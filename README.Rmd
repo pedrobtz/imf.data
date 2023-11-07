@@ -1,0 +1,66 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# imf.data
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/pedrobtz/imf.data/graph/badge.svg?token=VQQI8WH9GR)](https://codecov.io/gh/pedrobtz/imf.data)
+<!-- badges: end -->
+
+The goal of imf.data is to provide an interface to [IMF Data](https://data.imf.org/) via the [IMF Data REST API](https://datahelp.imf.org/knowledgebase/articles/667681-json-restful-web-service).
+
+## Installation
+
+You can install the development version of imf.data like so:
+
+``` r
+renv::install("github::pedrobtz/imf.data")
+```
+
+## Usage
+
+```{r} 
+library(imf.data)
+
+# list all available time-series
+dt <- list_datasets()
+head(dt,3)
+```
+
+```{r}
+# load IFS time-series
+IFS <- load_datasets("IFS")
+
+# see possible values for dimension 'ref_area'
+tail(IFS$dimensions$ref_area)
+
+# get time-series for GDP of Portugal, with Annual frequency
+x <- IFS$get_series(freq = "A", ref_area = "PT", indicator = "NGDP_D_IX")
+head(x)
+```
+
+```{r}
+# load DOT time-series
+DOT <- load_datasets("DOT")
+
+y <- DOT$get_series(freq = "M",
+                    ref_area = "PT",
+                    indicator = "TMG_CIF_USD",
+                    counterpart_area = c("B0","W00"),
+                    start_period = "2022-01-01",
+                    end_period = "2022-12-31")
+head(y)
+```

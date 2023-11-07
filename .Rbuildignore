@@ -1,0 +1,13 @@
+^imf\.data\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^README\.Rmd$
+^README\.md$
+^docs$
+^tests$
+^\.github$
+^_pkgdown\.yml$
+^pkgdown$
+^cran-comments\.md$
+^CRAN-SUBMISSION$
+^\.git$

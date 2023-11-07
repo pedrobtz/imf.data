@@ -1,0 +1,28 @@
+Package: imf.data
+Title: An Interface to IMF (International Monetary Fund) Data JSON API
+Version: 0.1.0
+Authors@R: 
+    person("Pedro", "Baltazar",, "pedrobtz@gmail.com", role = c("aut", "cre"))
+Description: A straightforward interface for accessing the IMF data JSON API, 
+    available at https://data.imf.org/. This package offers direct access to 
+    the primary API endpoints: Dataflow, DataStructure, and CompactData. 
+    And, in addition, it provides an intuitive interface for exploring available 
+    dimensions and attributes, as well as querying individual time-series datasets. 
+    Additionally, the package implements a rate limit on API calls to reduce the 
+    chances of exceeding service limits (limited to 10 calls every 5 seconds) a
+    nd encountering response errors.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    methods,
+    utils,
+    stats,
+    curl,
+    jsonlite
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+URL: https://pedrobtz.github.io/imf.data/
+BugReports: https://github.com/pedrobtz/imf.data/issues

@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![](https://www.r-pkg.org/badges/version/imf.data)](https://www.r-pkg.org/pkg/imf.data)
 [![R-CMD-check](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/pedrobtz/imf.data/graph/badge.svg?token=VQQI8WH9GR)](https://codecov.io/gh/pedrobtz/imf.data)
 <!-- badges: end -->
@@ -15,10 +16,10 @@ API](https://datahelp.imf.org/knowledgebase/articles/667681-json-restful-web-ser
 
 ## Installation
 
-You can install the development version of imf.data like so:
+Install the released version of remotes from CRAN:
 
 ``` r
-renv::install("github::pedrobtz/imf.data")
+install.packages("imf.data")
 ```
 
 ## Usage

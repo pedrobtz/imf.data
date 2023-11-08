@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">imf.data</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,19 +85,7 @@ function 'get_series' to retrieve time-series data.</p>
 <span class="r-in"><span>               counterpart_area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B0"</span>,<span class="st">"W00"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>               start_period <span class="op">=</span> <span class="st">"2022-01-01"</span>,</span></span>
 <span class="r-in"><span>               end_period <span class="op">=</span> <span class="st">"2022-12-31"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TIME_PERIOD M.GB.TMG_CIF_USD.W00 M.GB.TMG_CIF_USD.B0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      2022-01         68801.920379        24001.987484</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2022-02         67016.927275        25933.214716</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      2022-03         81096.417817        31201.578619</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      2022-04         67966.429524        26953.866539</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2022-05         66725.876113        27547.283077</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      2022-06         67131.746125        26811.570946</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      2022-07         66660.108532        26054.336273</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      2022-08         66139.574789        23693.312926</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      2022-09         62456.168476        21688.018013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     2022-10         63037.532221        22724.573173</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11     2022-11         67923.372393        26312.077167</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12     2022-12         69288.692693        25545.968572</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in curl::curl_fetch_memory(url = url, handle = get_curl_handle(accept)):</span> OpenSSL SSL_read: error:0A000126:SSL routines::unexpected eof while reading, errno 0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">DTS</span> <span class="op">&lt;-</span> <span class="fu">load_datasets</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DOT"</span>,<span class="st">"IFS"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

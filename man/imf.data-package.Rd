@@ -6,7 +6,7 @@
 \alias{imf.data-package}
 \title{imf.data: An Interface to IMF (International Monetary Fund) Data JSON API}
 \description{
-A straightforward interface for accessing the IMF data JSON API, available at https://data.imf.org/. This package offers direct access to the primary API endpoints: Dataflow, DataStructure, and CompactData. And, in addition, it provides an intuitive interface for exploring available dimensions and attributes, as well as querying individual time-series datasets. Additionally, the package implements a rate limit on API calls to reduce the chances of exceeding service limits (limited to 10 calls every 5 seconds) a nd encountering response errors.
+A straightforward interface for accessing the IMF (International Monetary Fund) data JSON API, available at \url{https://data.imf.org/}. This package offers direct access to the primary API endpoints: Dataflow, DataStructure, and CompactData. And, it provides an intuitive interface for exploring available dimensions and attributes, as well as querying individual time-series datasets. Additionally, the package implements a rate limit on API calls to reduce the chances of exceeding service limits (limited to 10 calls every 5 seconds) and encountering response errors.
 }
 \seealso{
 Useful links:

@@ -3,8 +3,15 @@ get_request <- function(url, accept = c("json","text")){
   type <- match.arg(accept)
 
   request_limit$consume()
-  resp <- curl::curl_fetch_memory(url = url,
-                                  handle = get_curl_handle(accept))
+  resp <- try(curl::curl_fetch_memory(url = url,
+                                  handle = get_curl_handle(accept)),
+              silent = TRUE)
+
+  if(is(resp,"try-error")){
+    if(settings$verbose()) message(resp)
+    return(invisible(NULL))
+  }
+
   on.exit(.last_response(resp))
 
   if(settings$verbose())

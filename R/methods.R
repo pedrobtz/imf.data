@@ -12,8 +12,7 @@ mt_dataflow <- local({
     if(is.null(.data)){
       resp <- get_request(url = build_api_path("Dataflow"))
       if(is.null(resp)){
-        message("Data service did not respond.")
-        return(invisible(NULL))
+        return(null_response())
       }
       stopifnot(!is.null(resp$Structure$Dataflows$Dataflow))
       .data <<- resp$Structure$Dataflows$Dataflow
@@ -39,8 +38,7 @@ mt_data_structure <- function(id){
     stop(sprintf("DatabaseID `%s` not found in Dataflow datasets", id))
   resp <- get_request(url = build_api_path(paste0("DataStructure/", id)))
   if(is.null(resp)){
-    message("Data service did not respond.")
-    return(invisible(NULL))
+    return(null_response())
   }
   return(resp)
 }
@@ -76,8 +74,7 @@ mt_compact_data <- function(id,
   path <- paste(path, dates, sep = "?")
   resp <- get_request(url = build_api_path(path))
   if(is.null(resp)){
-    message("Data service did not respond.")
-    return(invisible(NULL))
+    return(null_response())
   }
   return(resp)
 }
@@ -88,3 +85,9 @@ build_query <- function(dimensions){
   x <- paste(unlist(x), collapse = ".")
   return(x)
 }
+
+null_response <- function(){
+  message("Data service did not respond.")
+  return(invisible(NULL))
+}
+

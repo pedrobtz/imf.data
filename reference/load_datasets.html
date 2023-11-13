@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">imf.data</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,7 +77,9 @@ function 'get_series' to retrieve time-series data.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">IFS</span> <span class="op">&lt;-</span> <span class="fu">load_datasets</span><span class="op">(</span><span class="st">"IFS"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Data service did not respond.</span>
 <span class="r-in"><span><span class="va">DOT</span> <span class="op">&lt;-</span> <span class="fu">load_datasets</span><span class="op">(</span><span class="st">"DOT"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Data service did not respond.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">DOT</span><span class="op">$</span><span class="fu">get_series</span><span class="op">(</span>freq <span class="op">=</span> <span class="st">"M"</span>,</span></span>
 <span class="r-in"><span>               ref_area <span class="op">=</span><span class="st">"GB"</span>,</span></span>
@@ -85,9 +87,11 @@ function 'get_series' to retrieve time-series data.</p>
 <span class="r-in"><span>               counterpart_area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B0"</span>,<span class="st">"W00"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>               start_period <span class="op">=</span> <span class="st">"2022-01-01"</span>,</span></span>
 <span class="r-in"><span>               end_period <span class="op">=</span> <span class="st">"2022-12-31"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in curl::curl_fetch_memory(url = url, handle = get_curl_handle(accept)):</span> OpenSSL SSL_read: error:0A000126:SSL routines::unexpected eof while reading, errno 0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Dataset not loaded.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">DTS</span> <span class="op">&lt;-</span> <span class="fu">load_datasets</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DOT"</span>,<span class="st">"IFS"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Data service did not respond.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Data service did not respond.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

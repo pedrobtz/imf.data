@@ -11,6 +11,9 @@ mt_dataflow <- local({
   function(){
     if(is.null(.data)){
       resp <- get_request(url = build_api_path("Dataflow"))
+      if(is.null(resp)){
+        return(null_response())
+      }
       stopifnot(!is.null(resp$Structure$Dataflows$Dataflow))
       .data <<- resp$Structure$Dataflows$Dataflow
     }
@@ -29,9 +32,14 @@ mt_dataflow <- local({
 #'
 #' @export
 mt_data_structure <- function(id){
-  if(all(mt_dataflow()$KeyFamilyRef.KeyFamilyID != id))
+  ls_dts <- mt_dataflow()
+  if(is.null(ls_dts)) return(invisible(NULL))
+  if(all(ls_dts$KeyFamilyRef.KeyFamilyID != id))
     stop(sprintf("DatabaseID `%s` not found in Dataflow datasets", id))
   resp <- get_request(url = build_api_path(paste0("DataStructure/", id)))
+  if(is.null(resp)){
+    return(null_response())
+  }
   return(resp)
 }
 
@@ -65,6 +73,9 @@ mt_compact_data <- function(id,
   path <- sprintf("CompactData/%s/%s", id, query)
   path <- paste(path, dates, sep = "?")
   resp <- get_request(url = build_api_path(path))
+  if(is.null(resp)){
+    return(null_response())
+  }
   return(resp)
 }
 
@@ -74,3 +85,9 @@ build_query <- function(dimensions){
   x <- paste(unlist(x), collapse = ".")
   return(x)
 }
+
+null_response <- function(){
+  message("Data service did not respond.")
+  return(invisible(NULL))
+}
+

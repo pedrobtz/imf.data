@@ -10,6 +10,7 @@
 
 list_datasets <- function(){
   d <- mt_dataflow()
+  if(is.null(d)) return(invisible(NULL))
   d <- subset(d, select = c("KeyFamilyRef.KeyFamilyID", "Name.#text"))
   colnames(d) <- c("Id", "Description")
   return(d)
@@ -60,6 +61,8 @@ load_datasets <- local({
                            start_period = params$start_period,
                            end_period = params$end_period)
 
+    if(is.null(res)) return(invisible(NULL))
+
     series <- res$CompactData$DataSet$Series
 
     if(is.null(series)){
@@ -89,18 +92,29 @@ load_datasets <- local({
 
     if(is.null(.DataStr[[id]]) || isFALSE(use_cache)){
       data_str <- mt_data_structure(id)
-      dim_name <- extract_dimension_names(data_str)
-      dim_values <- extract_dimension_values(data_str, dim_name)
+      if(!is.null(data_str)){
 
-      .DataStr[[id]] <<- data_str
-      .DimNames[[id]] <<- dim_name
-      .DimValues[[id]] <<- dim_values
+        dim_name <- extract_dimension_names(data_str)
+        dim_values <- extract_dimension_values(data_str, dim_name)
+
+        .DataStr[[id]] <<- data_str
+        .DimNames[[id]] <<- dim_name
+        .DimValues[[id]] <<- dim_values
+        dim_name0 <- .DimNames[[id]]$Name
+
+      } else {
+        dim_values <- NULL
+        dim_name0 <- NULL
+      }
+    } else {
+      dim_values <- .DimValues[[id]]
+      dim_name0 <- .DimNames[[id]]$Name
     }
 
-    get_series <- make_get_function(.DimNames[[id]]$Name, id)
+    get_series <- make_get_function(dim_name0, id)
 
     mts <- list(id = id,
-                dimensions = .DimValues[[id]],
+                dimensions = dim_values,
                 get_series = get_series)
 
     class(mts) <- c("imf_db", class(mts))
@@ -128,8 +142,8 @@ extract_dimension_values <- function(data_str, dimensions){
   names(ls_values) <- dimensions$Name
 
   lapply(ls_values, function(x){
-      x <- x[, c("@value","Description.#text")]
-      colnames(x) <- c("Value","Description")
+    x <- x[, c("@value","Description.#text")]
+    colnames(x) <- c("Value","Description")
     return(x)
   })
 }
@@ -149,9 +163,8 @@ validate_dimension_values <- function(accepted, dimension, value){
 }
 
 
-make_get_function <- function(params,
+make_get_function <- function(params = NULL,
                               id,
-                              defaults = NA,
                               template = template_get,
                               envir = parent.frame(1L)){
 
@@ -160,12 +173,16 @@ make_get_function <- function(params,
   body(template) <- eval(substitute(substitute(X, list(ID = id)),
                                     env = list(X=body(template))))
 
-  force(defaults)
-  names(params) <- params
-  foo <- lapply(params, function(i)alist(x=)$x)
-
-  if(!is.null(defaults))
-    foo <- modifyList(foo, lapply(as.list(params), function(i)defaults))
+  if(is.null(params)){
+    foo <- formals(function(...){})
+    template <- function(){
+      message("Dataset not loaded.")
+      return(invisible(NULL))
+      }
+  } else {
+    names(params) <- params
+    foo <- lapply(params, function(i)alist(x=)$x)
+  }
 
   foo <- c(foo, formals(template))
   foo[[length(foo)+1]] <- body(template)

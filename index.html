@@ -42,7 +42,7 @@
     
     <a class="navbar-brand me-2" href="index.html">imf.data</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,10 +98,14 @@
 <span><span class="co"># list all available time-series</span></span>
 <span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/list_datasets.html">list_datasets</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dt</span>,<span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;            Id                         Description</span></span>
-<span><span class="co">#&gt; 1 BOP_2017M06 Balance of Payments (BOP), 2017 M06</span></span>
-<span><span class="co">#&gt; 2  BOP_2020M3 Balance of Payments (BOP), 2020 M03</span></span>
-<span><span class="co">#&gt; 3 BOP_2017M11 Balance of Payments (BOP), 2017 M11</span></span></code></pre></div>
+<span><span class="co">#&gt;               ID</span></span>
+<span><span class="co">#&gt; 300       AFRREO</span></span>
+<span><span class="co">#&gt; 41  AFRREO201410</span></span>
+<span><span class="co">#&gt; 110 AFRREO201504</span></span>
+<span><span class="co">#&gt;                                                            Description</span></span>
+<span><span class="co">#&gt; 300              Sub-Saharan Africa Regional Economic Outlook (AFRREO)</span></span>
+<span><span class="co">#&gt; 41  Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2014</span></span>
+<span><span class="co">#&gt; 110   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2015</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load IFS time-series</span></span>
 <span><span class="va">IFS</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_datasets.html">load_datasets</a></span><span class="op">(</span><span class="st">"IFS"</span><span class="op">)</span></span>
@@ -144,6 +148,26 @@
 <span><span class="co">#&gt; 4     2022-04         6639.368158          9427.777556</span></span>
 <span><span class="co">#&gt; 5     2022-05         7095.966482         10432.681421</span></span>
 <span><span class="co">#&gt; 6     2022-06          6778.13623         10180.535376</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">HPDD</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_datasets.html">load_datasets</a></span><span class="op">(</span><span class="st">"HPDD"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">HPDD</span><span class="op">$</span><span class="va">dimensions</span><span class="op">$</span><span class="va">indicator</span></span>
+<span><span class="co">#&gt;        Value       Description</span></span>
+<span><span class="co">#&gt; 1 GGXWDG_GDP Debt to GDP Ratio</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">HPDD</span><span class="op">$</span><span class="fu">get_series</span><span class="op">(</span>freq <span class="op">=</span> <span class="st">"A"</span>,</span>
+<span>                     ref_area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PT"</span>,<span class="st">"ES"</span><span class="op">)</span>,</span>
+<span>                     indicator <span class="op">=</span> <span class="st">"GGXWDG_GDP"</span>, </span>
+<span>                     start_period <span class="op">=</span> <span class="st">"1974"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    TIME_PERIOD  A.PT.GGXWDG_GDP  A.ES.GGXWDG_GDP</span></span>
+<span><span class="co">#&gt; 37        2010 96.1833185365076 60.0657865156585</span></span>
+<span><span class="co">#&gt; 38        2011 111.389678797878 69.4619949496129</span></span>
+<span><span class="co">#&gt; 39        2012 126.209890062282 85.4108429414156</span></span>
+<span><span class="co">#&gt; 40        2013  129.00084417095 93.6746787462474</span></span>
+<span><span class="co">#&gt; 41        2014 130.165394937574 99.2870917054055</span></span>
+<span><span class="co">#&gt; 42        2015  128.97682231548 99.2599490376345</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

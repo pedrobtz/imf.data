@@ -6,7 +6,7 @@ test_that("database works", {
 
   d <- list_datasets()
   expect_s3_class(d, "data.frame")
-  expect_named(d, c("Id", "Description"))
+  expect_named(d, c("ID", "Description"))
 
   IFS <- load_datasets("IFS")
   DOT <- load_datasets("DOT")

@@ -68,7 +68,9 @@ extract_resp_content <- function(resp, type = c("text", "json", "html")){
     return(extract_html_body(txt))
 
   if(type == "json"){
-    ans <- jsonlite::fromJSON(txt, flatten = TRUE, simplifyVector = TRUE)
+    ans <- jsonlite::fromJSON(txt, flatten = TRUE, simplifyVector = FALSE,
+                              simplifyDataFrame = FALSE,
+                              simplifyMatrix = FALSE)
     return(ans)
   }
 }

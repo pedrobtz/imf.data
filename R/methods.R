@@ -14,7 +14,9 @@ mt_dataflow <- local({
       if(is.null(resp)){
         return(null_response())
       }
-      stopifnot(!is.null(resp$Structure$Dataflows$Dataflow))
+      if(is.atomic(resp))
+        return(resp)
+
       .data <<- resp$Structure$Dataflows$Dataflow
     }
     return(.data)
@@ -34,7 +36,12 @@ mt_dataflow <- local({
 mt_data_structure <- function(id){
   ls_dts <- mt_dataflow()
   if(is.null(ls_dts)) return(invisible(NULL))
-  if(all(ls_dts$KeyFamilyRef.KeyFamilyID != id))
+
+  stopifnot(is.character(id), length(id) == 1L)
+
+  ls_ids <- sapply(ls_dts,function(x)x$KeyFamilyRef$KeyFamilyID)
+
+  if(!id %in% ls_ids)
     stop(sprintf("DatabaseID `%s` not found in Dataflow datasets", id))
   resp <- get_request(url = build_api_path(paste0("DataStructure/", id)))
   if(is.null(resp)){

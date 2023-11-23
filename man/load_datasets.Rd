@@ -31,6 +31,6 @@ DOT$get_series(freq = "M",
                start_period = "2022-01-01",
                end_period = "2022-12-31")
 
- DTS <- load_datasets(c("DOT","IFS"))
+DTS <- load_datasets(c("DOT","IFS"))
 
 }

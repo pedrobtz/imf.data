@@ -65,3 +65,17 @@ y <- DOT$get_series(freq = "M",
                     end_period = "2022-12-31")
 head(y)
 ```
+
+
+```{r}
+HPDD <- load_datasets("HPDD")
+
+HPDD$dimensions$indicator
+
+x <- HPDD$get_series(freq = "A",
+                     ref_area = c("PT","ES"),
+                     indicator = "GGXWDG_GDP", 
+                     start_period = "1974")
+
+tail(x)
+```

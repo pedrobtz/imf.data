@@ -9,11 +9,12 @@
 #'
 
 list_datasets <- function(){
-  d <- mt_dataflow()
-  if(is.null(d)) return(invisible(NULL))
-  d <- subset(d, select = c("KeyFamilyRef.KeyFamilyID", "Name.#text"))
-  colnames(d) <- c("Id", "Description")
-  return(d)
+  x <- mt_dataflow()
+  if(is.null(x)) return(invisible(NULL))
+  res <- data.frame(ID = sapply(x,function(y)y$KeyFamilyRef$KeyFamilyID),
+                    Description = sapply(x,function(y)y$Name$`#text`))
+  res <- res[ order(res$ID), ]
+  return(res)
 }
 
 
@@ -37,7 +38,7 @@ list_datasets <- function(){
 #'                start_period = "2022-01-01",
 #'                end_period = "2022-12-31")
 #'
-#'  DTS <- load_datasets(c("DOT","IFS"))
+#' DTS <- load_datasets(c("DOT","IFS"))
 #'
 #' @name load_datasets
 #' @export
@@ -70,13 +71,9 @@ load_datasets <- local({
       path <- sub("^.+(CompactData/.+)$", "\\1",x$url)
       warning(sprintf("Request '%s' returned empty data", path), call. = FALSE)
       return(invisible(NULL))
-    } else {
-      series <- as.list(series)
     }
 
-    query <- cat_query(series, dimensions)
-    series <- rename_series(series$Obs, query)
-    series <- cbind_series(series)
+    series <- cbind_series(transform_series(series, dimensions))
 
     return(series)
   }
@@ -125,18 +122,19 @@ load_datasets <- local({
 
 
 extract_dimension_names <- function(data_str){
-  y <- c("@codelist","@conceptRef")
-  x <- data_str$Structure$KeyFamilies$KeyFamily$Components$Dimension[, y ]
-  colnames(x) <- c("Codelist", "Name")
-  x$Name <- tolower(x$Name)
-  x$Num <- seq_along(x$Name)
-  return(x)
+  d <- rbind_list(data_str$Structure$KeyFamilies$KeyFamily$Components$Dimension)
+  res <- d[, c("@codelist","@conceptRef") ]
+  colnames(res) <- c("Codelist", "Name")
+  res$Name <- tolower(res$Name)
+  res$Num <- seq_along(res$Name)
+  return(res)
 }
 
 
 extract_dimension_values <- function(data_str, dimensions){
-  ls_values <- data_str$Structure$CodeLists$CodeList$Code
-  names(ls_values) <- data_str$Structure$CodeLists$CodeList$`@id`
+  ls_values <- lapply(data_str$Structure$CodeLists$CodeList,"[[","Code")
+  names(ls_values) <- sapply(data_str$Structure$CodeLists$CodeList,"[[", "@id")
+  ls_values <- lapply(ls_values, rbind_list)
 
   ls_values <- ls_values[dimensions$Codelist]
   names(ls_values) <- dimensions$Name
@@ -178,7 +176,7 @@ make_get_function <- function(params = NULL,
     template <- function(){
       message("Dataset not loaded.")
       return(invisible(NULL))
-      }
+    }
   } else {
     names(params) <- params
     foo <- lapply(params, function(i)alist(x=)$x)
@@ -206,19 +204,9 @@ as_list <- function(x){
   return(x)
 }
 
-rename_series <- function(series, query){
-  if(length(query) > 1L){
-    return(mapply(series, query, FUN = rename_series, SIMPLIFY = FALSE))
-  }
-  stopifnot(is.data.frame(series), ncol(series) == 2L)
-  colnames(series) <- c("TIME_PERIOD", query)
-  return(series)
-}
-
-
 cbind_series <- function(series){
-  if(is.data.frame(series))
-    return(series)
+  if(length(series) == 1L)
+    return(series[[1]])
 
   stopifnot(is.list(series), length(series) > 1L)
 
@@ -227,10 +215,42 @@ cbind_series <- function(series){
   })
 }
 
-cat_query <- function(series, dimensions){
-  x <- series[ paste0("@",toupper(names(dimensions))) ]
-  x <- as.data.frame(x)
-  query <- apply(x, 1, paste,collapse = ".")
-  return(query)
+rbind_list <- function(x){
+  if(!is.null(names(x))){
+    res <- as.data.frame(x,check.names = FALSE, stringsAsFactors = FALSE)
+    return(res)
+  }
+
+  res <- lapply(x, as.data.frame, check.names = FALSE, stringsAsFactors = FALSE)
+
+  cols <- unique(unlist(lapply(res, names)))
+  res <- lapply(res, function(y) {
+    z <- setdiff(cols, names(y))
+    if(length(z) > 0L)
+      y <- data.frame(c(y, sapply(z,function(i) NA)), check.names = FALSE, stringsAsFactors = FALSE)
+    return(y)
+  })
+
+  return(Reduce(rbind, res))
 }
 
+transform_series <- function(series, dimensions){
+
+  if(!is.null(names(series)))
+    series <- list(series)
+
+  ls_names <- paste0("@",toupper(names(dimensions)))
+
+  res <- lapply(series, function(x){
+
+    stopifnot("Obs" %in% names(x))
+    stopifnot(all(ls_names %in% names(x)))
+
+    d <- rbind_list(x$Obs)
+    colnames(d) <- c("TIME_PERIOD", paste(x[ls_names], collapse = "."))
+
+    return(d)
+  })
+
+  return(res)
+}

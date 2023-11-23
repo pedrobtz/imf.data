@@ -30,10 +30,14 @@ library(imf.data)
 # list all available time-series
 dt <- list_datasets()
 head(dt,3)
-#>            Id                         Description
-#> 1 BOP_2017M06 Balance of Payments (BOP), 2017 M06
-#> 2  BOP_2020M3 Balance of Payments (BOP), 2020 M03
-#> 3 BOP_2017M11 Balance of Payments (BOP), 2017 M11
+#>               ID
+#> 300       AFRREO
+#> 41  AFRREO201410
+#> 110 AFRREO201504
+#>                                                            Description
+#> 300              Sub-Saharan Africa Regional Economic Outlook (AFRREO)
+#> 41  Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2014
+#> 110   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2015
 ```
 
 ``` r
@@ -80,4 +84,26 @@ head(y)
 #> 4     2022-04         6639.368158          9427.777556
 #> 5     2022-05         7095.966482         10432.681421
 #> 6     2022-06          6778.13623         10180.535376
+```
+
+``` r
+HPDD <- load_datasets("HPDD")
+
+HPDD$dimensions$indicator
+#>        Value       Description
+#> 1 GGXWDG_GDP Debt to GDP Ratio
+
+x <- HPDD$get_series(freq = "A",
+                     ref_area = c("PT","ES"),
+                     indicator = "GGXWDG_GDP", 
+                     start_period = "1974")
+
+tail(x)
+#>    TIME_PERIOD  A.PT.GGXWDG_GDP  A.ES.GGXWDG_GDP
+#> 37        2010 96.1833185365076 60.0657865156585
+#> 38        2011 111.389678797878 69.4619949496129
+#> 39        2012 126.209890062282 85.4108429414156
+#> 40        2013  129.00084417095 93.6746787462474
+#> 41        2014 130.165394937574 99.2870917054055
+#> 42        2015  128.97682231548 99.2599490376345
 ```

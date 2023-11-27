@@ -11,11 +11,9 @@ mt_dataflow <- local({
   function(){
     if(is.null(.data)){
       resp <- get_request(url = build_api_path("Dataflow"))
-      if(is.null(resp)){
-        return(null_response())
+      if(is.null(resp) || is.character(resp)){
+        return(null_response(resp))
       }
-      if(is.atomic(resp))
-        return(resp)
 
       .data <<- resp$Structure$Dataflows$Dataflow
     }
@@ -44,8 +42,8 @@ mt_data_structure <- function(id){
   if(!id %in% ls_ids)
     stop(sprintf("DatabaseID `%s` not found in Dataflow datasets", id))
   resp <- get_request(url = build_api_path(paste0("DataStructure/", id)))
-  if(is.null(resp)){
-    return(null_response())
+  if(is.null(resp) || is.character(resp)){
+    return(null_response(resp))
   }
   return(resp)
 }
@@ -80,8 +78,8 @@ mt_compact_data <- function(id,
   path <- sprintf("CompactData/%s/%s", id, query)
   path <- paste(path, dates, sep = "?")
   resp <- get_request(url = build_api_path(path))
-  if(is.null(resp)){
-    return(null_response())
+  if(is.null(resp) || is.character(resp)){
+    return(null_response(resp))
   }
   return(resp)
 }
@@ -93,8 +91,11 @@ build_query <- function(dimensions){
   return(x)
 }
 
-null_response <- function(){
-  message("Data service did not respond.")
+null_response <- function(msg = NULL){
+  if(is.null(msg))
+    message("Data service did not respond.")
+  else
+    message("Data service response:","\n", msg)
   return(invisible(NULL))
 }
 

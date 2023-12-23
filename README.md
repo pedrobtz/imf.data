@@ -8,6 +8,7 @@
 [![](https://www.r-pkg.org/badges/version/imf.data)](https://www.r-pkg.org/pkg/imf.data)
 [![R-CMD-check](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/pedrobtz/imf.data/graph/badge.svg?token=VQQI8WH9GR)](https://codecov.io/gh/pedrobtz/imf.data)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)
 <!-- badges: end -->
 
 The goal of imf.data is to provide an interface to [IMF
@@ -31,11 +32,11 @@ library(imf.data)
 dt <- list_datasets()
 head(dt,3)
 #>               ID
-#> 300       AFRREO
+#> 297       AFRREO
 #> 41  AFRREO201410
 #> 110 AFRREO201504
 #>                                                            Description
-#> 300              Sub-Saharan Africa Regional Economic Outlook (AFRREO)
+#> 297              Sub-Saharan Africa Regional Economic Outlook (AFRREO)
 #> 41  Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2014
 #> 110   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2015
 ```

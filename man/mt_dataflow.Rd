@@ -13,6 +13,6 @@ a list with content of 'Dataflow' response.
 Calls API endpoint 'Dataflow'
 }
 \examples{
-mt_dataflow()
+DF <- mt_dataflow()
 
 }

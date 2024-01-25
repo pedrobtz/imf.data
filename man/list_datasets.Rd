@@ -13,6 +13,6 @@ a data.frame with columns 'Id' and 'Description'.
 List all available Time Series Datasets
 }
 \examples{
-list_datasets()
-
+d <- list_datasets()
+head(d)
 }

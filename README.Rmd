@@ -28,6 +28,11 @@ The goal of imf.data is to provide an interface to [IMF Data](https://data.imf.o
 
 Install the released version of remotes from CRAN:
 
+```{r, echo=FALSE}
+options(max.print = 15)
+options(width = 85)
+```
+
 ``` r
 install.packages("imf.data")
 ```
@@ -38,8 +43,7 @@ install.packages("imf.data")
 library(imf.data)
 
 # list all available time-series
-dt <- list_datasets()
-head(dt,3)
+list_datasets()
 ```
 
 ```{r}
@@ -47,24 +51,22 @@ head(dt,3)
 IFS <- load_datasets("IFS")
 
 # see possible values for dimension 'ref_area'
-tail(IFS$dimensions$ref_area)
+IFS$dimensions$ref_area
 
 # get time-series for GDP of Portugal, with Annual frequency
-x <- IFS$get_series(freq = "A", ref_area = "PT", indicator = "NGDP_D_IX")
-head(x)
+IFS$get_series(freq = "A", ref_area = "PT", indicator = "NGDP_D_IX")
 ```
 
 ```{r}
 # load DOT time-series
 DOT <- load_datasets("DOT")
 
-y <- DOT$get_series(freq = "M",
-                    ref_area = "PT",
-                    indicator = "TMG_CIF_USD",
-                    counterpart_area = c("B0","W00"),
-                    start_period = "2022-01-01",
-                    end_period = "2022-12-31")
-head(y)
+DOT$get_series(freq = "M",
+               ref_area = "PT",
+               indicator = "TMG_CIF_USD",
+               counterpart_area = c("B0","W00"),
+               start_period = "2022-01-01",
+               end_period = "2022-12-31")
 ```
 
 
@@ -73,10 +75,8 @@ HPDD <- load_datasets("HPDD")
 
 HPDD$dimensions$indicator
 
-x <- HPDD$get_series(freq = "A",
-                     ref_area = c("PT","ES"),
-                     indicator = "GGXWDG_GDP", 
-                     start_period = "1974")
-
-tail(x)
+HPDD$get_series(freq = "A",
+                ref_area = c("PT","ES"),
+                indicator = "GGXWDG_GDP", 
+                start_period = "1974")
 ```

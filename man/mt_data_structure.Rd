@@ -16,6 +16,6 @@ a list with content of 'DataStructure' response.
 Calls API endpoint 'DataStructure'
 }
 \examples{
-mt_data_structure("DOT")
+DOT <- mt_data_structure("DOT")
 
 }

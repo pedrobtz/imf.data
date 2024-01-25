@@ -3,7 +3,7 @@
 #'
 #' @returns a list with content of 'Dataflow' response.
 #' @examples
-#' mt_dataflow()
+#' DF <- mt_dataflow()
 #'
 #' @export
 mt_dataflow <- local({
@@ -28,7 +28,7 @@ mt_dataflow <- local({
 #' @returns a list with content of 'DataStructure' response.
 #'
 #' @examples
-#' mt_data_structure("DOT")
+#' DOT <- mt_data_structure("DOT")
 #'
 #' @export
 mt_data_structure <- function(id){
@@ -63,9 +63,9 @@ mt_data_structure <- function(id){
 #' 'yyyy', 'yyyy-mm' or 'yyyy-mm-dd'.
 #'
 #' @examples
-#' mt_compact_data("IFS", list("M", "GB", "PMP_IX"))
-#' mt_compact_data("IFS", list("M", "GB", "PMP_IX"), start_period = "2000-01")
-#' mt_compact_data("DOT", list("M","GB", "TMG_CIF_USD", c("B0","W00")))
+#' IFS <- mt_compact_data("IFS", list("M", "GB", "PMP_IX"))
+#' IFS <- mt_compact_data("IFS", list("M", "GB", "PMP_IX"), start_period = "2000-01")
+#' DOT <- mt_compact_data("DOT", list("M","GB", "TMG_CIF_USD", c("B0","W00")))
 #'
 #' @export
 mt_compact_data <- function(id,

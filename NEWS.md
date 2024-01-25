@@ -1,5 +1,9 @@
 # imf.data
 
+# imf.data 0.1.4
+
+* set 'curl' timeout to 5 minutes.
+
 # imf.data 0.1.3
 
 * improve error handling, when service responds with html message.

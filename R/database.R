@@ -5,8 +5,8 @@
 #' @export
 #'
 #' @examples
-#' list_datasets()
-#'
+#' d <- list_datasets()
+#' head(d)
 
 list_datasets <- function(){
   x <- mt_dataflow()
@@ -14,6 +14,7 @@ list_datasets <- function(){
   res <- data.frame(ID = sapply(x,function(y)y$KeyFamilyRef$KeyFamilyID),
                     Description = sapply(x,function(y)y$Name$`#text`))
   res <- res[ order(res$ID), ]
+  rownames(res) <- NULL
   return(res)
 }
 
@@ -74,7 +75,7 @@ load_datasets <- local({
     }
 
     series <- cbind_series(transform_series(series, dimensions))
-
+    row.names(series) <- NULL
     return(series)
   }
 
@@ -127,6 +128,7 @@ extract_dimension_names <- function(data_str){
   colnames(res) <- c("Codelist", "Name")
   res$Name <- tolower(res$Name)
   res$Num <- seq_along(res$Name)
+  row.names(res) <- NULL
   return(res)
 }
 
@@ -142,6 +144,7 @@ extract_dimension_values <- function(data_str, dimensions){
   lapply(ls_values, function(x){
     x <- x[, c("@value","Description.#text")]
     colnames(x) <- c("Value","Description")
+    row.names(x) <- NULL
     return(x)
   })
 }
@@ -210,9 +213,11 @@ cbind_series <- function(series){
 
   stopifnot(is.list(series), length(series) > 1L)
 
-  Reduce(x = series, function(x,y){
+  res <- Reduce(x = series, function(x,y){
     merge(x, y, by = "TIME_PERIOD", all = TRUE)
   })
+  row.names(res) <- NULL
+  return(res)
 }
 
 rbind_list <- function(x){
@@ -231,7 +236,9 @@ rbind_list <- function(x){
     return(y)
   })
 
-  return(Reduce(rbind, res))
+  res <- Reduce(rbind, res)
+  row.names(res) <- NULL
+  return(res)
 }
 
 transform_series <- function(series, dimensions){
@@ -252,5 +259,6 @@ transform_series <- function(series, dimensions){
     return(d)
   })
 
+  row.names(res) <- NULL
   return(res)
 }

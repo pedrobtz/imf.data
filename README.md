@@ -29,16 +29,16 @@ install.packages("imf.data")
 library(imf.data)
 
 # list all available time-series
-dt <- list_datasets()
-head(dt,3)
-#>               ID
-#> 297       AFRREO
-#> 41  AFRREO201410
-#> 110 AFRREO201504
-#>                                                            Description
-#> 297              Sub-Saharan Africa Regional Economic Outlook (AFRREO)
-#> 41  Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2014
-#> 110   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2015
+list_datasets()
+#>             ID                                                        Description
+#> 1       AFRREO              Sub-Saharan Africa Regional Economic Outlook (AFRREO)
+#> 2 AFRREO201410 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2014
+#> 3 AFRREO201504   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2015
+#> 4 AFRREO201510 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2015
+#> 5 AFRREO201604   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2016
+#> 6 AFRREO201610 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2016
+#> 7 AFRREO201704   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2017
+#>  [ reached 'max' / getOption("max.print") -- omitted 316 rows ]
 ```
 
 ``` r
@@ -46,18 +46,19 @@ head(dt,3)
 IFS <- load_datasets("IFS")
 
 # see possible values for dimension 'ref_area'
-tail(IFS$dimensions$ref_area)
-#>               Value                                      Description
-#> 273 1C_SRF_plus_EMU                               SRF (including EA)
-#> 274          1C_SRF                                    SRF Countries
-#> 275              F6                               Sub-Saharan Africa
-#> 276              7A WAEMU (West African Economic and Monetary Union)
-#> 277             A10                               Western Hemisphere
-#> 278             W00                  All Countries, excluding the IO
+IFS$dimensions$ref_area
+#>   Value         Description
+#> 1    AF         Afghanistan
+#> 2    AL             Albania
+#> 3    DZ             Algeria
+#> 4    AD             Andorra
+#> 5    AO              Angola
+#> 6    AI            Anguilla
+#> 7    AG Antigua and Barbuda
+#>  [ reached 'max' / getOption("max.print") -- omitted 271 rows ]
 
 # get time-series for GDP of Portugal, with Annual frequency
-x <- IFS$get_series(freq = "A", ref_area = "PT", indicator = "NGDP_D_IX")
-head(x)
+IFS$get_series(freq = "A", ref_area = "PT", indicator = "NGDP_D_IX")
 #>   TIME_PERIOD   A.PT.NGDP_D_IX
 #> 1        1995  65.121159550493
 #> 2        1996 66.6781968283958
@@ -65,26 +66,27 @@ head(x)
 #> 4        1998 71.9183372769496
 #> 5        1999 74.3423648876999
 #> 6        2000 76.8850736800294
+#> 7        2001 79.7421096759417
+#>  [ reached 'max' / getOption("max.print") -- omitted 21 rows ]
 ```
 
 ``` r
 # load DOT time-series
 DOT <- load_datasets("DOT")
 
-y <- DOT$get_series(freq = "M",
-                    ref_area = "PT",
-                    indicator = "TMG_CIF_USD",
-                    counterpart_area = c("B0","W00"),
-                    start_period = "2022-01-01",
-                    end_period = "2022-12-31")
-head(y)
+DOT$get_series(freq = "M",
+               ref_area = "PT",
+               indicator = "TMG_CIF_USD",
+               counterpart_area = c("B0","W00"),
+               start_period = "2022-01-01",
+               end_period = "2022-12-31")
 #>   TIME_PERIOD M.PT.TMG_CIF_USD.B0 M.PT.TMG_CIF_USD.W00
 #> 1     2022-01         5899.209507          8592.410482
 #> 2     2022-02         6625.214152          9306.561169
 #> 3     2022-03         7271.456185         10056.201211
 #> 4     2022-04         6639.368158          9427.777556
 #> 5     2022-05         7095.966482         10432.681421
-#> 6     2022-06          6778.13623         10180.535376
+#>  [ reached 'max' / getOption("max.print") -- omitted 7 rows ]
 ```
 
 ``` r
@@ -94,17 +96,15 @@ HPDD$dimensions$indicator
 #>        Value       Description
 #> 1 GGXWDG_GDP Debt to GDP Ratio
 
-x <- HPDD$get_series(freq = "A",
-                     ref_area = c("PT","ES"),
-                     indicator = "GGXWDG_GDP", 
-                     start_period = "1974")
-
-tail(x)
-#>    TIME_PERIOD  A.PT.GGXWDG_GDP  A.ES.GGXWDG_GDP
-#> 37        2010 96.1833185365076 60.0657865156585
-#> 38        2011 111.389678797878 69.4619949496129
-#> 39        2012 126.209890062282 85.4108429414156
-#> 40        2013  129.00084417095 93.6746787462474
-#> 41        2014 130.165394937574 99.2870917054055
-#> 42        2015  128.97682231548 99.2599490376345
+HPDD$get_series(freq = "A",
+                ref_area = c("PT","ES"),
+                indicator = "GGXWDG_GDP", 
+                start_period = "1974")
+#>   TIME_PERIOD  A.PT.GGXWDG_GDP  A.ES.GGXWDG_GDP
+#> 1        1974 13.5038251401281 8.40504508036064
+#> 2        1975 19.1667501320296 7.25030408773679
+#> 3        1976 24.5259382117236 13.0038706110036
+#> 4        1977 26.8756607793361 15.3279581608194
+#> 5        1978 29.8913266186709 14.3281987356424
+#>  [ reached 'max' / getOption("max.print") -- omitted 37 rows ]
 ```

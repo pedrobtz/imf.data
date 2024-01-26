@@ -5,10 +5,12 @@
 
 <!-- badges: start -->
 
-[![](https://www.r-pkg.org/badges/version/imf.data)](https://www.r-pkg.org/pkg/imf.data)
+[![Package
+Version](https://www.r-pkg.org/badges/version/imf.data)](https://www.r-pkg.org/pkg/imf.data)
 [![R-CMD-check](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/pedrobtz/imf.data/graph/badge.svg?token=VQQI8WH9GR)](https://codecov.io/gh/pedrobtz/imf.data)
-[![](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)
+[![Code
+Coverage](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)
 <!-- badges: end -->
 
 The goal of imf.data is to provide an interface to [IMF
@@ -30,14 +32,14 @@ library(imf.data)
 
 # list all available time-series
 list_datasets()
-#>             ID                                                        Description
-#> 1       AFRREO              Sub-Saharan Africa Regional Economic Outlook (AFRREO)
-#> 2 AFRREO201410 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2014
-#> 3 AFRREO201504   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2015
-#> 4 AFRREO201510 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2015
-#> 5 AFRREO201604   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2016
-#> 6 AFRREO201610 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2016
-#> 7 AFRREO201704   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2017
+#>               ID                                                        Description
+#> 297       AFRREO              Sub-Saharan Africa Regional Economic Outlook (AFRREO)
+#> 41  AFRREO201410 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2014
+#> 110 AFRREO201504   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2015
+#> 58  AFRREO201510 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2015
+#> 78  AFRREO201604   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2016
+#> 21  AFRREO201610 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2016
+#> 34  AFRREO201704   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2017
 #>  [ reached 'max' / getOption("max.print") -- omitted 316 rows ]
 ```
 

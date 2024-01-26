@@ -15,4 +15,5 @@ List all available Time Series Datasets
 \examples{
 d <- list_datasets()
 head(d)
+
 }

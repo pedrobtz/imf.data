@@ -1,7 +1,3 @@
 url: https://pedrobtz.github.io/imf.data
-development:
-  mode: auto
 template:
   bootstrap: 5
-code:
-  width: 90

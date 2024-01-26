@@ -2,12 +2,12 @@
 #' List all available Time Series Datasets
 #'
 #' @return a data.frame with columns 'Id' and 'Description'.
-#' @export
 #'
 #' @examples
 #' d <- list_datasets()
 #' head(d)
-
+#'
+#' @export
 list_datasets <- function(){
   x <- mt_dataflow()
   if(is.null(x)) return(invisible(NULL))
@@ -40,6 +40,7 @@ list_datasets <- function(){
 #'                end_period = "2022-12-31")
 #'
 #' DTS <- load_datasets(c("DOT","IFS"))
+#' DTS$DOT$dimensions$indicator
 #'
 #' @name load_datasets
 #' @export

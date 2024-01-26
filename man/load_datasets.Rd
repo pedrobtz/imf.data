@@ -32,5 +32,6 @@ DOT$get_series(freq = "M",
                end_period = "2022-12-31")
 
 DTS <- load_datasets(c("DOT","IFS"))
+DTS$DOT$dimensions$indicator
 
 }

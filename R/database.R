@@ -197,7 +197,7 @@ make_get_function <- function(params = NULL,
 utils::globalVariables(c("ID"))
 
 template_get <- function(start_period = NULL, end_period = NULL){
-  x <- eval(as_list(match.call()))
+  x <- eval.parent(as_list(match.call()))
   return(get0(x, ID))
 }
 

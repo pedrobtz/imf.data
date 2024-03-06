@@ -35,4 +35,12 @@ test_that("database works", {
 
   expect_equal(dim(x), c(12,3))
 
+  foo <- function(){
+    IFS <- imf.data::load_datasets("IFS")
+    x <- "BFDA_BP6_USD"
+    IFS$get_series(freq = "Q", indicator = x, ref_area = "US")
+  }
+
+  expect_s3_class(foo(), "data.frame")
+
 })

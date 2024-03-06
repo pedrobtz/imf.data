@@ -1,6 +1,6 @@
 Package: imf.data
 Title: An Interface to IMF (International Monetary Fund) Data JSON API
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: 
     person("Pedro", "Baltazar",, "pedrobtz@gmail.com", role = c("aut", "cre"))
 Description: A straightforward interface for accessing the IMF 

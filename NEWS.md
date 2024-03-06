@@ -1,5 +1,9 @@
 # imf.data
 
+# imf.data 0.1.5
+
+* [#5](https://github.com/pedrobtz/imf.data/issues/5) fix/change behavior of 'template_get' to evaluate function arguments within the calling environment.
+
 # imf.data 0.1.4
 
 * set 'curl' timeout to 5 minutes.

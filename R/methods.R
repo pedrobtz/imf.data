@@ -63,8 +63,6 @@ mt_data_structure <- function(id){
 #' 'yyyy', 'yyyy-mm' or 'yyyy-mm-dd'.
 #'
 #' @examples
-#' IFS <- mt_compact_data("IFS", list("M", "GB", "PMP_IX"))
-#' IFS <- mt_compact_data("IFS", list("M", "GB", "PMP_IX"), start_period = "2000-01")
 #' DOT <- mt_compact_data("DOT", list("M","GB", "TMG_CIF_USD", c("B0","W00")))
 #'
 #' @export

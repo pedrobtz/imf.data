@@ -21,7 +21,6 @@ function 'get_series' to retrieve time-series data.
 Loads Time Series Datasets
 }
 \examples{
-IFS <- load_datasets("IFS")
 DOT <- load_datasets("DOT")
 
 DOT$get_series(freq = "M",
@@ -30,8 +29,5 @@ DOT$get_series(freq = "M",
                counterpart_area = c("B0","W00"),
                start_period = "2022-01-01",
                end_period = "2022-12-31")
-
-DTS <- load_datasets(c("DOT","IFS"))
-DTS$DOT$dimensions$indicator
 
 }

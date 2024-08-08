@@ -59,7 +59,16 @@ IFS$dimensions$ref_area
 #> 7    AG Antigua and Barbuda
 #>  [ reached 'max' / getOption("max.print") -- omitted 271 rows ]
 
-# get time-series for GDP of Portugal, with Annual frequency
+IFS$dimensions$indicator
+#>              Value                                                                               Description
+#> 1       NFIAXD_XDC                      Acquisitions less Disposals of Valuables, Nominal, Domestic Currency
+#> 2    NFIAXD_SA_XDC Acquisitions less Disposals of Valuables, Nominal, Seasonally Adjusted, Domestic Currency
+#> 3   NFIAXD_NSA_XDC          Acquisitions less Disposals of Valuables, Nominal, Unadjusted, Domestic Currency
+#> 4     NFIAXD_R_XDC                         Acquisitions less Disposals of Valuables, Real, Domestic Currency
+#> 5  NFIAXD_R_SA_XDC    Acquisitions less Disposals of Valuables, Real, Seasonally Adjusted, Domestic Currency
+#> 6 NFIAXD_R_NSA_XDC             Acquisitions less Disposals of Valuables, Real, Unadjusted, Domestic Currency
+
+# get time-series for GDP Deflator Index of Portugal, with Annual frequency
 IFS$get_series(freq = "A", ref_area = "PT", indicator = "NGDP_D_IX")
 #>   TIME_PERIOD   A.PT.NGDP_D_IX
 #> 1        1995  65.121159550493

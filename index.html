@@ -92,7 +92,16 @@
 <span><span class="co">#&gt; 7    AG Antigua and Barbuda</span></span>
 <span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 271 rows ]</span></span>
 <span></span>
-<span><span class="co"># get time-series for GDP of Portugal, with Annual frequency</span></span>
+<span><span class="va">IFS</span><span class="op">$</span><span class="va">dimensions</span><span class="op">$</span><span class="va">indicator</span></span>
+<span><span class="co">#&gt;              Value                                                                               Description</span></span>
+<span><span class="co">#&gt; 1       NFIAXD_XDC                      Acquisitions less Disposals of Valuables, Nominal, Domestic Currency</span></span>
+<span><span class="co">#&gt; 2    NFIAXD_SA_XDC Acquisitions less Disposals of Valuables, Nominal, Seasonally Adjusted, Domestic Currency</span></span>
+<span><span class="co">#&gt; 3   NFIAXD_NSA_XDC          Acquisitions less Disposals of Valuables, Nominal, Unadjusted, Domestic Currency</span></span>
+<span><span class="co">#&gt; 4     NFIAXD_R_XDC                         Acquisitions less Disposals of Valuables, Real, Domestic Currency</span></span>
+<span><span class="co">#&gt; 5  NFIAXD_R_SA_XDC    Acquisitions less Disposals of Valuables, Real, Seasonally Adjusted, Domestic Currency</span></span>
+<span><span class="co">#&gt; 6 NFIAXD_R_NSA_XDC             Acquisitions less Disposals of Valuables, Real, Unadjusted, Domestic Currency</span></span>
+<span></span>
+<span><span class="co"># get time-series for GDP Deflator Index of Portugal, with Annual frequency</span></span>
 <span><span class="va">IFS</span><span class="op">$</span><span class="fu">get_series</span><span class="op">(</span>freq <span class="op">=</span> <span class="st">"A"</span>, ref_area <span class="op">=</span> <span class="st">"PT"</span>, indicator <span class="op">=</span> <span class="st">"NGDP_D_IX"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   TIME_PERIOD   A.PT.NGDP_D_IX</span></span>
 <span><span class="co">#&gt; 1        1995  65.121159550493</span></span>

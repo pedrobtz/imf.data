@@ -1,6 +1,6 @@
 Package: imf.data
 Title: An Interface to IMF (International Monetary Fund) Data JSON API
-Version: 0.1.6
+Version: 0.1.7
 Authors@R: 
     person("Pedro", "Baltazar",, "pedrobtz@gmail.com", role = c("aut", "cre"))
 Description: A straightforward interface for accessing the IMF 
@@ -23,7 +23,8 @@ Imports:
     curl,
     jsonlite
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    data.table
 Config/testthat/edition: 3
 URL: https://pedrobtz.github.io/imf.data/
 BugReports: https://github.com/pedrobtz/imf.data/issues

@@ -53,7 +53,8 @@ load_datasets <- local({
                        ifnotfound = NA)
 
     for(i in names(dimensions)){
-      if(!is.na(dimensions[[i]])){
+      value <- dimensions[[i]]
+      if(length(value) != 1L || !(is.na(value))){
         validate_dimension_values(accepted = .DimValues[[id]],
                                   dimension = i,
                                   value = dimensions[[i]])

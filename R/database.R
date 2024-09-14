@@ -48,12 +48,16 @@ load_datasets <- local({
 
   get0 <- function(params, id){
 
-    dimensions <- params[names(params)%in% names(.DimValues[[id]])]
+    dimensions <- mget(names(.DimValues[[id]]),
+                       envir = as.environment(params),
+                       ifnotfound = NA)
 
-    for(i in names(params)){
+    for(i in names(dimensions)){
+      if(!is.na(dimensions[[i]])){
         validate_dimension_values(accepted = .DimValues[[id]],
                                   dimension = i,
                                   value = dimensions[[i]])
+      }
     }
 
     res <- mt_compact_data(id = id,
@@ -210,6 +214,9 @@ as_list <- function(x){
 }
 
 cbind_series <- function(series){
+
+  series <- Filter(Negate(is.null), series)
+
   if(length(series) == 1L)
     return(series[[1]])
 
@@ -251,8 +258,10 @@ transform_series <- function(series, dimensions){
   ls_names <- paste0("@",toupper(names(dimensions)))
 
   res <- lapply(series, function(x){
-    browser()
-    stopifnot("Obs" %in% names(x))
+
+    if(!"Obs" %in% names(x))
+      return(NULL)
+
     stopifnot(all(ls_names %in% names(x)))
 
     d <- rbind_list(x$Obs)

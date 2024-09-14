@@ -1,5 +1,13 @@
 # imf.data
 
+# imf.data 0.1.7
+
+* [#11](https://github.com/pedrobtz/imf.data/issues/11) fix issue with handling Series with empty/NULL data for some dimensions.
+
+# imf.data 0.1.6
+
+* [#9](https://github.com/pedrobtz/imf.data/issues/9) fix issue with handling Series with multiple value (Obs + other indicators).
+
 # imf.data 0.1.5
 
 * [#5](https://github.com/pedrobtz/imf.data/issues/5) fix/change behavior of 'template_get' to evaluate function arguments within the calling environment.

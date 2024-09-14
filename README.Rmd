@@ -84,3 +84,13 @@ d <- HPDD$get_series(freq = "A",
 # see original data
 ls_series <- attr(d, "original_data")
 ```
+
+```{r}
+# melt the results 
+library(data.table)
+
+cols <- lapply(HPDD$dimensions, function(x)NULL)
+
+melt(as.data.table(d), measure.vars = measurev(cols, sep="."))
+```
+

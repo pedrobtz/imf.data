@@ -85,7 +85,7 @@ mt_compact_data <- function(id,
 
 build_query <- function(dimensions){
   x <- lapply(dimensions, function(x){
-    if(is.na(x)) NULL else x
+    if(length(x) ==1 && is.na(x)) NULL else x
   })
   x <- lapply(x, paste,collapse = "+")
   x <- paste(unlist(x), collapse = ".")

@@ -48,12 +48,13 @@ load_datasets <- local({
 
   get0 <- function(params, id){
 
-    dimensions <- params[names(.DimValues[[id]])]
+    dimensions <- params[names(params)%in% names(.DimValues[[id]])]
 
-    for(i in names(dimensions))
-      validate_dimension_values(accepted = .DimValues[[id]],
-                                dimension = i,
-                                value = dimensions[[i]])
+    for(i in names(params)){
+        validate_dimension_values(accepted = .DimValues[[id]],
+                                  dimension = i,
+                                  value = dimensions[[i]])
+    }
 
     res <- mt_compact_data(id = id,
                            dimensions = dimensions,
@@ -250,7 +251,7 @@ transform_series <- function(series, dimensions){
   ls_names <- paste0("@",toupper(names(dimensions)))
 
   res <- lapply(series, function(x){
-
+    browser()
     stopifnot("Obs" %in% names(x))
     stopifnot(all(ls_names %in% names(x)))
 

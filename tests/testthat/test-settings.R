@@ -1,5 +1,4 @@
 test_that("settings works", {
-
   settings$verbose(TRUE)
 
   expect_equal(settings$verbose(), TRUE)
@@ -20,7 +19,7 @@ test_that("settings works", {
   settings$handle_options(value = NULL)
 
   request_limit$set_rate(limit = 50, window = 60)
-  expect_equal(request_limit$get_rate(), list(rate=50, window=as.difftime(60,units = "secs")))
+  expect_equal(request_limit$get_rate(), list(rate = 50, window = as.difftime(60, units = "secs")))
 
   request_limit$set_rate()
 })

@@ -63,12 +63,14 @@ IFS$get_series(freq = "A", ref_area = "PT", indicator = "NGDP_D_IX")
 # load DOT time-series
 DOT <- load_datasets("DOT")
 
-DOT$get_series(freq = "M",
-               ref_area = "PT",
-               indicator = "TMG_CIF_USD",
-               counterpart_area = c("B0","W00"),
-               start_period = "2022-01-01",
-               end_period = "2022-12-31")
+DOT$get_series(
+  freq = "M",
+  ref_area = "PT",
+  indicator = "TMG_CIF_USD",
+  counterpart_area = c("B0", "W00"),
+  start_period = "2022-01-01",
+  end_period = "2022-12-31"
+)
 ```
 
 
@@ -77,20 +79,22 @@ HPDD <- load_datasets("HPDD")
 
 HPDD$dimensions$indicator
 
-d <- HPDD$get_series(freq = "A",
-                     ref_area = c("PT","ES"),
-                     indicator = "GGXWDG_GDP", 
-                     start_period = "1974")
+d <- HPDD$get_series(
+  freq = "A",
+  ref_area = c("PT", "ES"),
+  indicator = "GGXWDG_GDP",
+  start_period = "1974"
+)
 # see original data
 ls_series <- attr(d, "original_data")
 ```
 
 ```{r}
-# melt the results 
+# melt the results
 library(data.table)
 
-cols <- lapply(HPDD$dimensions, function(x)NULL)
+cols <- lapply(HPDD$dimensions, function(x) NULL)
 
-melt(as.data.table(d), measure.vars = measurev(cols, sep="."))
+melt(as.data.table(d), measure.vars = measurev(cols, sep = "."))
 ```
 

@@ -1,4 +1,3 @@
-
 #' List all available Time Series Datasets
 #'
 #' @return a data.frame with columns 'Id' and 'Description'.
@@ -8,12 +7,16 @@
 #' head(d)
 #'
 #' @export
-list_datasets <- function(){
+list_datasets <- function() {
   x <- mt_dataflow()
-  if(is.null(x)) return(invisible(NULL))
-  res <- data.frame(ID = sapply(x,function(y)y$KeyFamilyRef$KeyFamilyID),
-                    Description = sapply(x,function(y)y$Name$`#text`))
-  res <- res[ order(res$ID), ]
+  if (is.null(x)) {
+    return(invisible(NULL))
+  }
+  res <- data.frame(
+    ID = sapply(x, function(y) y$KeyFamilyRef$KeyFamilyID),
+    Description = sapply(x, function(y) y$Name$`#text`)
+  )
+  res <- res[order(res$ID), ]
   rownames(res) <- NULL
   return(res)
 }
@@ -31,48 +34,55 @@ list_datasets <- function(){
 #' @examples
 #' DOT <- load_datasets("DOT")
 #'
-#' DOT$get_series(freq = "M",
-#'                ref_area ="GB",
-#'                indicator = "TMG_CIF_USD",
-#'                counterpart_area = c("B0","W00"),
-#'                start_period = "2022-01-01",
-#'                end_period = "2022-12-31")
+#' DOT$get_series(
+#'   freq = "M",
+#'   ref_area = "GB",
+#'   indicator = "TMG_CIF_USD",
+#'   counterpart_area = c("B0", "W00"),
+#'   start_period = "2022-01-01",
+#'   end_period = "2022-12-31"
+#' )
 #'
 #' @name load_datasets
 #' @export
 load_datasets <- local({
-
   .DataStr <- list()
   .DimNames <- list()
   .DimValues <- list()
 
-  get0 <- function(params, id){
-
+  get0 <- function(params, id) {
     dimensions <- mget(names(.DimValues[[id]]),
-                       envir = as.environment(params),
-                       ifnotfound = NA)
+      envir = as.environment(params),
+      ifnotfound = NA
+    )
 
-    for(i in names(dimensions)){
+    for (i in names(dimensions)) {
       value <- dimensions[[i]]
-      if(length(value) != 1L || !(is.na(value))){
-        validate_dimension_values(accepted = .DimValues[[id]],
-                                  dimension = i,
-                                  value = dimensions[[i]])
+      if (length(value) != 1L || !(is.na(value))) {
+        validate_dimension_values(
+          accepted = .DimValues[[id]],
+          dimension = i,
+          value = dimensions[[i]]
+        )
       }
     }
 
-    res <- mt_compact_data(id = id,
-                           dimensions = dimensions,
-                           start_period = params$start_period,
-                           end_period = params$end_period)
+    res <- mt_compact_data(
+      id = id,
+      dimensions = dimensions,
+      start_period = params$start_period,
+      end_period = params$end_period
+    )
 
-    if(is.null(res)) return(invisible(NULL))
+    if (is.null(res)) {
+      return(invisible(NULL))
+    }
 
     series <- res$CompactData$DataSet$Series
 
-    if(is.null(series)){
+    if (is.null(series)) {
       x <- .last_response()
-      path <- sub("^.+(CompactData/.+)$", "\\1",x$url)
+      path <- sub("^.+(CompactData/.+)$", "\\1", x$url)
       warning(sprintf("Request '%s' returned empty data", path), call. = FALSE)
       return(invisible(NULL))
     }
@@ -85,19 +95,17 @@ load_datasets <- local({
     return(dt_series)
   }
 
-  function(id, use_cache = TRUE){
-
-    if(length(id) > 1L){
+  function(id, use_cache = TRUE) {
+    if (length(id) > 1L) {
       names(id) <- id
-      return(lapply(id, function(x){
+      return(lapply(id, function(x) {
         try(load_datasets(x, use_cache), silent = FALSE)
       }))
     }
 
-    if(is.null(.DataStr[[id]]) || isFALSE(use_cache)){
+    if (is.null(.DataStr[[id]]) || isFALSE(use_cache)) {
       data_str <- mt_data_structure(id)
-      if(!is.null(data_str)){
-
+      if (!is.null(data_str)) {
         dim_name <- extract_dimension_names(data_str)
         dim_values <- extract_dimension_values(data_str, dim_name)
 
@@ -105,7 +113,6 @@ load_datasets <- local({
         .DimNames[[id]] <<- dim_name
         .DimValues[[id]] <<- dim_values
         dim_name0 <- .DimNames[[id]]$Name
-
       } else {
         dim_values <- NULL
         dim_name0 <- NULL
@@ -117,9 +124,11 @@ load_datasets <- local({
 
     get_series <- make_get_function(dim_name0, id)
 
-    mts <- list(id = id,
-                dimensions = dim_values,
-                get_series = get_series)
+    mts <- list(
+      id = id,
+      dimensions = dim_values,
+      get_series = get_series
+    )
 
     class(mts) <- c("imf_db", class(mts))
 
@@ -128,9 +137,9 @@ load_datasets <- local({
 })
 
 
-extract_dimension_names <- function(data_str){
+extract_dimension_names <- function(data_str) {
   d <- rbind_list(data_str$Structure$KeyFamilies$KeyFamily$Components$Dimension)
-  res <- d[, c("@codelist","@conceptRef") ]
+  res <- d[, c("@codelist", "@conceptRef")]
   colnames(res) <- c("Codelist", "Name")
   res$Name <- tolower(res$Name)
   res$Num <- seq_along(res$Name)
@@ -139,30 +148,29 @@ extract_dimension_names <- function(data_str){
 }
 
 
-extract_dimension_values <- function(data_str, dimensions){
-  ls_values <- lapply(data_str$Structure$CodeLists$CodeList,"[[","Code")
-  names(ls_values) <- sapply(data_str$Structure$CodeLists$CodeList,"[[", "@id")
+extract_dimension_values <- function(data_str, dimensions) {
+  ls_values <- lapply(data_str$Structure$CodeLists$CodeList, "[[", "Code")
+  names(ls_values) <- sapply(data_str$Structure$CodeLists$CodeList, "[[", "@id")
   ls_values <- lapply(ls_values, rbind_list)
 
   ls_values <- ls_values[dimensions$Codelist]
   names(ls_values) <- dimensions$Name
 
-  lapply(ls_values, function(x){
-    x <- x[, c("@value","Description.#text")]
-    colnames(x) <- c("Value","Description")
+  lapply(ls_values, function(x) {
+    x <- x[, c("@value", "Description.#text")]
+    colnames(x) <- c("Value", "Description")
     row.names(x) <- NULL
     return(x)
   })
 }
 
 
-validate_dimension_values <- function(accepted, dimension, value){
-
+validate_dimension_values <- function(accepted, dimension, value) {
   accepted_values <- accepted[[dimension]]$Value
 
   i <- which(!value %in% accepted_values)
 
-  if(length(i) > 0L){
+  if (length(i) > 0L) {
     j <- paste0(value[i], collapse = ", ")
     stop(sprintf("Invalid value(s) '%s' for dimension '%s'.", j, dimension))
   }
@@ -173,26 +181,26 @@ validate_dimension_values <- function(accepted, dimension, value){
 make_get_function <- function(params = NULL,
                               id,
                               template = template_get,
-                              envir = parent.frame(1L)){
-
+                              envir = parent.frame(1L)) {
   stopifnot(is.function(template))
 
   body(template) <- eval(substitute(substitute(X, list(ID = id)),
-                                    env = list(X=body(template))))
+    env = list(X = body(template))
+  ))
 
-  if(is.null(params)){
-    foo <- formals(function(...){})
-    template <- function(){
+  if (is.null(params)) {
+    foo <- formals(function(...) {})
+    template <- function() {
       message("Dataset not loaded.")
       return(invisible(NULL))
     }
   } else {
     names(params) <- params
-    foo <- lapply(params, function(i)alist(x=)$x)
+    foo <- lapply(params, function(i) alist(x = )$x)
   }
 
   foo <- c(foo, formals(template))
-  foo[[length(foo)+1]] <- body(template)
+  foo[[length(foo) + 1]] <- body(template)
   foo <- as.function.default(foo, envir = envir)
 
   return(foo)
@@ -201,38 +209,38 @@ make_get_function <- function(params = NULL,
 
 utils::globalVariables(c("ID"))
 
-template_get <- function(start_period = NULL, end_period = NULL){
+template_get <- function(start_period = NULL, end_period = NULL) {
   x <- eval.parent(as_list(match.call()))
   ans <- get0(x, ID)
   return(ans)
 }
 
 
-as_list <- function(x){
+as_list <- function(x) {
   stopifnot(is.language(x))
   x[[1]] <- as.symbol("list")
   return(x)
 }
 
-cbind_series <- function(series){
-
+cbind_series <- function(series) {
   series <- Filter(Negate(is.null), series)
 
-  if(length(series) == 1L)
+  if (length(series) == 1L) {
     return(series[[1]])
+  }
 
   stopifnot(is.list(series), length(series) > 1L)
 
-  res <- Reduce(x = series, function(x,y){
+  res <- Reduce(x = series, function(x, y) {
     merge(x, y, by = "TIME_PERIOD", all = TRUE)
   })
   row.names(res) <- NULL
   return(res)
 }
 
-rbind_list <- function(x){
-  if(!is.null(names(x))){
-    res <- as.data.frame(x,check.names = FALSE, stringsAsFactors = FALSE)
+rbind_list <- function(x) {
+  if (!is.null(names(x))) {
+    res <- as.data.frame(x, check.names = FALSE, stringsAsFactors = FALSE)
     return(res)
   }
 
@@ -241,8 +249,9 @@ rbind_list <- function(x){
   cols <- unique(unlist(lapply(res, names)))
   res <- lapply(res, function(y) {
     z <- setdiff(cols, names(y))
-    if(length(z) > 0L)
-      y <- data.frame(c(y, sapply(z,function(i) NA)), check.names = FALSE, stringsAsFactors = FALSE)
+    if (length(z) > 0L) {
+      y <- data.frame(c(y, sapply(z, function(i) NA)), check.names = FALSE, stringsAsFactors = FALSE)
+    }
     return(y)
   })
 
@@ -251,22 +260,22 @@ rbind_list <- function(x){
   return(res)
 }
 
-transform_series <- function(series, dimensions){
-
-  if(!is.null(names(series)))
+transform_series <- function(series, dimensions) {
+  if (!is.null(names(series))) {
     series <- list(series)
+  }
 
-  ls_names <- paste0("@",toupper(names(dimensions)))
+  ls_names <- paste0("@", toupper(names(dimensions)))
 
-  res <- lapply(series, function(x){
-
-    if(!"Obs" %in% names(x))
+  res <- lapply(series, function(x) {
+    if (!"Obs" %in% names(x)) {
       return(NULL)
+    }
 
     stopifnot(all(ls_names %in% names(x)))
 
     d <- rbind_list(x$Obs)
-    d <- d[, c("@TIME_PERIOD","@OBS_VALUE") ]
+    d <- d[, c("@TIME_PERIOD", "@OBS_VALUE")]
     colnames(d) <- c("TIME_PERIOD", paste(x[ls_names], collapse = "."))
 
     return(d)

@@ -99,6 +99,7 @@ extract_resp_content <- function(resp, type = c("text", "json", "html")) {
 print_response <- function(resp, path) {
   status <- ifelse(resp$status == 200, "OK", "ERROR")
   message(sprintf("[%s][%s] GET %s", resp$status, status, path))
+  return(invisible(NULL))
 }
 
 extract_html_body <- function(x) {

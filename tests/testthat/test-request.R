@@ -67,8 +67,7 @@ test_that("extract_resp_content works", {
 
   resp <- .last_response()
 
-  y <- "{ \"Content-Length\": \"90\", \"Content-Type\": \"application/json\",
-  \"freeform\": \"123\" }"
+  y <- "{ \"Content-Length\": \"90\", \"Content-Type\": \"application/json\", \"freeform\": \"123\" }"
   expect_equal(extract_resp_content(resp, type = "text"), y)
   expect_equal(
     extract_resp_content(resp, type = "json"),

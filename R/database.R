@@ -27,7 +27,8 @@ list_datasets <- function() {
 #' @param id is character vector of Dataset Series identifier.
 #' @param use_cache is Boolean, defaults to TRUE, if TRUE it reloads the Dataset
 #' from cached values.
-#' @return a dataset object for the time-series identifier, i.e. a list containing
+#' @return a dataset object for the time-series identifier, i.e.
+#' a list containing
 #' a list 'dimensions' of data.frames with the valid dimensions values, and a
 #' function 'get_series' to retrieve time-series data.
 #'
@@ -51,7 +52,8 @@ load_datasets <- local({
   .DimValues <- list()
 
   get0 <- function(params, id) {
-    dimensions <- mget(names(.DimValues[[id]]),
+    dimensions <- mget(
+      names(.DimValues[[id]]),
       envir = as.environment(params),
       ifnotfound = NA
     )
@@ -178,13 +180,16 @@ validate_dimension_values <- function(accepted, dimension, value) {
 }
 
 
-make_get_function <- function(params = NULL,
-                              id,
-                              template = template_get,
-                              envir = parent.frame(1L)) {
+make_get_function <- function(
+  params = NULL,
+  id,
+  template = template_get,
+  envir = parent.frame(1L)
+) {
   stopifnot(is.function(template))
 
-  body(template) <- eval(substitute(substitute(X, list(ID = id)),
+  body(template) <- eval(substitute(
+    substitute(X, list(ID = id)),
     env = list(X = body(template))
   ))
 
@@ -250,14 +255,18 @@ rbind_list <- function(x) {
   res <- lapply(res, function(y) {
     z <- setdiff(cols, names(y))
     if (length(z) > 0L) {
-      y <- data.frame(c(y, sapply(z, function(i) NA)), check.names = FALSE, stringsAsFactors = FALSE)
+      y <- data.frame(
+        c(y, sapply(z, function(i) NA)),
+        check.names = FALSE,
+        stringsAsFactors = FALSE
+      )
     }
     return(y)
   })
 
   res <- Reduce(rbind, res)
   row.names(res) <- NULL
-  return(res)
+  res
 }
 
 transform_series <- function(series, dimensions) {

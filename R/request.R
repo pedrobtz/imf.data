@@ -1,5 +1,5 @@
 get_request <- function(url, accept = c("json", "text")) {
-  type <- match.arg(accept)
+  accept <- match.arg(accept)
 
   request_limit$consume()
   resp <- try(
@@ -11,7 +11,9 @@ get_request <- function(url, accept = c("json", "text")) {
   )
 
   if (is(resp, "try-error")) {
-    if (settings$verbose()) message(resp)
+    if (settings$verbose()) {
+      message(resp)
+    }
     return(invisible(NULL))
   }
 
@@ -22,22 +24,24 @@ get_request <- function(url, accept = c("json", "text")) {
   }
 
   if (resp$status != 200) {
-    stop(status_error_msg(resp))
+    stop(status_error_msg(resp), call. = FALSE)
   }
 
   if (grepl("json", resp$type)) {
     res <- extract_resp_content(resp, "json")
-  } else if (grepl("html", resp$type)) {
+  } else if (grepl("html", resp$type, fixed = TRUE)) {
     res <- extract_resp_content(resp, "html")
   } else {
-    stop(sprintf("response type '%s' not expected.", resp$type))
+    stop(sprintf("response type '%s' not expected.", resp$type), call. = FALSE)
   }
   return(res)
 }
 
 
-get_curl_handle <- function(accept = c("json", "text"),
-                            opts = settings$handle_options()) {
+get_curl_handle <- function(
+  accept = c("json", "text"),
+  opts = settings$handle_options()
+) {
   accept <- match.arg(accept)
   h <- curl::new_handle()
   curl::handle_setheaders(
@@ -65,7 +69,9 @@ status_error_msg <- function(resp) {
   txt <- extract_resp_content(resp, type = "text")
   msg <- sprintf(
     "Request to '%s'\nStatus code: %d\nContent: \n%s",
-    resp$url, resp$status, txt
+    resp$url,
+    resp$status,
+    txt
   )
   return(msg)
 }
@@ -79,8 +85,10 @@ extract_resp_content <- function(resp, type = c("text", "json", "html")) {
   }
 
   if (type == "json") {
-    ans <- jsonlite::fromJSON(txt,
-      flatten = TRUE, simplifyVector = FALSE,
+    ans <- jsonlite::fromJSON(
+      txt,
+      flatten = TRUE,
+      simplifyVector = FALSE,
       simplifyDataFrame = FALSE,
       simplifyMatrix = FALSE
     )

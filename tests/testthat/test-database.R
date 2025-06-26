@@ -1,7 +1,10 @@
 test_that("database works", {
   request_limit$set_rate(limit = 5)
 
-  expect_error(load_datasets("WRONG"), "DatabaseID `WRONG` not found in Dataflow datasets")
+  expect_error(
+    load_datasets("WRONG"),
+    "DatabaseID `WRONG` not found in Dataflow datasets"
+  )
 
   d <- list_datasets()
   expect_s3_class(d, "data.frame")
@@ -13,7 +16,8 @@ test_that("database works", {
 
   expect_length(DTS, 2L)
 
-  expect_error(IFS$get_series(freq = "A", ref_area = "PT", indicator = "GDP"),
+  expect_error(
+    IFS$get_series(freq = "A", ref_area = "PT", indicator = "GDP"),
     regexp = "Invalid value(s) 'GDP' for dimension 'indicator'.",
     fixed = TRUE
   )
@@ -21,12 +25,21 @@ test_that("database works", {
   d <- IFS$get_series(freq = "A", ref_area = "PT", indicator = "NGDP_D_IX")
   expect_s3_class(d, "data.frame")
 
-
-  d <- IFS$get_series(freq = "A", ref_area = c("PT", "CH"), indicator = c("NGDP_D_IX", "PCPI_PC_CP_A_PT"))
-  expect_equal(colnames(d), c(
-    "TIME_PERIOD", "A.PT.PCPI_PC_CP_A_PT", "A.CH.PCPI_PC_CP_A_PT",
-    "A.PT.NGDP_D_IX", "A.CH.NGDP_D_IX"
-  ))
+  d <- IFS$get_series(
+    freq = "A",
+    ref_area = c("PT", "CH"),
+    indicator = c("NGDP_D_IX", "PCPI_PC_CP_A_PT")
+  )
+  expect_equal(
+    colnames(d),
+    c(
+      "TIME_PERIOD",
+      "A.PT.PCPI_PC_CP_A_PT",
+      "A.CH.PCPI_PC_CP_A_PT",
+      "A.PT.NGDP_D_IX",
+      "A.CH.NGDP_D_IX"
+    )
+  )
 
   x <- DOT$get_series(
     freq = "M",
@@ -40,9 +53,10 @@ test_that("database works", {
   expect_equal(dim(x), c(12, 3))
 
   foo <- function() {
-    IFS <- imf.data::load_datasets("IFS")
+    IFS <- load_datasets("IFS")
     x <- "BFDA_BP6_USD"
-    IFS$get_series(freq = "Q", indicator = x, ref_area = "US")
+    res <- IFS$get_series(freq = "Q", indicator = x, ref_area = "US")
+    return(res)
   }
 
   expect_s3_class(foo(), "data.frame")

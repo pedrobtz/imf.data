@@ -15,11 +15,9 @@ settings <- local({
   }
 
   list(
-    handle_options = setter("handle_options",
-      check_fun = function(x) {
-        is.list(x) || is.null(x)
-      }
-    ),
+    handle_options = setter("handle_options", check_fun = function(x) {
+      is.list(x) || is.null(x)
+    }),
     verbose = setter("verbose", check_fun = is.logical)
   )
 })
@@ -30,9 +28,7 @@ request_limit <- local({
   .time_window <- NULL
   .rate_limit <- NULL
 
-  set_rate <- function(limit = 10L,
-                       window = 5,
-                       units = "secs") {
+  set_rate <- function(limit = 10L, window = 5, units = "secs") {
     window <- as.difftime(tim = window, units = units)
 
     stopifnot(is.infinite(limit) || (as.integer(limit) && limit > 0))
@@ -63,7 +59,10 @@ request_limit <- local({
       ztime <- .time_window - x[1]
 
       if (settings$verbose()) {
-        message(sprintf("Rate Limit exceeded: waiting for %s seconds.", round(ztime, digits = 2)))
+        message(sprintf(
+          "Rate Limit exceeded: waiting for %s seconds.",
+          round(ztime, digits = 2)
+        ))
       }
 
       Sys.sleep(ztime)

@@ -14,7 +14,9 @@ test_that("mt_compact_data works", {
   expect_equal(class(d), "list")
   expect_equal(length(d[[1]]), 2)
 
-  x <- mt_compact_data("IFS", list("A", "GB", "PMP_IX"),
+  x <- mt_compact_data(
+    "IFS",
+    list("A", "GB", "PMP_IX"),
     start_period = "2010-01",
     end_period = "2015-12"
   )

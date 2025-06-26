@@ -68,10 +68,12 @@ mt_data_structure <- function(id) {
 #' DOT <- mt_compact_data("DOT", list("M", "GB", "TMG_CIF_USD", c("B0", "W00")))
 #'
 #' @export
-mt_compact_data <- function(id,
-                            dimensions,
-                            start_period = NA,
-                            end_period = NA) {
+mt_compact_data <- function(
+  id,
+  dimensions,
+  start_period = NA,
+  end_period = NA
+) {
   query <- build_query(dimensions)
   dates <- na.omit(c("startPeriod=" = start_period, "endPeriod=" = end_period))
   dates <- paste0(names(dates), dates, collapse = "&")
@@ -87,11 +89,11 @@ mt_compact_data <- function(id,
 
 build_query <- function(dimensions) {
   x <- lapply(dimensions, function(x) {
-    if (length(x) == 1 && is.na(x)) NULL else x
+    if (length(x) == 1L && is.na(x)) NULL else x
   })
   x <- lapply(x, paste, collapse = "+")
   x <- paste(unlist(x), collapse = ".")
-  return(x)
+  x
 }
 
 null_response <- function(msg = NULL) {

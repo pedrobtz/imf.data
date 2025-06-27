@@ -4,14 +4,10 @@
 # imf.data
 
 <!-- badges: start -->
-
 [![Package
 Version](https://www.r-pkg.org/badges/version/imf.data)](https://www.r-pkg.org/pkg/imf.data)
 [![R-CMD-check](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/pedrobtz/imf.data/graph/badge.svg?token=VQQI8WH9GR)](https://codecov.io/gh/pedrobtz/imf.data)
-[![Code
-Coverage](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)
-
 <!-- badges: end -->
 
 The goal of imf.data is to provide an interface to [IMF

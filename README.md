@@ -9,6 +9,8 @@
 [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)
 <!-- badges: end -->
 
+**⚠️ This package is no longer maintained as the underlying API has been decommissioned; please use for example [imfapi](https://cloud.r-project.org/web/packages/imfapi/) for this functionality for the new IMF API.**
+
 The goal of imf.data is to provide an interface to [IMF
 Data](https://data.imf.org/) via the [IMF Data REST
 API](https://datahelp.imf.org/knowledgebase/articles/667681-json-restful-web-service).

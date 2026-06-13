@@ -2,8 +2,10 @@
 % Please edit documentation in R/sdmx_api.R
 \name{sdmx_api}
 \alias{sdmx_api}
-\title{IMF SDMX 3.0 API Wrapper}
+\title{IMF SDMX 3.0 API}
 \description{
-Simple wrapper for the IMF SDMX 3.0 API using httr2.
-Base URL: https://api.imf.org/external/sdmx/3.0
+Low-level access to the IMF SDMX 3.0 structure, data, availability, and
+metadata endpoints. These functions return the API response without
+converting it to a tidy data frame. See \code{\link[=get_data]{get_data()}} for the higher-level
+interface.
 }

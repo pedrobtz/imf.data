@@ -8,8 +8,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  eval = FALSE
 )
 ```
 
@@ -23,77 +22,104 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-The goal of imf.data is to provide an interface to [IMF Data](https://data.imf.org/) via the [IMF Data REST API](https://datahelp.imf.org/knowledgebase/articles/667681-json-restful-web-service).
+`imf.data` provides an R interface to the
+[IMF SDMX 3.0 API](https://datasupport.imf.org/knowledge?id=knowledge_category&category_id=9959b2bc1b6391903dba646fbd4bcb6a).
+Version 0.2.0 is a breaking migration from the retired IMF JSON service.
+
+The package has two layers:
+
+- A concise workflow that discovers datasets and returns tidy observations.
+- Raw `sdmx_*()` functions for users who need the complete SDMX response.
 
 ## Installation
 
-Install the released version of remotes from CRAN:
+Install the released package from CRAN:
 
-```{r, echo=FALSE}
-options(max.print = 15)
-options(width = 85)
-```
-
-``` r
+```r
 install.packages("imf.data")
 ```
 
-## Usage
+The SDMX 3.0 rewrite is available from GitHub while version 0.2.0 is under
+development:
 
-```{r} 
+```r
+pak::pak("pedrobtz/imf.data")
+```
+
+## Quick start
+
+```{r}
 library(imf.data)
 
-# list all available time-series
-list_datasets()
+# Discover IMF Statistics Department datasets
+datasets <- list_datasets("IMF.STA")
+datasets[datasets$id == "CPI", ]
 ```
 
 ```{r}
-# load IFS time-series
-IFS <- load_datasets("IFS")
-
-# see possible values for dimension 'ref_area'
-IFS$dimensions$ref_area
-
-# get time-series for GDP of Portugal, with Annual frequency
-IFS$get_series(freq = "A", ref_area = "PT", indicator = "NGDP_D_IX")
+# Inspect a dataset's key dimensions
+list_dimensions("CPI")
 ```
 
 ```{r}
-# load DOT time-series
-DOT <- load_datasets("DOT")
-
-DOT$get_series(
-  freq = "M",
-  ref_area = "PT",
-  indicator = "TMG_CIF_USD",
-  counterpart_area = c("B0", "W00"),
-  start_period = "2022-01-01",
-  end_period = "2022-12-31"
+# Find valid frequency codes for US CPI data
+list_dimension_values(
+  "CPI",
+  "FREQUENCY",
+  filters = list(COUNTRY = "USA")
 )
 ```
 
-
 ```{r}
-HPDD <- load_datasets("HPDD")
-
-HPDD$dimensions$indicator
-
-d <- HPDD$get_series(
-  freq = "A",
-  ref_area = c("PT", "ES"),
-  indicator = "GGXWDG_GDP",
-  start_period = "1974"
+# Download the latest monthly headline CPI observations
+cpi <- get_data(
+  "CPI",
+  filters = list(
+    COUNTRY = c("USA", "CAN"),
+    INDEX_TYPE = "CPI",
+    COICOP_1999 = "_T",
+    TYPE_OF_TRANSFORMATION = "IX",
+    FREQUENCY = "M"
+  ),
+  last_n_obs = 12,
+  attributes = "STATUS"
 )
-# see original data
-ls_series <- attr(d, "original_data")
+cpi
 ```
+
+`get_data()` returns one row per observation. Dimension and time columns are
+character vectors, `OBS_VALUE` is numeric, and requested SDMX attributes are
+included as additional columns.
+
+## Raw SDMX access
 
 ```{r}
-# melt the results
-library(data.table)
-
-cols <- lapply(HPDD$dimensions, function(x) NULL)
-
-melt(as.data.table(d), measure.vars = measurev(cols, sep = "."))
+raw <- sdmx_data(
+  "CPI",
+  key = "USA.CPI._T.IX.M",
+  last_n_obs = 2
+)
 ```
 
+See `vignette("getting-started")` for the complete workflow and
+`vignette("migration")` when upgrading from version 0.1.x.
+
+## Proxy configuration
+
+httr2 respects standard proxy environment variables such as `HTTPS_PROXY` and
+`NO_PROXY`. A proxy can also be configured specifically for `imf.data`:
+
+```{r}
+set_imf_proxy(
+  "http://proxy.example.com",
+  port = 8080,
+  username = Sys.getenv("PROXY_USER"),
+  password = Sys.getenv("PROXY_PASSWORD")
+)
+
+list_datasets("IMF.STA")
+clear_imf_proxy()
+```
+
+The package-specific configuration applies to all raw and tidy API functions
+for the remainder of the R session, until `clear_imf_proxy()` is called.

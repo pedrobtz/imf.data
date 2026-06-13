@@ -2,49 +2,52 @@
 % Please edit documentation in R/sdmx_api.R
 \name{sdmx_availability}
 \alias{sdmx_availability}
-\title{Query data availability from the IMF SDMX API}
+\title{Query data availability}
 \usage{
 sdmx_availability(
   dataflow,
   key = "*",
   component_id = "*",
-  agency_id = "IMF",
+  agency_id = "IMF.STA",
   version = "+",
   context = "dataflow",
+  filters = list(),
   mode = c("exact", "available"),
   references = "none",
   format = c("json", "xml")
 )
 }
 \arguments{
-\item{dataflow}{Character. The dataflow ID.}
+\item{dataflow}{Dataflow ID.}
 
-\item{key}{Character. Dimension filter key. Default is "*".}
+\item{key}{SDMX series key. Use \code{"*"} with \code{filters} for named filtering.}
 
-\item{component_id}{Character. Component ID to get availability for. Default is "*".}
+\item{component_id}{Dimension for which availability is requested.}
 
-\item{agency_id}{Character. Agency ID. Default is "IMF".}
+\item{agency_id}{Maintainer ID.}
 
-\item{version}{Character. Version. Default is "+" (latest stable).}
+\item{version}{Dataflow version.}
 
-\item{context}{Character. Query context. Default is "dataflow".}
+\item{context}{Query context.}
 
-\item{mode}{Character. "exact" or "available". Default is "exact".}
+\item{filters}{Named list of component filters.}
 
-\item{references}{Character. References to include. Default is "none".}
+\item{mode}{Return exact matches or values that remain available.}
 
-\item{format}{Character. Response format: "json" or "xml". Default is "json".}
+\item{references}{Referenced artefacts to include.}
+
+\item{format}{Response format. XML responses are returned as text.}
 }
 \value{
-Parsed API response.
+A nested list for JSON, a character value for XML, or \code{NULL} for
+an HTTP 204 response.
 }
 \description{
-Check which data is available without retrieving the actual data.
-Useful for building data query forms.
+Retrieve the available dimension values matching a data query without
+downloading observations.
 }
 \examples{
 \dontrun{
-# Check availability for CPI dataflow
-sdmx_availability("CPI", agency_id = "IMF.STA")
+sdmx_availability("CPI", component_id = "COUNTRY")
 }
 }

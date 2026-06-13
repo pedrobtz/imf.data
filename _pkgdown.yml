@@ -1,3 +1,28 @@
 url: https://pedrobtz.github.io/imf.data
 template:
   bootstrap: 5
+
+reference:
+  - title: Tidy workflow
+    contents:
+      - list_datasets
+      - list_dimensions
+      - list_dimension_values
+      - get_data
+  - title: Raw SDMX API
+    contents:
+      - sdmx_api
+      - sdmx_structure
+      - sdmx_data
+      - sdmx_availability
+      - sdmx_metadata
+  - title: Configuration
+    contents:
+      - set_imf_proxy
+
+articles:
+  - title: Guides
+    navbar: Guides
+    contents:
+      - getting-started
+      - migration

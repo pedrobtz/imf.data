@@ -2,11 +2,11 @@
 % Please edit documentation in R/sdmx_api.R
 \name{sdmx_structure}
 \alias{sdmx_structure}
-\title{Query structural metadata from the IMF SDMX API}
+\title{Query structural metadata}
 \usage{
 sdmx_structure(
   structure_type = "dataflow",
-  agency_id = "IMF",
+  agency_id = "*",
   resource_id = "*",
   version = "+",
   detail = NULL,
@@ -15,37 +15,31 @@ sdmx_structure(
 )
 }
 \arguments{
-\item{structure_type}{Character. Type of structure to query. One of:
-"datastructure", "dataflow", "codelist", "conceptscheme", "categoryscheme",
-"agencyscheme", or "*" for all.}
+\item{structure_type}{Type of structure to retrieve.}
 
-\item{agency_id}{Character. Agency ID (e.g., "IMF"). Use "*" for all. Default is "IMF".}
+\item{agency_id}{Maintainer ID. Use \code{"*"} for all maintainers.}
 
-\item{resource_id}{Character. Resource ID. Use "\emph{" for all. Default is "}".}
+\item{resource_id}{Resource ID. Use \code{"*"} for all resources.}
 
-\item{version}{Character. Version. Use "+" for latest stable, "~" for latest. Default is "+".}
+\item{version}{Resource version. \code{"+"} selects the latest stable version.}
 
-\item{detail}{Character. Level of detail: "full", "allstubs", "referencestubs", etc.}
+\item{detail}{Optional SDMX detail level.}
 
-\item{references}{Character. Which references to include: "none", "children", "descendants", etc.}
+\item{references}{Optional referenced artefacts to include.}
 
-\item{format}{Character. Response format: "json" or "xml". Default is "json".}
+\item{format}{Response format. XML responses are returned as text.}
 }
 \value{
-Parsed API response.
+A nested list for JSON, a character value for XML, or \code{NULL} for
+an HTTP 204 response.
 }
 \description{
-Retrieve structural metadata such as codelists, dataflows, data structures, etc.
+Retrieve IMF SDMX structural metadata such as dataflows, data structures,
+codelists, and concept schemes.
 }
 \examples{
 \dontrun{
-# Get all dataflows
-sdmx_structure("dataflow")
-
-# Get a specific codelist
-sdmx_structure("codelist", resource_id = "CL_COUNTRY")
-
-# Get all codelists as stubs
-sdmx_structure("codelist", detail = "allstubs")
+sdmx_structure("dataflow", agency_id = "IMF.STA", detail = "allstubs")
+sdmx_structure("codelist", "IMF", "CL_FREQ")
 }
 }

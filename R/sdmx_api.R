@@ -1,238 +1,578 @@
-#' IMF SDMX 3.0 API Wrapper
+#' IMF SDMX 3.0 API
 #'
-#' Simple wrapper for the IMF SDMX 3.0 API using httr2.
-#' Base URL: https://api.imf.org/external/sdmx/3.0
+#' Low-level access to the IMF SDMX 3.0 structure, data, availability, and
+#' metadata endpoints. These functions return the API response without
+#' converting it to a tidy data frame. See [get_data()] for the higher-level
+#' interface.
 #'
 #' @name sdmx_api
 NULL
 
-# Base URL for the IMF SDMX 3.0 API
-SDMX_BASE_URL <- "https://api.imf.org/external/sdmx/3.0"
+sdmx_base_url <- "https://api.imf.org/external/sdmx/3.0"
 
-#' Create a base request for the IMF SDMX API
-#'
-#' @param path Character. The API endpoint path.
-#' @param format Character. Response format: "json" or "xml". Default is "json".
-#' @return An httr2 request object.
-#' @keywords internal
-sdmx_request <- function(path, format = c("json", "xml")) {
-  format <- match.arg(format)
-  accept <- if (format == "json") "application/json" else "application/xml"
+structure_types <- c(
+  "datastructure",
+  "metadatastructure",
+  "dataflow",
+  "metadataflow",
+  "provisionagreement",
+  "structureset",
+  "process",
+  "categorisation",
+  "dataconstraint",
+  "metadataconstraint",
+  "conceptscheme",
+  "codelist",
+  "categoryscheme",
+  "hierarchy",
+  "hierarchyassociation",
+  "agencyscheme",
+  "dataproviderscheme",
+  "dataconsumerscheme",
+  "organisationunitscheme",
+  "transformationscheme",
+  "rulesetscheme",
+  "userdefinedoperatorscheme",
+  "customtypescheme",
+  "namepersonalisationscheme",
+  "vtlmappingscheme",
+  "valuelist",
+  "structuremap",
+  "representationmap",
+  "conceptschememap",
+  "categoryschememap",
+  "organisationschememap",
+  "reportingtaxonomymap",
+  "*"
+)
 
-  httr2::request(SDMX_BASE_URL) |>
-    httr2::req_url_path_append(path) |>
-    httr2::req_headers(Accept = accept) |>
-    httr2::req_user_agent("imf.data R package")
-}
+query_contexts <- c("dataflow", "datastructure", "provisionagreement", "*")
 
-#' Perform an API request and return the response
-#'
-#' @param req An httr2 request object.
-#' @param format Character. Response format: "json" or "xml".
-#' @return Parsed response (list for JSON, character for XML).
-#' @keywords internal
-sdmx_perform <- function(req, format = "json") {
-  # Fetch from API (httr2 handles caching automatically)
-  resp <- httr2::req_perform(req)
+proxy_auth_methods <- c(
+  "basic",
+  "digest",
+  "digest_ie",
+  "bearer",
+  "negotiate",
+  "ntlm",
+  "ntlm_wb",
+  "any",
+  "anysafe"
+)
 
-  result <- if (format == "json") {
-    httr2::resp_body_json(resp, check_type = TRUE, simplifyDataFrame = TRUE)
-  } else {
-    httr2::resp_body_string(resp)
+validate_scalar_character <- function(x, name, allow_null = FALSE) {
+  if (allow_null && is.null(x)) {
+    return(invisible(x))
   }
-
-  result
+  if (!is.character(x) || length(x) != 1L || is.na(x) || !nzchar(x)) {
+    stop(
+      sprintf("`%s` must be one non-empty character value.", name),
+      call. = FALSE
+    )
+  }
+  invisible(x)
 }
 
-#' Query structural metadata from the IMF SDMX API
+validate_choice <- function(x, choices, name) {
+  validate_scalar_character(x, name)
+  if (!x %in% choices) {
+    stop(
+      sprintf(
+        "`%s` must be one of: %s.",
+        name,
+        paste(shQuote(choices), collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+  invisible(x)
+}
+
+validate_count <- function(x, name) {
+  if (is.null(x)) {
+    return(invisible(x))
+  }
+  if (length(x) != 1L || is.na(x) || !is.numeric(x) || x < 1 || x %% 1 != 0) {
+    stop(sprintf("`%s` must be a positive whole number.", name), call. = FALSE)
+  }
+  invisible(x)
+}
+
+validate_period <- function(x, name) {
+  if (is.null(x)) {
+    return(invisible(x))
+  }
+  validate_scalar_character(x, name)
+  if (!grepl("^[0-9]{4}([-QM][0-9]{1,2}|-[0-9]{2}(-[0-9]{2})?)?$", x)) {
+    stop(sprintf("`%s` is not a supported SDMX period.", name), call. = FALSE)
+  }
+  invisible(x)
+}
+
+validate_filters <- function(filters) {
+  if (!is.list(filters)) {
+    stop("`filters` must be a named list.", call. = FALSE)
+  }
+  if (!length(filters)) {
+    return(invisible(filters))
+  }
+  filter_names <- names(filters)
+  if (is.null(filter_names) || any(!nzchar(filter_names))) {
+    stop(
+      "Every element of `filters` must have a dimension name.",
+      call. = FALSE
+    )
+  }
+  if (anyDuplicated(filter_names)) {
+    stop("Dimension names in `filters` must be unique.", call. = FALSE)
+  }
+  valid_name <- grepl("^[A-Za-z][A-Za-z0-9_]*$", filter_names)
+  if (any(!valid_name)) {
+    stop(
+      "Filter names may contain only letters, numbers, and underscores.",
+      call. = FALSE
+    )
+  }
+  valid_value <- vapply(
+    filters,
+    function(value) {
+      is.atomic(value) && length(value) > 0L && !anyNA(value)
+    },
+    logical(1)
+  )
+  if (any(!valid_value)) {
+    stop(
+      "Every filter must contain one or more non-missing atomic values.",
+      call. = FALSE
+    )
+  }
+  invisible(filters)
+}
+
+validate_proxy_port <- function(port) {
+  if (is.null(port)) {
+    return(invisible(port))
+  }
+  if (
+    length(port) != 1L ||
+      is.na(port) ||
+      !is.numeric(port) ||
+      port %% 1 != 0 ||
+      port < 1 ||
+      port > 65535
+  ) {
+    stop("`port` must be a whole number between 1 and 65535.", call. = FALSE)
+  }
+  invisible(port)
+}
+
+validate_proxy_credentials <- function(username, password) {
+  if (xor(is.null(username), is.null(password))) {
+    stop(
+      "`username` and `password` must be supplied together.",
+      call. = FALSE
+    )
+  }
+  if (!is.null(username)) {
+    validate_scalar_character(username, "username")
+    if (!is.character(password) || length(password) != 1L || is.na(password)) {
+      stop("`password` must be one character value.", call. = FALSE)
+    }
+  }
+  invisible(NULL)
+}
+
+#' Configure an HTTP proxy
 #'
-#' Retrieve structural metadata such as codelists, dataflows, data structures, etc.
+#' Configure a proxy for all subsequent IMF API requests in the current R
+#' session. Credentials are passed to [httr2::req_proxy()] and are not embedded
+#' in the proxy URL.
 #'
-#' @param structure_type Character. Type of structure to query. One of:
-#'   "datastructure", "dataflow", "codelist", "conceptscheme", or "*" for all.
-#' @param agency_id Character. Agency ID (e.g., "IMF.STA"). Use "*" for all. Default is "*".
-#' @param resource_id Character. Resource ID. Use "*" for all. Default is "*".
-#' @param version Character. Version. Use "+" for latest stable, "~" for latest. Default is "+".
-#' @param detail Character. Level of detail: "full", "allstubs", "referencestubs", etc.
-#' @param references Character. Which references to include: "none", "children", "descendants", etc.
-#' @param format Character. Response format: "json" or "xml". Default is "json".
-#' @return Parsed API response.
+#' Standard proxy environment variables such as `HTTPS_PROXY`, `HTTP_PROXY`,
+#' and `NO_PROXY` continue to work when no package-specific proxy is set.
+#'
+#' @param url Proxy URL, including its scheme and hostname.
+#' @param port Optional proxy port.
+#' @param username,password Optional proxy credentials. Supply both or neither.
+#' @param auth Proxy authentication method supported by [httr2::req_proxy()].
+#'
+#' @return The previous proxy configuration, invisibly.
 #' @export
+#'
 #' @examples
 #' \dontrun{
-#' # Get all dataflows
-#' sdmx_structure("dataflow")
+#' set_imf_proxy(
+#'   "http://proxy.example.com",
+#'   port = 8080,
+#'   username = Sys.getenv("PROXY_USER"),
+#'   password = Sys.getenv("PROXY_PASSWORD")
+#' )
 #'
-#' # Get a specific codelist
-#' sdmx_structure("codelist", resource_id = "CL_COUNTRY")
-#'
-#' # Get all codelists as stubs
-#' sdmx_structure("codelist", detail = "allstubs")
+#' list_datasets("IMF.STA")
+#' clear_imf_proxy()
 #' }
-sdmx_structure <- function(structure_type = "dataflow",
-                           agency_id = "*",
-                           resource_id = "*",
-                           version = "+",
-                           detail = NULL,
-                           references = NULL,
-                           format = c("json", "xml")) {
+set_imf_proxy <- function(
+  url,
+  port = NULL,
+  username = NULL,
+  password = NULL,
+  auth = proxy_auth_methods
+) {
+  validate_scalar_character(url, "url")
+  validate_proxy_port(port)
+  validate_proxy_credentials(username, password)
+  auth <- match.arg(auth)
+
+  previous <- getOption("imf.data.proxy")
+  options(
+    imf.data.proxy = list(
+      url = url,
+      port = if (is.null(port)) NULL else as.integer(port),
+      username = username,
+      password = password,
+      auth = auth
+    )
+  )
+  invisible(previous)
+}
+
+#' @rdname set_imf_proxy
+#' @export
+clear_imf_proxy <- function() {
+  previous <- getOption("imf.data.proxy")
+  options(imf.data.proxy = NULL)
+  invisible(previous)
+}
+
+apply_proxy <- function(req) {
+  proxy <- getOption("imf.data.proxy")
+  if (is.null(proxy)) {
+    return(req)
+  }
+  do.call(httr2::req_proxy, c(list(req), proxy))
+}
+
+add_query <- function(req, query) {
+  query <- query[!vapply(query, is.null, logical(1))]
+  if (!length(query)) {
+    return(req)
+  }
+  do.call(httr2::req_url_query, c(list(req), query))
+}
+
+filter_query <- function(filters) {
+  validate_filters(filters)
+  if (!length(filters)) {
+    return(list())
+  }
+  values <- lapply(filters, function(value) {
+    paste(as.character(value), collapse = ",")
+  })
+  names(values) <- paste0("c[", names(filters), "]")
+  values
+}
+
+sdmx_error_body <- function(resp) {
+  body <- tryCatch(
+    httr2::resp_body_string(resp),
+    error = function(cnd) ""
+  )
+  body <- trimws(gsub("[\r\n]+", " ", body))
+  if (nzchar(body)) {
+    sprintf("IMF API request failed: %s", body)
+  } else {
+    sprintf(
+      "IMF API request failed with HTTP status %s.",
+      httr2::resp_status(resp)
+    )
+  }
+}
+
+sdmx_send <- function(req) {
+  httr2::req_perform(req)
+}
+
+sdmx_request <- function(path, format = c("json", "xml")) {
+  format <- match.arg(format)
+  validate_scalar_character(path, "path")
+  accept <- if (format == "json") "application/json" else "application/xml"
+
+  req <- httr2::request(sdmx_base_url)
+  req <- httr2::req_url_path_append(req, path)
+  req <- httr2::req_headers(req, Accept = accept)
+  req <- apply_proxy(req)
+  req <- httr2::req_user_agent(
+    req,
+    sprintf(
+      "imf.data/%s (https://github.com/pedrobtz/imf.data)",
+      utils::packageVersion("imf.data")
+    )
+  )
+  req <- httr2::req_timeout(req, seconds = 60)
+  req <- httr2::req_retry(
+    req,
+    max_tries = 3,
+    retry_on_failure = TRUE
+  )
+  httr2::req_error(req, body = sdmx_error_body)
+}
+
+sdmx_perform <- function(req, format = c("json", "xml")) {
+  format <- match.arg(format)
+  resp <- sdmx_send(req)
+  if (httr2::resp_status(resp) == 204L) {
+    return(NULL)
+  }
+  if (format == "xml") {
+    return(httr2::resp_body_string(resp))
+  }
+  httr2::resp_body_json(resp, check_type = TRUE, simplifyVector = FALSE)
+}
+
+#' Query structural metadata
+#'
+#' Retrieve IMF SDMX structural metadata such as dataflows, data structures,
+#' codelists, and concept schemes.
+#'
+#' @param structure_type Type of structure to retrieve.
+#' @param agency_id Maintainer ID. Use `"*"` for all maintainers.
+#' @param resource_id Resource ID. Use `"*"` for all resources.
+#' @param version Resource version. `"+"` selects the latest stable version.
+#' @param detail Optional SDMX detail level.
+#' @param references Optional referenced artefacts to include.
+#' @param format Response format. XML responses are returned as text.
+#'
+#' @return A nested list for JSON, a character value for XML, or `NULL` for
+#'   an HTTP 204 response.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' sdmx_structure("dataflow", agency_id = "IMF.STA", detail = "allstubs")
+#' sdmx_structure("codelist", "IMF", "CL_FREQ")
+#' }
+sdmx_structure <- function(
+  structure_type = "dataflow",
+  agency_id = "*",
+  resource_id = "*",
+  version = "+",
+  detail = NULL,
+  references = NULL,
+  format = c("json", "xml")
+) {
+  validate_choice(structure_type, structure_types, "structure_type")
+  validate_scalar_character(agency_id, "agency_id")
+  validate_scalar_character(resource_id, "resource_id")
+  validate_scalar_character(version, "version")
+  validate_scalar_character(detail, "detail", allow_null = TRUE)
+  validate_scalar_character(references, "references", allow_null = TRUE)
   format <- match.arg(format)
 
-  path <- paste("structure", structure_type, agency_id, resource_id, version, sep = "/")
-
+  path <- paste(
+    "structure",
+    structure_type,
+    agency_id,
+    resource_id,
+    version,
+    sep = "/"
+  )
   req <- sdmx_request(path, format)
-
-  if (!is.null(detail)) {
-    req <- httr2::req_url_query(req, detail = detail)
-  }
-
-  if (!is.null(references)) {
-    req <- httr2::req_url_query(req, references = references)
-  }
-
+  req <- add_query(req, list(detail = detail, references = references))
   sdmx_perform(req, format)
 }
 
-#' Query data from the IMF SDMX API
+#' Query statistical data
 #'
-#' Retrieve statistical data from the IMF SDMX API.
+#' Retrieve an SDMX data message from the IMF API. This is the raw interface;
+#' use [get_data()] to obtain a tidy data frame.
 #'
-#' @param dataflow Character. The dataflow ID (e.g., "CPI", "BOP").
-#' @param key Character. Dimension filter key (e.g., "USA.CPI.*.IX.M"). Default is "*" (all).
-#' @param agency_id Character. Agency ID. Default is "*".
-#' @param version Character. Dataflow version. Default is "+" (latest stable).
-#' @param context Character. Query context: "dataflow", "datastructure", or "provisionagreement".
-#' @param start_period Character. Start period filter (e.g., "2020-01").
-#' @param end_period Character. End period filter (e.g., "2023-12").
-#' @param first_n_obs Integer. Return only first N observations per series.
-#' @param last_n_obs Integer. Return only last N observations per series.
-#' @param updated_after Character. ISO datetime. Only return data updated after this time.
-#' @param include_history Logical. Include historical versions. Default is FALSE.
-#' @param format Character. Response format: "json" or "xml". Default is "json".
-#' @return Parsed API response.
+#' @param dataflow Dataflow ID.
+#' @param key SDMX series key. Use `"*"` with `filters` for named filtering.
+#' @param agency_id Maintainer ID.
+#' @param version Dataflow version.
+#' @param context Query context.
+#' @param filters Named list of component filters.
+#' @param start_period,end_period Optional SDMX period bounds.
+#' @param first_n_obs,last_n_obs Optional positive observation limits. They
+#'   cannot be used together.
+#' @param updated_after Optional RFC 3339 timestamp.
+#' @param include_history Include historical versions.
+#' @param attributes Attribute detail requested from the API.
+#' @param measures Measures requested from the API.
+#' @param format Response format. XML responses are returned as text.
+#'
+#' @return A nested list for JSON, a character value for XML, or `NULL` for
+#'   an HTTP 204 response.
 #' @export
+#'
 #' @examples
 #' \dontrun{
-#' # Get CPI data for USA
-#' sdmx_data("CPI", key = "USA.*.*.*.*", agency_id = "IMF.STA")
-#'
-#' # Get last 12 observations
-#' sdmx_data("CPI", key = "USA.*.*.*.*", agency_id = "IMF.STA", last_n_obs = 12)
+#' sdmx_data(
+#'   "CPI",
+#'   agency_id = "IMF.STA",
+#'   key = "USA.CPI._T.IX.M",
+#'   last_n_obs = 2
+#' )
 #' }
-sdmx_data <- function(dataflow,
-                      key = "*",
-                      agency_id = "*",
-                      version = "+",
-                      context = "dataflow",
-                      start_period = NULL,
-                      end_period = NULL,
-                      first_n_obs = NULL,
-                      last_n_obs = NULL,
-                      updated_after = NULL,
-                      include_history = FALSE,
-                      format = c("json", "xml")) {
+sdmx_data <- function(
+  dataflow,
+  key = "*",
+  agency_id = "IMF.STA",
+  version = "+",
+  context = "dataflow",
+  filters = list(),
+  start_period = NULL,
+  end_period = NULL,
+  first_n_obs = NULL,
+  last_n_obs = NULL,
+  updated_after = NULL,
+  include_history = FALSE,
+  attributes = "dsd",
+  measures = "all",
+  format = c("json", "xml")
+) {
+  validate_scalar_character(dataflow, "dataflow")
+  validate_scalar_character(key, "key")
+  validate_scalar_character(agency_id, "agency_id")
+  validate_scalar_character(version, "version")
+  validate_choice(context, query_contexts, "context")
+  validate_filters(filters)
+  validate_period(start_period, "start_period")
+  validate_period(end_period, "end_period")
+  validate_count(first_n_obs, "first_n_obs")
+  validate_count(last_n_obs, "last_n_obs")
+  validate_scalar_character(updated_after, "updated_after", allow_null = TRUE)
+  if (
+    !is.logical(include_history) ||
+      length(include_history) != 1L ||
+      is.na(include_history)
+  ) {
+    stop("`include_history` must be TRUE or FALSE.", call. = FALSE)
+  }
+  if (!is.null(first_n_obs) && !is.null(last_n_obs)) {
+    stop("Use only one of `first_n_obs` and `last_n_obs`.", call. = FALSE)
+  }
   format <- match.arg(format)
 
   path <- paste("data", context, agency_id, dataflow, version, key, sep = "/")
+  query <- filter_query(filters)
+  time_filter <- character()
+  if (!is.null(start_period)) {
+    time_filter <- c(time_filter, paste0("ge:", start_period))
+  }
+  if (!is.null(end_period)) {
+    time_filter <- c(time_filter, paste0("le:", end_period))
+  }
+  if (length(time_filter)) {
+    query[["c[TIME_PERIOD]"]] <- paste(time_filter, collapse = "+")
+  }
+  query$firstNObservations <- first_n_obs
+  query$lastNObservations <- last_n_obs
+  query$updatedAfter <- updated_after
+  query$includeHistory <- if (include_history) "true" else NULL
+  query$attributes <- attributes
+  query$measures <- measures
 
-  req <- sdmx_request(path, format)
-
-
-  # Add time period filter
-  if (!is.null(start_period) && !is.null(end_period)) {
-    req <- httr2::req_url_query(req,
-      `c[TIME_PERIOD]` = paste0("ge:", start_period, "+le:", end_period)
-    )
-  } else if (!is.null(start_period)) {
-    req <- httr2::req_url_query(req, `c[TIME_PERIOD]` = paste0("ge:", start_period))
-  } else if (!is.null(end_period)) {
-    req <- httr2::req_url_query(req, `c[TIME_PERIOD]` = paste0("le:", end_period))
-  }
-  if (!is.null(first_n_obs)) {
-    req <- httr2::req_url_query(req, firstNObservations = first_n_obs)
-  }
-  if (!is.null(last_n_obs)) {
-    req <- httr2::req_url_query(req, lastNObservations = last_n_obs)
-  }
-  if (!is.null(updated_after)) {
-    req <- httr2::req_url_query(req, updatedAfter = updated_after)
-  }
-  if (include_history) {
-    req <- httr2::req_url_query(req, includeHistory = "true")
-  }
-
+  req <- add_query(sdmx_request(path, format), query)
   sdmx_perform(req, format)
 }
 
-#' Query data availability from the IMF SDMX API
+#' Query data availability
 #'
-#' Check which data is available without retrieving the actual data.
-#' Useful for building data query forms.
+#' Retrieve the available dimension values matching a data query without
+#' downloading observations.
 #'
-#' @param dataflow Character. The dataflow ID.
-#' @param key Character. Dimension filter key. Default is "*".
-#' @param component_id Character. Component ID to get availability for. Default is "*".
-#' @param agency_id Character. Agency ID. Default is "*".
-#' @param version Character. Version. Default is "+" (latest stable).
-#' @param context Character. Query context. Default is "dataflow".
-#' @param mode Character. "exact" or "available". Default is "exact".
-#' @param references Character. References to include. Default is "none".
-#' @param format Character. Response format: "json" or "xml". Default is "json".
-#' @return Parsed API response.
+#' @inheritParams sdmx_data
+#' @param component_id Dimension for which availability is requested.
+#' @param mode Return exact matches or values that remain available.
+#' @param references Referenced artefacts to include.
+#'
+#' @return A nested list for JSON, a character value for XML, or `NULL` for
+#'   an HTTP 204 response.
 #' @export
+#'
 #' @examples
 #' \dontrun{
-#' # Check availability for CPI dataflow
-#' sdmx_availability("CPI", agency_id = "IMF.STA")
+#' sdmx_availability("CPI", component_id = "COUNTRY")
 #' }
-sdmx_availability <- function(dataflow,
-                              key = "*",
-                              component_id = "*",
-                              agency_id = "*",
-                              version = "+",
-                              context = "dataflow",
-                              mode = c("exact", "available"),
-                              references = "none",
-                              format = c("json", "xml")) {
-  format <- match.arg(format)
+sdmx_availability <- function(
+  dataflow,
+  key = "*",
+  component_id = "*",
+  agency_id = "IMF.STA",
+  version = "+",
+  context = "dataflow",
+  filters = list(),
+  mode = c("exact", "available"),
+  references = "none",
+  format = c("json", "xml")
+) {
+  validate_scalar_character(dataflow, "dataflow")
+  validate_scalar_character(key, "key")
+  validate_scalar_character(component_id, "component_id")
+  validate_scalar_character(agency_id, "agency_id")
+  validate_scalar_character(version, "version")
+  validate_choice(context, query_contexts, "context")
+  validate_filters(filters)
+  validate_scalar_character(references, "references")
   mode <- match.arg(mode)
+  format <- match.arg(format)
 
-  path <- paste("availability", context, agency_id, dataflow, version, key, component_id, sep = "/")
-
-  req <- sdmx_request(path, format) |>
-    httr2::req_url_query(mode = mode, references = references)
-
+  path <- paste(
+    "availability",
+    context,
+    agency_id,
+    dataflow,
+    version,
+    key,
+    component_id,
+    sep = "/"
+  )
+  query <- filter_query(filters)
+  query$mode <- mode
+  query$references <- references
+  req <- add_query(sdmx_request(path, format), query)
   sdmx_perform(req, format)
 }
 
-#' Query metadata from the IMF SDMX API
+#' Query metadata reports
 #'
-#' Retrieve metadatasets from the API.
+#' Retrieve metadatasets from the IMF SDMX API.
 #'
-#' @param provider_id Character. Provider ID. Default is "*".
-#' @param metadataset_id Character. Metadataset ID. Default is "*".
-#' @param version Character. Version. Default is "+" (latest stable).
-#' @param detail Character. Detail level: "full" or "allstubs". Default is "allstubs".
-#' @param format Character. Response format: "json" or "xml". Default is "json".
-#' @return Parsed API response.
+#' @param provider_id Metadata provider ID.
+#' @param metadataset_id Metadataset ID.
+#' @param version Metadataset version.
+#' @param detail Metadata detail level.
+#' @param format Response format. XML responses are returned as text.
+#'
+#' @return A nested list for JSON, a character value for XML, or `NULL` for
+#'   an HTTP 204 response.
 #' @export
+#'
 #' @examples
 #' \dontrun{
-#' # Get all metadatasets
-#' sdmx_metadata()
+#' sdmx_metadata(detail = "allstubs")
 #' }
-sdmx_metadata <- function(provider_id = "*",
-                          metadataset_id = "*",
-                          version = "+",
-                          detail = c("allstubs", "full"),
-                          format = c("json", "xml")) {
-  format <- match.arg(format)
+sdmx_metadata <- function(
+  provider_id = "*",
+  metadataset_id = "*",
+  version = "+",
+  detail = c("allstubs", "full"),
+  format = c("json", "xml")
+) {
+  validate_scalar_character(provider_id, "provider_id")
+  validate_scalar_character(metadataset_id, "metadataset_id")
+  validate_scalar_character(version, "version")
   detail <- match.arg(detail)
+  format <- match.arg(format)
 
-  path <- paste("metadata/metadataset", provider_id, metadataset_id, version, sep = "/")
-
-  req <- sdmx_request(path, format) |>
-    httr2::req_url_query(detail = detail)
-
+  path <- paste(
+    "metadata/metadataset",
+    provider_id,
+    metadataset_id,
+    version,
+    sep = "/"
+  )
+  req <- add_query(sdmx_request(path, format), list(detail = detail))
   sdmx_perform(req, format)
 }

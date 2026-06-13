@@ -4,116 +4,116 @@
 # imf.data
 
 <!-- badges: start -->
-[![PackageVersion](https://www.r-pkg.org/badges/version/imf.data)](https://www.r-pkg.org/pkg/imf.data)
+
+[![Package
+Version](https://www.r-pkg.org/badges/version/imf.data)](https://www.r-pkg.org/pkg/imf.data)
 [![R-CMD-check](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml)
 [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)](https://cranlogs.r-pkg.org/badges/grand-total/imf.data)
+
 <!-- badges: end -->
 
-**⚠️ This package is no longer maintained as the underlying API has been decommissioned; please use for example [imfapi](https://cloud.r-project.org/web/packages/imfapi/) for this functionality for the new IMF API.**
+`imf.data` provides an R interface to the [IMF SDMX 3.0
+API](https://datasupport.imf.org/knowledge?id=knowledge_category&category_id=9959b2bc1b6391903dba646fbd4bcb6a).
+Version 0.2.0 is a breaking migration from the retired IMF JSON service.
 
-The goal of imf.data is to provide an interface to [IMF
-Data](https://data.imf.org/) via the [IMF Data REST
-API](https://datahelp.imf.org/knowledgebase/articles/667681-json-restful-web-service).
+The package has two layers:
+
+- A concise workflow that discovers datasets and returns tidy
+  observations.
+- Raw `sdmx_*()` functions for users who need the complete SDMX
+  response.
 
 ## Installation
 
-Install the released version of remotes from CRAN:
+Install the released package from CRAN:
 
 ``` r
 install.packages("imf.data")
 ```
 
-## Usage
+The SDMX 3.0 rewrite is available from GitHub while version 0.2.0 is
+under development:
+
+``` r
+pak::pak("pedrobtz/imf.data")
+```
+
+## Quick start
 
 ``` r
 library(imf.data)
 
-# list all available time-series
-list_datasets()
-#>             ID                                                        Description
-#> 1       AFRREO              Sub-Saharan Africa Regional Economic Outlook (AFRREO)
-#> 2 AFRREO201410 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2014
-#> 3 AFRREO201504   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2015
-#> 4 AFRREO201510 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2015
-#> 5 AFRREO201604   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2016
-#> 6 AFRREO201610 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2016
-#> 7 AFRREO201704   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2017
-#>  [ reached 'max' / getOption("max.print") -- omitted 316 rows ]
+# Discover IMF Statistics Department datasets
+datasets <- list_datasets("IMF.STA")
+datasets[datasets$id == "CPI", ]
 ```
 
 ``` r
-# load IFS time-series
-IFS <- load_datasets("IFS")
-
-# see possible values for dimension 'ref_area'
-IFS$dimensions$ref_area
-#>   Value         Description
-#> 1    AF         Afghanistan
-#> 2    AL             Albania
-#> 3    DZ             Algeria
-#> 4    AD             Andorra
-#> 5    AO              Angola
-#> 6    AI            Anguilla
-#> 7    AG Antigua and Barbuda
-#>  [ reached 'max' / getOption("max.print") -- omitted 264 rows ]
-
-# get time-series for GDP of Portugal, with Annual frequency
-IFS$get_series(freq = "A", ref_area = "PT", indicator = "NGDP_D_IX")
-#>   TIME_PERIOD   A.PT.NGDP_D_IX
-#> 1        1995  65.121159550493
-#> 2        1996 66.6781968283958
-#> 3        1997 69.2687835398304
-#> 4        1998 71.9183372769496
-#> 5        1999 74.3423648876999
-#> 6        2000 76.8850736800294
-#> 7        2001 79.7421096759417
-#>  [ reached 'max' / getOption("max.print") -- omitted 22 rows ]
+# Inspect a dataset's key dimensions
+list_dimensions("CPI")
 ```
 
 ``` r
-# load DOT time-series
-DOT <- load_datasets("DOT")
-
-DOT$get_series(freq = "M",
-               ref_area = "PT",
-               indicator = "TMG_CIF_USD",
-               counterpart_area = c("B0","W00"),
-               start_period = "2022-01-01",
-               end_period = "2022-12-31")
-#>   TIME_PERIOD M.PT.TMG_CIF_USD.B0 M.PT.TMG_CIF_USD.W00
-#> 1     2022-01         5901.778786          8595.602054
-#> 2     2022-02         6627.285827          9310.123613
-#> 3     2022-03         7284.719861          10072.49156
-#> 4     2022-04         6643.374962          9309.040471
-#> 5     2022-05         7099.878914         10332.531519
-#>  [ reached 'max' / getOption("max.print") -- omitted 7 rows ]
+# Find valid frequency codes for US CPI data
+list_dimension_values(
+  "CPI",
+  "FREQUENCY",
+  filters = list(COUNTRY = "USA")
+)
 ```
 
 ``` r
-HPDD <- load_datasets("HPDD")
-
-HPDD$dimensions$indicator
-#>        Value       Description
-#> 1 GGXWDG_GDP Debt to GDP Ratio
-
-d <- HPDD$get_series(freq = "A",
-                     ref_area = c("PT","ES"),
-                     indicator = "GGXWDG_GDP", 
-                     start_period = "1974")
-# see original data
-ls_series <- attr(d, "original_data")
+# Download the latest monthly headline CPI observations
+cpi <- get_data(
+  "CPI",
+  filters = list(
+    COUNTRY = c("USA", "CAN"),
+    INDEX_TYPE = "CPI",
+    COICOP_1999 = "_T",
+    TYPE_OF_TRANSFORMATION = "IX",
+    FREQUENCY = "M"
+  ),
+  last_n_obs = 12,
+  attributes = "STATUS"
+)
+cpi
 ```
+
+`get_data()` returns one row per observation. Dimension and time columns
+are character vectors, `OBS_VALUE` is numeric, and requested SDMX
+attributes are included as additional columns.
+
+## Raw SDMX access
 
 ``` r
-# melt the results 
-library(data.table)
-
-cols <- lapply(HPDD$dimensions, function(x)NULL)
-
-melt(as.data.table(d), measure.vars = measurev(cols, sep="."))
-#>     TIME_PERIOD   freq ref_area  indicator            value
-#>          <char> <char>   <char>     <char>           <char>
-#>  1:        1974      A       PT GGXWDG_GDP 13.5038251401281
-#>  2:        1975      A       PT GGXWDG_GDP 19.1667501320296
-#>  [ reached getOption("max.print") -- omitted 83 rows ]
+raw <- sdmx_data(
+  "CPI",
+  key = "USA.CPI._T.IX.M",
+  last_n_obs = 2
+)
 ```
+
+See `vignette("getting-started")` for the complete workflow and
+`vignette("migration")` when upgrading from version 0.1.x.
+
+## Proxy configuration
+
+httr2 respects standard proxy environment variables such as
+`HTTPS_PROXY` and `NO_PROXY`. A proxy can also be configured
+specifically for `imf.data`:
+
+``` r
+set_imf_proxy(
+  "http://proxy.example.com",
+  port = 8080,
+  username = Sys.getenv("PROXY_USER"),
+  password = Sys.getenv("PROXY_PASSWORD")
+)
+
+list_datasets("IMF.STA")
+clear_imf_proxy()
+```
+
+The package-specific configuration applies to all raw and tidy API
+functions for the remainder of the R session, until `clear_imf_proxy()`
+is called.

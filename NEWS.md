@@ -1,6 +1,17 @@
-# imf.data (development version)
+# imf.data 0.2.0
 
-# imf.data
+* This is a breaking migration from the retired IMF JSON service to the IMF
+  SDMX 3.0 API. The legacy `load_datasets()` and `$get_series()` workflow has
+  been removed.
+* `get_data()` accepts named dimension filters and returns one tidy row per
+  observation.
+* `list_datasets()` returns a stable catalogue of IMF SDMX dataflows.
+* `list_dimensions()` resolves a dataflow's ordered dimensions and codelists.
+* `list_dimension_values()` returns available codes and labels for a dimension.
+* `sdmx_availability()`, `sdmx_data()`, `sdmx_metadata()`, and
+  `sdmx_structure()` provide validated low-level access to SDMX 3.0 responses.
+* `set_imf_proxy()` and `clear_imf_proxy()` configure an authenticated proxy for
+  every IMF API request in the current R session.
 
 # imf.data 0.1.7
 

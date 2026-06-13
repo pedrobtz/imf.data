@@ -2,7 +2,7 @@
 % Please edit documentation in R/sdmx_api.R
 \name{sdmx_metadata}
 \alias{sdmx_metadata}
-\title{Query metadata from the IMF SDMX API}
+\title{Query metadata reports}
 \usage{
 sdmx_metadata(
   provider_id = "*",
@@ -13,25 +13,25 @@ sdmx_metadata(
 )
 }
 \arguments{
-\item{provider_id}{Character. Provider ID. Default is "*".}
+\item{provider_id}{Metadata provider ID.}
 
-\item{metadataset_id}{Character. Metadataset ID. Default is "*".}
+\item{metadataset_id}{Metadataset ID.}
 
-\item{version}{Character. Version. Default is "+" (latest stable).}
+\item{version}{Metadataset version.}
 
-\item{detail}{Character. Detail level: "full" or "allstubs". Default is "allstubs".}
+\item{detail}{Metadata detail level.}
 
-\item{format}{Character. Response format: "json" or "xml". Default is "json".}
+\item{format}{Response format. XML responses are returned as text.}
 }
 \value{
-Parsed API response.
+A nested list for JSON, a character value for XML, or \code{NULL} for
+an HTTP 204 response.
 }
 \description{
-Retrieve metadatasets from the API.
+Retrieve metadatasets from the IMF SDMX API.
 }
 \examples{
 \dontrun{
-# Get all metadatasets
-sdmx_metadata()
+sdmx_metadata(detail = "allstubs")
 }
 }

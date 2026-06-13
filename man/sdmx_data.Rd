@@ -2,51 +2,69 @@
 % Please edit documentation in R/sdmx_api.R
 \name{sdmx_data}
 \alias{sdmx_data}
-\title{Query data from the IMF SDMX API}
+\title{Query statistical data}
 \usage{
 sdmx_data(
   dataflow,
   key = "*",
-  agency_id = "IMF",
+  agency_id = "IMF.STA",
   version = "+",
   context = "dataflow",
+  filters = list(),
   start_period = NULL,
   end_period = NULL,
   first_n_obs = NULL,
   last_n_obs = NULL,
   updated_after = NULL,
   include_history = FALSE,
+  attributes = "dsd",
+  measures = "all",
   format = c("json", "xml")
 )
 }
 \arguments{
-\item{dataflow}{Character. The dataflow ID (e.g., "CPI", "BOP").}
+\item{dataflow}{Dataflow ID.}
 
-\item{key}{Character. Dimension filter key (e.g., "USA.CPI.\emph{.IX.M"). Default is "}" (all).}
+\item{key}{SDMX series key. Use \code{"*"} with \code{filters} for named filtering.}
 
-\item{agency_id}{Character. Agency ID. Default is "IMF".}
+\item{agency_id}{Maintainer ID.}
 
-\item{version}{Character. Dataflow version. Default is "+" (latest stable).}
+\item{version}{Dataflow version.}
 
-\item{context}{Character. Query context: "dataflow", "datastructure", or "provisionagreement".}
+\item{context}{Query context.}
 
-\item{start_period}{Character. Start period filter (e.g., "2020-01").}
+\item{filters}{Named list of component filters.}
 
-\item{end_period}{Character. End period filter (e.g., "2023-12").}
+\item{start_period, end_period}{Optional SDMX period bounds.}
 
-\item{first_n_obs}{Integer. Return only first N observations per series.}
+\item{first_n_obs, last_n_obs}{Optional positive observation limits. They
+cannot be used together.}
 
-\item{last_n_obs}{Integer. Return only last N observations per series.}
+\item{updated_after}{Optional RFC 3339 timestamp.}
 
-\item{updated_after}{Character. ISO datetime. Only return data updated after this time.}
+\item{include_history}{Include historical versions.}
 
-\item{include_history}{Logical. Include historical versions. Default is FALSE.}
+\item{attributes}{Attribute detail requested from the API.}
 
-\item{format}{Character. Response format: "json" or "xml". Default is "json".}
+\item{measures}{Measures requested from the API.}
+
+\item{format}{Response format. XML responses are returned as text.}
 }
 \value{
-Parsed API response.
+A nested list for JSON, a character value for XML, or \code{NULL} for
+an HTTP 204 response.
 }
 \description{
-Retrieve statistical data from the IMF SDMX API.
+Retrieve an SDMX data message from the IMF API. This is the raw interface;
+use \code{\link[=get_data]{get_data()}} to obtain a tidy data frame.
+}
+\examples{
+\dontrun{
+sdmx_data(
+  "CPI",
+  agency_id = "IMF.STA",
+  key = "USA.CPI._T.IX.M",
+  last_n_obs = 2
+)
+}
 }

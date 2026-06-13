@@ -1,22 +1,30 @@
 Package: imf.data
 Title: An Interface to IMF (International Monetary Fund) Data SDMX 3.0 API
-Version: 0.1.7.9000
+Version: 0.2.0
 Authors@R: 
     person("Pedro", "Baltazar",, "pedrobtz@gmail.com", role = c("aut", "cre"))
-Description: Provides a simple interface to the IMF's new SDMX 3.0 API
-    (<https://api.imf.org/external/sdmx/3.0/>). It allows users to search for datasets,
-    retrieve metadata, and download data in a user-friendly format.
+Description: Provides low-level access to the International Monetary Fund
+    SDMX 3.0 API and a concise workflow for discovering datasets,
+    inspecting dimensions, and downloading observations as tidy data frames.
+    API documentation is available from IMF Data Support
+    (<https://datasupport.imf.org/knowledge?id=knowledge_category&category_id=9959b2bc1b6391903dba646fbd4bcb6a>).
 Depends: R (>= 4.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Imports:
-    httr2,
+    httr2 (>= 1.0.0),
     tibble
 Suggests:
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0),
     vcr (>= 0.6.0)
 Config/testthat/edition: 3
+VignetteBuilder: knitr
+Collate:
+    'sdmx_api.R'
+    'imf_api.R'
 URL: https://pedrobtz.github.io/imf.data/
 BugReports: https://github.com/pedrobtz/imf.data/issues

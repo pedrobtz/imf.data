@@ -57,10 +57,10 @@
 ---
 
     Code
-      sdmx_data("CPI", filters = list("USA"))
+      sdmx_data("CPI", start_period = "2026-02-30")
     Condition
       Error:
-      ! Every element of `filters` must have a dimension name.
+      ! `start_period` is not a supported SDMX period.
 
 ---
 

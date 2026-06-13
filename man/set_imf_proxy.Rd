@@ -25,12 +25,12 @@ clear_imf_proxy()
 \item{auth}{Proxy authentication method supported by \code{\link[httr2:req_proxy]{httr2::req_proxy()}}.}
 }
 \value{
-The previous proxy configuration, invisibly.
+A redacted summary of the previous proxy configuration, invisibly.
 }
 \description{
 Configure a proxy for all subsequent IMF API requests in the current R
-session. Credentials are passed to \code{\link[httr2:req_proxy]{httr2::req_proxy()}} and are not embedded
-in the proxy URL.
+session. Credentials are kept in package-private session state, passed to
+\code{\link[httr2:req_proxy]{httr2::req_proxy()}}, and omitted from returned configuration summaries.
 }
 \details{
 Standard proxy environment variables such as \code{HTTPS_PROXY}, \code{HTTP_PROXY},

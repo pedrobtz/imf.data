@@ -74,6 +74,26 @@ fixture_dsd_response <- function() {
       ),
       conceptSchemes = list(
         list(
+          agencyID = "IMF",
+          id = "CS_OTHER",
+          version = "1.0",
+          concepts = list(
+            list(
+              id = "FREQ",
+              name = "Unrelated frequency",
+              coreRepresentation = list(
+                enumeration = paste0(
+                  "urn:sdmx:org.sdmx.infomodel.codelist.",
+                  "Codelist=IMF:CL_WRONG(1.0)"
+                )
+              )
+            )
+          )
+        ),
+        list(
+          agencyID = "IMF",
+          id = "CS_MASTER",
+          version = "1.0",
           concepts = list(
             list(
               id = "COUNTRY",

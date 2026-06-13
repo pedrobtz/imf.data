@@ -10,6 +10,8 @@ NULL
 
 sdmx_base_url <- "https://api.imf.org/external/sdmx/3.0"
 
+imf_data_state <- new.env(parent = emptyenv())
+
 structure_types <- c(
   "datastructure",
   "metadatastructure",
@@ -52,12 +54,9 @@ proxy_auth_methods <- c(
   "basic",
   "digest",
   "digest_ie",
-  "bearer",
-  "negotiate",
+  "gssnegotiate",
   "ntlm",
-  "ntlm_wb",
-  "any",
-  "anysafe"
+  "any"
 )
 
 validate_scalar_character <- function(x, name, allow_null = FALSE) {
@@ -103,8 +102,51 @@ validate_period <- function(x, name) {
     return(invisible(x))
   }
   validate_scalar_character(x, name)
-  if (!grepl("^[0-9]{4}([-QM][0-9]{1,2}|-[0-9]{2}(-[0-9]{2})?)?$", x)) {
+
+  calendar_year <- "^[0-9]{4}$"
+  calendar_month <- "^[0-9]{4}-(0[1-9]|1[0-2])$"
+  calendar_date <- "^[0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}$"
+  timezone <- "(Z|[+-](14:00|((0[0-9]|1[0-3]):[0-5][0-9])))?"
+  reporting_period <- paste0(
+    "^[0-9]{4}-(",
+    "A1|S[1-2]|T[1-3]|Q[1-4]|M(0[1-9]|1[0-2])|",
+    "W(0[1-9]|[1-4][0-9]|5[0-3])|",
+    "D(00[1-9]|0[1-9][0-9]|[1-2][0-9]{2}|3[0-5][0-9]|36[0-6])",
+    ")",
+    timezone,
+    "$"
+  )
+  valid_date <- grepl(calendar_date, x) &&
+    !is.na(as.Date(x, format = "%Y-%m-%d"))
+  valid <- grepl(calendar_year, x) ||
+    grepl(calendar_month, x) ||
+    valid_date ||
+    grepl(reporting_period, x) ||
+    is_rfc3339(x)
+  if (!valid) {
     stop(sprintf("`%s` is not a supported SDMX period.", name), call. = FALSE)
+  }
+  invisible(x)
+}
+
+is_rfc3339 <- function(x) {
+  pattern <- paste0(
+    "^[0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}",
+    "[Tt]([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]",
+    "(\\.[0-9]+)?",
+    "([Zz]|[+-](14:00|((0[0-9]|1[0-3]):[0-5][0-9])))$"
+  )
+  grepl(pattern, x) &&
+    !is.na(as.Date(substr(x, 1L, 10L), format = "%Y-%m-%d"))
+}
+
+validate_rfc3339 <- function(x, name) {
+  if (is.null(x)) {
+    return(invisible(x))
+  }
+  validate_scalar_character(x, name)
+  if (!is_rfc3339(x)) {
+    stop(sprintf("`%s` must be an RFC 3339 timestamp.", name), call. = FALSE)
   }
   invisible(x)
 }
@@ -182,11 +224,23 @@ validate_proxy_credentials <- function(username, password) {
   invisible(NULL)
 }
 
+proxy_summary <- function(proxy) {
+  if (is.null(proxy)) {
+    return(NULL)
+  }
+  list(
+    url = proxy$url,
+    port = proxy$port,
+    authenticated = !is.null(proxy$username),
+    auth = proxy$auth
+  )
+}
+
 #' Configure an HTTP proxy
 #'
 #' Configure a proxy for all subsequent IMF API requests in the current R
-#' session. Credentials are passed to [httr2::req_proxy()] and are not embedded
-#' in the proxy URL.
+#' session. Credentials are kept in package-private session state, passed to
+#' [httr2::req_proxy()], and omitted from returned configuration summaries.
 #'
 #' Standard proxy environment variables such as `HTTPS_PROXY`, `HTTP_PROXY`,
 #' and `NO_PROXY` continue to work when no package-specific proxy is set.
@@ -196,7 +250,7 @@ validate_proxy_credentials <- function(username, password) {
 #' @param username,password Optional proxy credentials. Supply both or neither.
 #' @param auth Proxy authentication method supported by [httr2::req_proxy()].
 #'
-#' @return The previous proxy configuration, invisibly.
+#' @return A redacted summary of the previous proxy configuration, invisibly.
 #' @export
 #'
 #' @examples
@@ -223,29 +277,27 @@ set_imf_proxy <- function(
   validate_proxy_credentials(username, password)
   auth <- match.arg(auth)
 
-  previous <- getOption("imf.data.proxy")
-  options(
-    imf.data.proxy = list(
-      url = url,
-      port = if (is.null(port)) NULL else as.integer(port),
-      username = username,
-      password = password,
-      auth = auth
-    )
+  previous <- imf_data_state$proxy
+  imf_data_state$proxy <- list(
+    url = url,
+    port = if (is.null(port)) NULL else as.integer(port),
+    username = username,
+    password = password,
+    auth = auth
   )
-  invisible(previous)
+  invisible(proxy_summary(previous))
 }
 
 #' @rdname set_imf_proxy
 #' @export
 clear_imf_proxy <- function() {
-  previous <- getOption("imf.data.proxy")
-  options(imf.data.proxy = NULL)
-  invisible(previous)
+  previous <- imf_data_state$proxy
+  imf_data_state$proxy <- NULL
+  invisible(proxy_summary(previous))
 }
 
 apply_proxy <- function(req) {
-  proxy <- getOption("imf.data.proxy")
+  proxy <- imf_data_state$proxy
   if (is.null(proxy)) {
     return(req)
   }
@@ -441,7 +493,7 @@ sdmx_data <- function(
   validate_period(end_period, "end_period")
   validate_count(first_n_obs, "first_n_obs")
   validate_count(last_n_obs, "last_n_obs")
-  validate_scalar_character(updated_after, "updated_after", allow_null = TRUE)
+  validate_rfc3339(updated_after, "updated_after")
   if (
     !is.logical(include_history) ||
       length(include_history) != 1L ||

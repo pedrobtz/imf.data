@@ -79,6 +79,43 @@ The result contains one row per observation. SDMX dimensions and
 Use `first_n_obs` or `last_n_obs` to limit observations per matching series.
 The two arguments cannot be combined.
 
+## Reshape for comparison
+
+`get_data()` returns one row per observation, which is convenient for
+plotting and analysis but awkward for comparing countries side by side.
+Reshape it to one column per country with base R:
+
+```{r}
+wide <- reshape(
+  cpi[c("COUNTRY", "TIME_PERIOD", "OBS_VALUE")],
+  idvar = "TIME_PERIOD",
+  timevar = "COUNTRY",
+  direction = "wide"
+)
+wide[order(wide$TIME_PERIOD), ]
+```
+
+## Handle validation errors
+
+`get_data()` and the raw `sdmx_*()` functions validate their arguments before
+contacting the API, so mistakes raise an informative error instead of an
+opaque HTTP failure:
+
+```{r}
+tryCatch(
+  get_data(
+    "CPI",
+    filters = list(COUNTRY = "USA"),
+    first_n_obs = 1,
+    last_n_obs = 1
+  ),
+  error = function(e) conditionMessage(e)
+)
+```
+
+Use `list_dimension_values()` to confirm a code is valid for the current
+dataflow before retrying.
+
 ## Use the raw API
 
 The raw functions preserve the complete nested SDMX response:
@@ -96,6 +133,8 @@ availability <- sdmx_availability(
   filters = list(COUNTRY = "USA"),
   mode = "available"
 )
+
+metadata <- sdmx_metadata(detail = "allstubs")
 ```
 
 Raw JSON responses are unsimplified lists so their zero-based SDMX indexes can

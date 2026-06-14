@@ -37,12 +37,15 @@ Standard proxy environment variables such as \code{HTTPS_PROXY}, \code{HTTP_PROX
 and \code{NO_PROXY} continue to work when no package-specific proxy is set.
 }
 \examples{
-\donttest{
+# Not run: requires a reachable proxy server. The example points at a
+# placeholder host, so executing it would route a real request through a
+# non-existent proxy and fail.
+\dontrun{
 set_imf_proxy(
   "http://proxy.example.com",
   port = 8080,
-  username = Sys.getenv("PROXY_USER"),
-  password = Sys.getenv("PROXY_PASSWORD")
+  username = "proxy_user",
+  password = "proxy_password"
 )
 
 list_datasets("IMF.STA")

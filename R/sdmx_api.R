@@ -79,7 +79,7 @@ validate_choice <- function(x, choices, name) {
       sprintf(
         "`%s` must be one of: %s.",
         name,
-        paste(shQuote(choices), collapse = ", ")
+        paste(paste0("'", choices, "'"), collapse = ", ")
       ),
       call. = FALSE
     )

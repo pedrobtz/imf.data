@@ -17,7 +17,7 @@ and \code{dsd_id} columns.
 Return the available IMF SDMX dataflows as a stable, tidy catalogue.
 }
 \examples{
-\dontrun{
+\donttest{
 datasets <- list_datasets("IMF.STA")
 }
 }

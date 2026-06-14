@@ -41,7 +41,7 @@ Query a dataflow with named dimension filters and decode the indexed SDMX
 response into one row per observation.
 }
 \examples{
-\dontrun{
+\donttest{
 get_data(
   "CPI",
   filters = list(

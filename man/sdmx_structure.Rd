@@ -38,7 +38,7 @@ Retrieve IMF SDMX structural metadata such as dataflows, data structures,
 codelists, and concept schemes.
 }
 \examples{
-\dontrun{
+\donttest{
 sdmx_structure("dataflow", agency_id = "IMF.STA", detail = "allstubs")
 sdmx_structure("codelist", "IMF", "CL_FREQ")
 }

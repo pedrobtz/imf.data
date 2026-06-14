@@ -1,0 +1,23 @@
+http_interactions:
+- request:
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/CPI/%2B/USA.CPI._T.IX.M/FREQUENCY?mode=available&references=none
+  response:
+    status: 200
+    headers:
+      cache-control: no-cache, no-store, max-age=0, must-revalidate
+      content-length: '1180'
+      content-type: application/json
+      expires: '0'
+      pragma: no-cache
+      server: istio-envoy
+      strict-transport-security: max-age=31536000 ; includeSubDomains
+      x-content-type-options: nosniff
+      x-frame-options: DENY
+      x-xss-protection: '0'
+    body:
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:CPI(5.0.0)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"1","type":"sdmx_metrics"},{"id":"time_period_start","title":"1955-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2026-06-01","type":"sdmx_metrics"}],"id":"CPI","name":"Data
+        Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"5.0.0","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_CPI(5.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"FREQUENCY","include":false,"removePrefix":false,"values":[{"value":"A"},{"value":"M"},{"value":"Q"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF4475","test":false,"prepared":"2026-06-14T19:10:11.991300107Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+  recorded_at: 2026-06-14 19:10:11
+recorded_with: VCR-vcr/2.1.0

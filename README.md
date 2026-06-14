@@ -14,25 +14,19 @@ Version](https://www.r-pkg.org/badges/version/imf.data)](https://www.r-pkg.org/p
 
 `imf.data` provides an R interface to the [IMF SDMX 3.0
 API](https://datasupport.imf.org/knowledge?id=knowledge_category&category_id=9959b2bc1b6391903dba646fbd4bcb6a).
-Version 0.2.0 is a breaking migration from the retired IMF JSON service.
-
-The package has two layers:
-
-- A concise workflow that discovers datasets and returns tidy
-  observations.
-- Raw `sdmx_*()` functions for users who need the complete SDMX
-  response.
+It supports discovering datasets, inspecting their dimensions, and
+downloading observations as tidy data frames. Raw SDMX responses are
+also available for advanced use.
 
 ## Installation
 
-Install the released package from CRAN:
+Install `imf.data` from CRAN:
 
 ``` r
 install.packages("imf.data")
 ```
 
-The SDMX 3.0 rewrite is available from GitHub while version 0.2.0 is
-under development:
+Install the development version from GitHub:
 
 ``` r
 pak::pak("pedrobtz/imf.data")
@@ -93,8 +87,7 @@ raw <- sdmx_data(
 )
 ```
 
-See `vignette("getting-started")` for the complete workflow and
-`vignette("migration")` when upgrading from version 0.1.x.
+See `vignette("getting-started")` for a complete workflow.
 
 ## Proxy configuration
 

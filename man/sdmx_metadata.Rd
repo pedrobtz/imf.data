@@ -31,7 +31,7 @@ an HTTP 204 response.
 Retrieve metadatasets from the IMF SDMX API.
 }
 \examples{
-\dontrun{
+\donttest{
 sdmx_metadata(detail = "allstubs")
 }
 }

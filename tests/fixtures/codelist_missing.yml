@@ -1,0 +1,17 @@
+http_interactions:
+- request:
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/structure/codelist/IMF/NOT_A_CODELIST/+
+  response:
+    status: 204
+    headers:
+      cache-control: no-cache, no-store, max-age=0, must-revalidate
+      expires: '0'
+      pragma: no-cache
+      server: istio-envoy
+      strict-transport-security: max-age=31536000 ; includeSubDomains
+      x-content-type-options: nosniff
+      x-frame-options: DENY
+      x-xss-protection: '0'
+  recorded_at: 2026-06-14 19:10:06
+recorded_with: VCR-vcr/2.1.0

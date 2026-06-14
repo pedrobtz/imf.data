@@ -21,7 +21,7 @@ Resolve a dataflow's data structure and return its dimensions in SDMX key
 order, including the associated codelist where one is declared.
 }
 \examples{
-\dontrun{
+\donttest{
 list_dimensions("CPI")
 }
 }

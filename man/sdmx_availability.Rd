@@ -47,7 +47,7 @@ Retrieve the available dimension values matching a data query without
 downloading observations.
 }
 \examples{
-\dontrun{
+\donttest{
 sdmx_availability("CPI", component_id = "COUNTRY")
 }
 }

@@ -220,7 +220,7 @@ dimension_records <- function(resolved) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' datasets <- list_datasets("IMF.STA")
 #' }
 list_datasets <- function(agency_id = "*") {
@@ -271,7 +271,7 @@ list_datasets <- function(agency_id = "*") {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' list_dimensions("CPI")
 #' }
 list_dimensions <- function(dataflow, agency_id = "IMF.STA", version = "+") {
@@ -375,7 +375,7 @@ codelist_labels <- function(agency, id, version) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' list_dimension_values(
 #'   "CPI",
 #'   "FREQUENCY",
@@ -766,8 +766,7 @@ available_attributes <- function(response) {
   unique(c(
     component_names(structures, c("attributes", "series")),
     component_names(structures, c("attributes", "observation"))
-  )
-  )
+  ))
 }
 
 #' Download IMF data as a tidy data frame
@@ -789,7 +788,7 @@ available_attributes <- function(response) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' get_data(
 #'   "CPI",
 #'   filters = list(

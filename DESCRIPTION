@@ -1,11 +1,12 @@
 Package: imf.data
-Title: An Interface to IMF (International Monetary Fund) Data SDMX 3.0 API
+Title: An Interface to IMF (International Monetary Fund) Data
 Version: 0.2.0
-Authors@R: 
-    person("Pedro", "Baltazar",, "pedrobtz@gmail.com", role = c("aut", "cre"))
+Authors@R:
+    person("Pedro", "Baltazar",, "pedrobtz@gmail.com", role = c("aut", "cre", "cph"))
 Description: Provides low-level access to the International Monetary Fund
-    SDMX 3.0 API and a concise workflow for discovering datasets,
-    inspecting dimensions, and downloading observations as tidy data frames.
+    Statistical Data and Metadata eXchange ('SDMX') 3.0 API and a concise
+    workflow for discovering datasets, inspecting dimensions, and
+    downloading observations as tidy data frames.
     API documentation is available from IMF Data Support
     (<https://datasupport.imf.org/knowledge?id=knowledge_category&category_id=9959b2bc1b6391903dba646fbd4bcb6a>).
 Depends: R (>= 4.0.0)
@@ -20,7 +21,7 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    vcr (>= 0.6.0)
+    vcr (>= 2.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Collate:

@@ -8,20 +8,12 @@ http_interactions:
       cache-control: no-cache, no-store, max-age=0, must-revalidate
       content-encoding: gzip
       content-type: application/json
-      date: Fri, 12 Jun 2026 20:18:30 GMT
       expires: '0'
       pragma: no-cache
-      request-context: appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
       server: istio-envoy
-      set-cookie:
-      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
-        Secure
-      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
       strict-transport-security: max-age=31536000 ; includeSubDomains
       vary: accept-encoding
       x-content-type-options: nosniff
-      x-correlation-id: fbbb17b66dca0ddc8438a393b5416cc2
-      x-envoy-upstream-service-time: '95'
       x-frame-options: DENY
       x-xss-protection: '0'
     body:

@@ -254,7 +254,7 @@ proxy_summary <- function(proxy) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' set_imf_proxy(
 #'   "http://proxy.example.com",
 #'   port = 8080,
@@ -399,7 +399,7 @@ sdmx_perform <- function(req, format = c("json", "xml")) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sdmx_structure("dataflow", agency_id = "IMF.STA", detail = "allstubs")
 #' sdmx_structure("codelist", "IMF", "CL_FREQ")
 #' }
@@ -458,7 +458,7 @@ sdmx_structure <- function(
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sdmx_data(
 #'   "CPI",
 #'   agency_id = "IMF.STA",
@@ -544,7 +544,7 @@ sdmx_data <- function(
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sdmx_availability("CPI", component_id = "COUNTRY")
 #' }
 sdmx_availability <- function(
@@ -602,7 +602,7 @@ sdmx_availability <- function(
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sdmx_metadata(detail = "allstubs")
 #' }
 sdmx_metadata <- function(

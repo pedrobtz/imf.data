@@ -37,7 +37,7 @@ Standard proxy environment variables such as \code{HTTPS_PROXY}, \code{HTTP_PROX
 and \code{NO_PROXY} continue to work when no package-specific proxy is set.
 }
 \examples{
-\dontrun{
+\donttest{
 set_imf_proxy(
   "http://proxy.example.com",
   port = 8080,

@@ -31,7 +31,7 @@ Use the IMF availability endpoint to return the codes that remain valid for
 a dimension, optionally constrained by selections for other dimensions.
 }
 \examples{
-\dontrun{
+\donttest{
 list_dimension_values(
   "CPI",
   "FREQUENCY",

@@ -59,7 +59,7 @@ Retrieve an SDMX data message from the IMF API. This is the raw interface;
 use \code{\link[=get_data]{get_data()}} to obtain a tidy data frame.
 }
 \examples{
-\dontrun{
+\donttest{
 sdmx_data(
   "CPI",
   agency_id = "IMF.STA",

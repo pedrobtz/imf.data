@@ -22,6 +22,62 @@
       Error in `match.arg()`:
       ! 'arg' should be one of "basic", "digest", "digest_ie", "gssnegotiate", "ntlm", "any"
 
+# request validation covers malformed scalar and filter inputs
+
+    Code
+      sdmx_request("")
+    Condition
+      Error:
+      ! `path` must be one non-empty character value.
+
+---
+
+    Code
+      sdmx_structure(agency_id = character())
+    Condition
+      Error:
+      ! `agency_id` must be one non-empty character value.
+
+---
+
+    Code
+      sdmx_data("CPI", filters = "COUNTRY=USA")
+    Condition
+      Error:
+      ! `filters` must be a named list.
+
+---
+
+    Code
+      sdmx_data("CPI", filters = list(COUNTRY = "USA", COUNTRY = "CAN"))
+    Condition
+      Error:
+      ! Dimension names in `filters` must be unique.
+
+---
+
+    Code
+      sdmx_data("CPI", filters = list(`BAD-NAME` = "USA"))
+    Condition
+      Error:
+      ! Filter names may contain only letters, numbers, and underscores.
+
+---
+
+    Code
+      sdmx_data("CPI", filters = list(COUNTRY = NA_character_))
+    Condition
+      Error:
+      ! Every filter must contain one or more non-missing atomic values.
+
+---
+
+    Code
+      sdmx_data("CPI", include_history = NA)
+    Condition
+      Error:
+      ! `include_history` must be TRUE or FALSE.
+
 # raw client validation is informative
 
     Code

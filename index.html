@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>An Interface to IMF (International Monetary Fund) Data JSON API • imf.data</title>
+<title>An Interface to IMF (International Monetary Fund) Data • imf.data</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="An Interface to IMF (International Monetary Fund) Data JSON API">
-<meta name="description" content="A straightforward interface for accessing the IMF (International Monetary Fund) data JSON API, available at &lt;https://data.imf.org/&gt;. This package offers direct access to the primary API endpoints: Dataflow, DataStructure, and CompactData. And, it provides an intuitive interface for exploring available dimensions and attributes, as well as querying individual time-series datasets. Additionally, the package implements a rate limit on API calls to reduce the chances of exceeding service limits (limited to 10 calls every 5 seconds) and encountering response errors.">
-<meta property="og:description" content="A straightforward interface for accessing the IMF (International Monetary Fund) data JSON API, available at &lt;https://data.imf.org/&gt;. This package offers direct access to the primary API endpoints: Dataflow, DataStructure, and CompactData. And, it provides an intuitive interface for exploring available dimensions and attributes, as well as querying individual time-series datasets. Additionally, the package implements a rate limit on API calls to reduce the chances of exceeding service limits (limited to 10 calls every 5 seconds) and encountering response errors.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="An Interface to IMF (International Monetary Fund) Data">
+<meta name="description" content="Provides low-level access to the International Monetary Fund Statistical Data and Metadata eXchange (SDMX) 3.0 API and a concise workflow for discovering datasets, inspecting dimensions, and downloading observations as tidy data frames.">
+<meta property="og:description" content="Provides low-level access to the International Monetary Fund Statistical Data and Metadata eXchange (SDMX) 3.0 API and a concise workflow for discovering datasets, inspecting dimensions, and downloading observations as tidy data frames.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">imf.data</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.7.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +32,15 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Guides</h6></li>
+    <li><a class="dropdown-item" href="articles/getting-started.html">Getting started with IMF SDMX 3.0 data</a></li>
+    <li><a class="dropdown-item" href="articles/migration.html">Migrating from imf.data 0.1.x</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -51,101 +60,80 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><strong>⚠️ This package is no longer maintained as the underlying API has been decommissioned; please use for example <a href="https://cloud.r-project.org/web/packages/imfapi/" class="external-link">imfapi</a> for this functionality for the new IMF API.</strong></p>
-<p>The goal of imf.data is to provide an interface to <a href="https://data.imf.org/" class="external-link">IMF Data</a> via the <a href="https://datahelp.imf.org/knowledgebase/articles/667681-json-restful-web-service" class="external-link">IMF Data REST API</a>.</p>
+<!-- badges: end -->
+<p><code>imf.data</code> provides an R interface to the <a href="https://datasupport.imf.org/knowledge?id=knowledge_category&amp;category_id=9959b2bc1b6391903dba646fbd4bcb6a" class="external-link">IMF SDMX 3.0 API</a>. It supports discovering datasets, inspecting their dimensions, and downloading observations as tidy data frames. Raw SDMX responses are also available for advanced use.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Install the released version of remotes from CRAN:</p>
+<p>Install <code>imf.data</code> from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"imf.data"</span><span class="op">)</span></span></code></pre></div>
+<p>Install the development version from GitHub:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"pedrobtz/imf.data"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+<h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pedrobtz.github.io/imf.data/">imf.data</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># list all available time-series</span></span>
-<span><span class="fu"><a href="reference/list_datasets.html">list_datasets</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             ID                                                        Description</span></span>
-<span><span class="co">#&gt; 1       AFRREO              Sub-Saharan Africa Regional Economic Outlook (AFRREO)</span></span>
-<span><span class="co">#&gt; 2 AFRREO201410 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2014</span></span>
-<span><span class="co">#&gt; 3 AFRREO201504   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2015</span></span>
-<span><span class="co">#&gt; 4 AFRREO201510 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2015</span></span>
-<span><span class="co">#&gt; 5 AFRREO201604   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2016</span></span>
-<span><span class="co">#&gt; 6 AFRREO201610 Sub-Saharan Africa Regional Economic Outlook (AFRREO) October 2016</span></span>
-<span><span class="co">#&gt; 7 AFRREO201704   Sub-Saharan Africa Regional Economic Outlook (AFRREO) April 2017</span></span>
-<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 316 rows ]</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># load IFS time-series</span></span>
-<span><span class="va">IFS</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_datasets.html">load_datasets</a></span><span class="op">(</span><span class="st">"IFS"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># see possible values for dimension 'ref_area'</span></span>
-<span><span class="va">IFS</span><span class="op">$</span><span class="va">dimensions</span><span class="op">$</span><span class="va">ref_area</span></span>
-<span><span class="co">#&gt;   Value         Description</span></span>
-<span><span class="co">#&gt; 1    AF         Afghanistan</span></span>
-<span><span class="co">#&gt; 2    AL             Albania</span></span>
-<span><span class="co">#&gt; 3    DZ             Algeria</span></span>
-<span><span class="co">#&gt; 4    AD             Andorra</span></span>
-<span><span class="co">#&gt; 5    AO              Angola</span></span>
-<span><span class="co">#&gt; 6    AI            Anguilla</span></span>
-<span><span class="co">#&gt; 7    AG Antigua and Barbuda</span></span>
-<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 264 rows ]</span></span>
-<span></span>
-<span><span class="co"># get time-series for GDP of Portugal, with Annual frequency</span></span>
-<span><span class="va">IFS</span><span class="op">$</span><span class="fu">get_series</span><span class="op">(</span>freq <span class="op">=</span> <span class="st">"A"</span>, ref_area <span class="op">=</span> <span class="st">"PT"</span>, indicator <span class="op">=</span> <span class="st">"NGDP_D_IX"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   TIME_PERIOD   A.PT.NGDP_D_IX</span></span>
-<span><span class="co">#&gt; 1        1995  65.121159550493</span></span>
-<span><span class="co">#&gt; 2        1996 66.6781968283958</span></span>
-<span><span class="co">#&gt; 3        1997 69.2687835398304</span></span>
-<span><span class="co">#&gt; 4        1998 71.9183372769496</span></span>
-<span><span class="co">#&gt; 5        1999 74.3423648876999</span></span>
-<span><span class="co">#&gt; 6        2000 76.8850736800294</span></span>
-<span><span class="co">#&gt; 7        2001 79.7421096759417</span></span>
-<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 22 rows ]</span></span></code></pre></div>
+<span><span class="co"># Discover IMF Statistics Department datasets</span></span>
+<span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/list_datasets.html">list_datasets</a></span><span class="op">(</span><span class="st">"IMF.STA"</span><span class="op">)</span></span>
+<span><span class="va">datasets</span><span class="op">[</span><span class="va">datasets</span><span class="op">$</span><span class="va">id</span> <span class="op">==</span> <span class="st">"CPI"</span>, <span class="op">]</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># load DOT time-series</span></span>
-<span><span class="va">DOT</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_datasets.html">load_datasets</a></span><span class="op">(</span><span class="st">"DOT"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">DOT</span><span class="op">$</span><span class="fu">get_series</span><span class="op">(</span>freq <span class="op">=</span> <span class="st">"M"</span>,</span>
-<span>               ref_area <span class="op">=</span> <span class="st">"PT"</span>,</span>
-<span>               indicator <span class="op">=</span> <span class="st">"TMG_CIF_USD"</span>,</span>
-<span>               counterpart_area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B0"</span>,<span class="st">"W00"</span><span class="op">)</span>,</span>
-<span>               start_period <span class="op">=</span> <span class="st">"2022-01-01"</span>,</span>
-<span>               end_period <span class="op">=</span> <span class="st">"2022-12-31"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   TIME_PERIOD M.PT.TMG_CIF_USD.B0 M.PT.TMG_CIF_USD.W00</span></span>
-<span><span class="co">#&gt; 1     2022-01         5901.778786          8595.602054</span></span>
-<span><span class="co">#&gt; 2     2022-02         6627.285827          9310.123613</span></span>
-<span><span class="co">#&gt; 3     2022-03         7284.719861          10072.49156</span></span>
-<span><span class="co">#&gt; 4     2022-04         6643.374962          9309.040471</span></span>
-<span><span class="co">#&gt; 5     2022-05         7099.878914         10332.531519</span></span>
-<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 7 rows ]</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Inspect a dataset's key dimensions</span></span>
+<span><span class="fu"><a href="reference/list_dimensions.html">list_dimensions</a></span><span class="op">(</span><span class="st">"CPI"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">HPDD</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_datasets.html">load_datasets</a></span><span class="op">(</span><span class="st">"HPDD"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">HPDD</span><span class="op">$</span><span class="va">dimensions</span><span class="op">$</span><span class="va">indicator</span></span>
-<span><span class="co">#&gt;        Value       Description</span></span>
-<span><span class="co">#&gt; 1 GGXWDG_GDP Debt to GDP Ratio</span></span>
-<span></span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">HPDD</span><span class="op">$</span><span class="fu">get_series</span><span class="op">(</span>freq <span class="op">=</span> <span class="st">"A"</span>,</span>
-<span>                     ref_area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PT"</span>,<span class="st">"ES"</span><span class="op">)</span>,</span>
-<span>                     indicator <span class="op">=</span> <span class="st">"GGXWDG_GDP"</span>, </span>
-<span>                     start_period <span class="op">=</span> <span class="st">"1974"</span><span class="op">)</span></span>
-<span><span class="co"># see original data</span></span>
-<span><span class="va">ls_series</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"original_data"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Find valid frequency codes for US CPI data</span></span>
+<span><span class="fu"><a href="reference/list_dimension_values.html">list_dimension_values</a></span><span class="op">(</span></span>
+<span>  <span class="st">"CPI"</span>,</span>
+<span>  <span class="st">"FREQUENCY"</span>,</span>
+<span>  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>COUNTRY <span class="op">=</span> <span class="st">"USA"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># melt the results </span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Download the latest monthly headline CPI observations</span></span>
+<span><span class="va">cpi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_data.html">get_data</a></span><span class="op">(</span></span>
+<span>  <span class="st">"CPI"</span>,</span>
+<span>  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    COUNTRY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"USA"</span>, <span class="st">"CAN"</span><span class="op">)</span>,</span>
+<span>    INDEX_TYPE <span class="op">=</span> <span class="st">"CPI"</span>,</span>
+<span>    COICOP_1999 <span class="op">=</span> <span class="st">"_T"</span>,</span>
+<span>    TYPE_OF_TRANSFORMATION <span class="op">=</span> <span class="st">"IX"</span>,</span>
+<span>    FREQUENCY <span class="op">=</span> <span class="st">"M"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  last_n_obs <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  attributes <span class="op">=</span> <span class="st">"STATUS"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">cpi</span></span></code></pre></div>
+<p><code><a href="reference/get_data.html">get_data()</a></code> returns one row per observation. Dimension and time columns are character vectors, <code>OBS_VALUE</code> is numeric, and requested SDMX attributes are included as additional columns.</p>
+</div>
+<div class="section level2">
+<h2 id="raw-sdmx-access">Raw SDMX access<a class="anchor" aria-label="anchor" href="#raw-sdmx-access"></a>
+</h2>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sdmx_data.html">sdmx_data</a></span><span class="op">(</span></span>
+<span>  <span class="st">"CPI"</span>,</span>
+<span>  key <span class="op">=</span> <span class="st">"USA.CPI._T.IX.M"</span>,</span>
+<span>  last_n_obs <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>See <code><a href="articles/getting-started.html">vignette("getting-started")</a></code> for a complete workflow.</p>
+</div>
+<div class="section level2">
+<h2 id="proxy-configuration">Proxy configuration<a class="anchor" aria-label="anchor" href="#proxy-configuration"></a>
+</h2>
+<p>httr2 respects standard proxy environment variables such as <code>HTTPS_PROXY</code> and <code>NO_PROXY</code>. A proxy can also be configured specifically for <code>imf.data</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/set_imf_proxy.html">set_imf_proxy</a></span><span class="op">(</span></span>
+<span>  <span class="st">"http://proxy.example.com"</span>,</span>
+<span>  port <span class="op">=</span> <span class="fl">8080</span>,</span>
+<span>  username <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"PROXY_USER"</span><span class="op">)</span>,</span>
+<span>  password <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"PROXY_PASSWORD"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">HPDD</span><span class="op">$</span><span class="va">dimensions</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/melt.data.table.html" class="external-link">melt</a></span><span class="op">(</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, measure.vars <span class="op">=</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/measure.html" class="external-link">measurev</a></span><span class="op">(</span><span class="va">cols</span>, sep<span class="op">=</span><span class="st">"."</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     TIME_PERIOD   freq ref_area  indicator            value</span></span>
-<span><span class="co">#&gt;          &lt;char&gt; &lt;char&gt;   &lt;char&gt;     &lt;char&gt;           &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:        1974      A       PT GGXWDG_GDP 13.5038251401281</span></span>
-<span><span class="co">#&gt;  2:        1975      A       PT GGXWDG_GDP 19.1667501320296</span></span>
-<span><span class="co">#&gt;  [ reached getOption("max.print") -- omitted 83 rows ]</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/list_datasets.html">list_datasets</a></span><span class="op">(</span><span class="st">"IMF.STA"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/set_imf_proxy.html">clear_imf_proxy</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>The package-specific configuration applies to all raw and tidy API functions for the remainder of the R session, until <code><a href="reference/set_imf_proxy.html">clear_imf_proxy()</a></code> is called.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -176,14 +164,14 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Pedro Baltazar <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Pedro Baltazar <br><small class="roles"> Author, maintainer, copyright holder </small>   </li>
 </ul>
 </div>
 
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-pkg.org/pkg/imf.data" class="external-link"><img src="https://www.r-pkg.org/badges/version/imf.data" alt="PackageVersion"></a></li>
+<li><a href="https://www.r-pkg.org/pkg/imf.data" class="external-link"><img src="https://www.r-pkg.org/badges/version/imf.data" alt="Package Version"></a></li>
 <li><a href="https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/pedrobtz/imf.data/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://cranlogs.r-pkg.org/badges/grand-total/imf.data" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/imf.data" alt="downloads"></a></li>
 </ul>
@@ -198,7 +186,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

@@ -7,8 +7,6 @@ Description: Provides low-level access to the International Monetary Fund
     Statistical Data and Metadata eXchange ('SDMX') 3.0 API and a concise
     workflow for discovering datasets, inspecting dimensions, and
     downloading observations as tidy data frames.
-    API documentation is available from IMF Data Support
-    (<https://datasupport.imf.org/knowledge?id=knowledge_category&category_id=9959b2bc1b6391903dba646fbd4bcb6a>).
 Depends: R (>= 4.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8

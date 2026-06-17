@@ -1,0 +1,59 @@
+http_interactions:
+- request:
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/structure/dataflow/IMF.STA/CPI/+
+  response:
+    status: 200
+    headers:
+      cache-control: no-cache, no-store, max-age=0, must-revalidate
+      content-type: application/vnd.sdmx.structure+json;version=2.0.0
+      expires: '0'
+      pragma: no-cache
+      server: istio-envoy
+      strict-transport-security: max-age=31536000 ; includeSubDomains
+      x-content-type-options: nosniff
+      x-frame-options: DENY
+      x-xss-protection: '0'
+    body:
+      raw_gzip: |-
+        eJztVm1v2zYQ/isEvyzBZFlOm6TVUGCZXxYBaWIkLoa2KQyaPEtcJVLgUXaNwP99OEp2nC3t
+        9xX5JJG
+        8V95zD++BK+EFTx/Cd1naNfL08wMXxlgvvLamXWvFU/579n7CI+61L4Gn/HI+nGbz
+        Pz7OhzfvpzfX4+
+        sZHW5qOhtdzC4mVzd/zae347vx9exilt1c84ivRNnQeaHBCSeLzbvs/SS+
+        m12k/7V2NIiTODkmo/DN8
+        5TXDhBMG9Y8RPFuaA02FTg2dVoCy4yCb+xoOM2O2WLDhraqrQHj
+        f2NPdBWgdLqm/3ezAthwmjGNTLAK
+        BDYOmF0yXwATK3AiByYLYXJg2rCa3CCd59YqZMIohuBW
+        YVe2wShyXdgGobClQmZX4JhgNThtVTCtK4g
+        ZOaZLJ89ddKDIh2BeLEqI2Fr7goGQBZO2Md5t
+        fsEQ6sLZr2CYsmtDruQuy9bmfolMG1k2CtjSWhVCXU
+        CbEUYhQG3yiHknDNbWtXcTMVHXwkEZ
+        MQfSQbcJqpHhN5iRtqoao2V3WIHSUpRMCgdRELC+APfMFcVdM
+        ZEQB+alpj9FTbfbqGMIyn1s
+        cm3gDrzXJseDnn+454VGb92mO5xtarjn6T2ffLi6ml9md7Ob24/3fMv3
+        9qzTuTYHNrLr2fjP
+        25ZN9lKjvdcDdqKCIDgNOF+dPMpqnGgjyseNUqD/UCvhQV34A08nyclpL3nTG5z
+        OkvM0SdJB
+        Ep8nr87P3n7i2y9RqzycZjziRlSk8X3cdjKPqP+B6DbiB1DmKQ9g/n5L0JUj+B0uMIDchC
+        pS
+        +XaKdVDUpAhICANpja02McsME0rpAARv2x4pS6Y9VAQpEKrUplONmAIvdBlAvTc10iuNpH4E
+        cR6z
+        yQ6Z19b0RCltYUstD3E6LK0vAlDBy/g4IqfaMYFopaZKsDXovPAYddA03ulFE54jinGf
+        njCmESXTZll
+        2SHbA6mZRaizISgGOOl7okrrv2Vz3tobTDKOwRf347LVeCldZoxEUlWDHGk+L
+        g+zoMhtO8Tg0bbiqxY
+        aNG2fRC8+W1oVFDfGj4tPi7AiLPDqgxFY7uuqIh7BNrEISP2SvunGy
+        EPhv+orYutCyOCS0BoEp7UD6c
+        hMx6yia/dJbhsJrXG66ShFLGYDO3VoYH6j9ALiPWH/B7wt+
+        /xf43UZ8BQ5b1j2l2ZNHXORg5CYb0dvT
+        Tqo84uhdI33jiPUbZ1JU1bfUujymn1ibpa2sgjIO
+        RdjJxvRM3e1W+7l3dDeiyffoNE5+pWl3+2Ub8Qr
+        aoRxlAZWgedn7GtN+34l1nGtfNIsGwRGw
+        aEaQtuqT655f5+3P32hNvxLowfXJGEXSqwBR5ND31pbYb2
+        1j/4QyfdTq7cVbgZg2effeZaPb
+        8eT07M0gzHHoeboUJUJEYxxNGKp9OM96yVlv8Ho2eJsOknRwEr8+T
+        wYnb16dnX3iEe+ivhIm
+        b6ifePqZmOJLxBGMAkeJB2+N+Wrs2vDtdvsP+25ugQ==
+  recorded_at: 2026-06-14 19:10:12
+recorded_with: VCR-vcr/2.1.0

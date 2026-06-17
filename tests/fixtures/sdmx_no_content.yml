@@ -1,0 +1,11 @@
+http_interactions:
+- request:
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/data/dataflow/IMF.STA/NO_CONTENT/%2B/%2A?attributes=dsd&measures=all
+  response:
+    status: 204
+    headers: {}
+    body:
+      string: ''
+  recorded_at: 2026-06-14 00:00:00
+recorded_with: VCR-vcr/2.1.0

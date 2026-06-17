@@ -1,30 +1,29 @@
 Package: imf.data
-Title: An Interface to IMF (International Monetary Fund) Data JSON API
-Version: 0.1.7.9000
-Authors@R: 
-    person("Pedro", "Baltazar",, "pedrobtz@gmail.com", role = c("aut", "cre"))
-Description: A straightforward interface for accessing the IMF 
-    (International Monetary Fund) data JSON API, 
-    available at <https://data.imf.org/>. This package offers direct access to 
-    the primary API endpoints: Dataflow, DataStructure, and CompactData. 
-    And, it provides an intuitive interface for exploring available 
-    dimensions and attributes, as well as querying individual time-series datasets. 
-    Additionally, the package implements a rate limit on API calls to reduce the 
-    chances of exceeding service limits (limited to 10 calls every 5 seconds) 
-    and encountering response errors.
+Title: An Interface to IMF (International Monetary Fund) Data
+Version: 0.2.0
+Authors@R:
+    person("Pedro", "Baltazar",, "pedrobtz@gmail.com", role = c("aut", "cre", "cph"))
+Description: Provides low-level access to the International Monetary Fund
+    Statistical Data and Metadata eXchange ('SDMX') 3.0 API and a concise
+    workflow for discovering datasets, inspecting dimensions, and
+    downloading observations as tidy data frames.
+Depends: R (>= 4.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-Imports: 
-    methods,
-    utils,
-    stats,
-    curl,
-    jsonlite
-Suggests: 
+RoxygenNote: 7.3.3
+Imports:
+    httr2 (>= 1.0.0),
+    tibble
+Suggests:
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0),
-    data.table
+    vcr (>= 2.0.0)
 Config/testthat/edition: 3
+VignetteBuilder: knitr
+Collate:
+    'sdmx_api.R'
+    'imf_api.R'
 URL: https://pedrobtz.github.io/imf.data/
 BugReports: https://github.com/pedrobtz/imf.data/issues

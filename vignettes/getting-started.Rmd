@@ -1,0 +1,167 @@
+---
+title: "Getting started with IMF SDMX 3.0 data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with IMF SDMX 3.0 data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+`imf.data` follows a four-step workflow: find a dataflow, inspect its
+dimensions, inspect valid values, and download observations.
+
+## Find a dataflow
+
+```{r}
+library(imf.data)
+
+datasets <- list_datasets("IMF.STA")
+datasets[datasets$id == "CPI", ]
+```
+
+Dataflows are identified by an agency, ID, and version. Most examples in this
+guide use the IMF Statistics Department agency, `IMF.STA`.
+
+## Inspect dimensions
+
+```{r}
+dimensions <- list_dimensions("CPI")
+dimensions
+```
+
+The returned order is the order used by an SDMX series key. For the higher-level
+workflow, use dimension names in a named `filters` list instead of assembling a
+positional key.
+
+## Inspect available values
+
+```{r}
+list_dimension_values(
+  "CPI",
+  "FREQUENCY",
+  filters = list(COUNTRY = "USA")
+)
+```
+
+Availability is conditional. Adding filters for other dimensions narrows the
+codes returned for the requested dimension.
+
+## Download observations
+
+```{r}
+cpi <- get_data(
+  "CPI",
+  filters = list(
+    COUNTRY = c("USA", "CAN"),
+    INDEX_TYPE = "CPI",
+    COICOP_1999 = "_T",
+    TYPE_OF_TRANSFORMATION = "IX",
+    FREQUENCY = "M"
+  ),
+  start_period = "2020",
+  last_n_obs = 12,
+  attributes = c("SCALE", "STATUS")
+)
+cpi
+```
+
+The result contains one row per observation. SDMX dimensions and
+`TIME_PERIOD` are character columns, while `OBS_VALUE` is numeric.
+
+Use `first_n_obs` or `last_n_obs` to limit observations per matching series.
+The two arguments cannot be combined.
+
+## Reshape for comparison
+
+`get_data()` returns one row per observation, which is convenient for
+plotting and analysis but awkward for comparing countries side by side.
+Reshape it to one column per country with base R:
+
+```{r}
+wide <- reshape(
+  cpi[c("COUNTRY", "TIME_PERIOD", "OBS_VALUE")],
+  idvar = "TIME_PERIOD",
+  timevar = "COUNTRY",
+  direction = "wide"
+)
+wide[order(wide$TIME_PERIOD), ]
+```
+
+## Handle validation errors
+
+`get_data()` and the raw `sdmx_*()` functions validate their arguments before
+contacting the API, so mistakes raise an informative error instead of an
+opaque HTTP failure:
+
+```{r}
+tryCatch(
+  get_data(
+    "CPI",
+    filters = list(COUNTRY = "USA"),
+    first_n_obs = 1,
+    last_n_obs = 1
+  ),
+  error = function(e) conditionMessage(e)
+)
+```
+
+Use `list_dimension_values()` to confirm a code is valid for the current
+dataflow before retrying.
+
+## Use the raw API
+
+The raw functions preserve the complete nested SDMX response:
+
+```{r}
+raw <- sdmx_data(
+  "CPI",
+  key = "USA.CPI._T.IX.M",
+  last_n_obs = 2
+)
+
+availability <- sdmx_availability(
+  "CPI",
+  component_id = "FREQUENCY",
+  filters = list(COUNTRY = "USA"),
+  mode = "available"
+)
+
+metadata <- sdmx_metadata(detail = "allstubs")
+```
+
+Raw JSON responses are unsimplified lists so their zero-based SDMX indexes can
+be decoded without losing structure. XML responses are available as text by
+setting `format = "xml"`.
+
+## Configure a proxy
+
+httr2 automatically respects standard environment variables such as
+`HTTPS_PROXY`, `HTTP_PROXY`, and `NO_PROXY`. To configure a proxy only for
+`imf.data`, use:
+
+```{r}
+set_imf_proxy(
+  "http://proxy.example.com",
+  port = 8080,
+  username = Sys.getenv("PROXY_USER"),
+  password = Sys.getenv("PROXY_PASSWORD")
+)
+```
+
+This configuration applies to every package request in the current R session.
+Remove it with:
+
+```{r}
+clear_imf_proxy()
+```
+
+Keep credentials in environment variables or another secrets manager rather
+than writing them directly into scripts.

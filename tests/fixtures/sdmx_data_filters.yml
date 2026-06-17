@@ -1,0 +1,22 @@
+http_interactions:
+- request:
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/data/dataflow/IMF.STA/CPI/%2B/%2A?c%5BCOUNTRY%5D=USA&c%5BINDEX_TYPE%5D=CPI&c%5BCOICOP_1999%5D=_T&c%5BTYPE_OF_TRANSFORMATION%5D=IX&c%5BFREQUENCY%5D=M&c%5BTIME_PERIOD%5D=ge%3A2026-M04%2Ble%3A2026-M05&lastNObservations=2&includeHistory=true&attributes=dsd&measures=all
+  response:
+    status: 200
+    headers:
+      cache-control: no-cache, no-store, max-age=0, must-revalidate
+      content-encoding: gzip
+      content-type: application/json
+      expires: '0'
+      pragma: no-cache
+      server: istio-envoy
+      strict-transport-security: max-age=31536000 ; includeSubDomains
+      vary: accept-encoding
+      x-content-type-options: nosniff
+      x-frame-options: DENY
+      x-xss-protection: '0'
+    body:
+      string: '{"meta":{},"data":{"dataSets":[{"structure":0,"action":"Replace","series":{"0:0:0:0:0":{"attributes":[0,null,0,"2010A","true"],"observations":{"0":["152.7225866809138",null,0,"2010A",null],"1":["153.6870200476484",null,0,"2010A",null]}}}}],"structures":[{"dataSets":[0],"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow=IMF.STA:CPI(5.0.0)","title":"Dataflow"},{"urn":"urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_CPI(5.0.0)","title":"DataStructureDefinition"}],"dimensions":{"series":[{"id":"COUNTRY","keyPosition":0,"roles":[],"values":[{"id":"USA"}]},{"id":"INDEX_TYPE","keyPosition":1,"roles":[],"values":[{"id":"CPI"}]},{"id":"COICOP_1999","keyPosition":2,"roles":[],"values":[{"id":"_T"}]},{"id":"TYPE_OF_TRANSFORMATION","keyPosition":3,"roles":[],"values":[{"id":"IX"}]},{"id":"FREQUENCY","keyPosition":4,"roles":["FREQ"],"values":[{"id":"M"}]}],"observation":[{"id":"TIME_PERIOD","keyPosition":5,"values":[{"value":"2026-M04"},{"value":"2026-M05"}]}]},"measures":{"observation":[{"id":"OBS_VALUE","roles":[]}]},"attributes":{"dimensionGroup":[{"id":"REPORTING_PERIOD_TYPE","roles":[],"isMandatory":false,"relationship":{"dimensions":["TYPE_OF_TRANSFORMATION"]},"values":[]},{"id":"TRANSFORMATION","roles":[],"isMandatory":false,"relationship":{"dimensions":["TYPE_OF_TRANSFORMATION"]},"values":[]},{"id":"UNIT","roles":[],"isMandatory":false,"relationship":{"dimensions":["TYPE_OF_TRANSFORMATION"]},"values":[]}],"series":[{"id":"SCALE","roles":[],"isMandatory":false,"relationship":{"dimensions":["COUNTRY","INDEX_TYPE","COICOP_1999","TYPE_OF_TRANSFORMATION","FREQUENCY"]},"values":[{"id":"0"}]},{"id":"DECIMALS_DISPLAYED","roles":[],"isMandatory":false,"relationship":{"dimensions":["COUNTRY","INDEX_TYPE","COICOP_1999","TYPE_OF_TRANSFORMATION","FREQUENCY"]},"values":[]},{"id":"OVERLAP","roles":[],"isMandatory":false,"relationship":{"dimensions":["COUNTRY","INDEX_TYPE","COICOP_1999","TYPE_OF_TRANSFORMATION","FREQUENCY"]},"values":[{"id":"OL"}]},{"id":"COMMON_REFERENCE_PERIOD","roles":[],"isMandatory":false,"relationship":{"dimensions":["COUNTRY","INDEX_TYPE","COICOP_1999","TYPE_OF_TRANSFORMATION","FREQUENCY"]},"values":[]},{"id":"IFS_FLAG","roles":[],"isMandatory":false,"relationship":{"dimensions":["COUNTRY","INDEX_TYPE","COICOP_1999","TYPE_OF_TRANSFORMATION","FREQUENCY"]},"values":[]}],"observation":[{"id":"PRECISION","roles":[],"isMandatory":false,"relationship":{"observation":{}},"values":[]},{"id":"DERIVATION_TYPE","roles":[],"isMandatory":false,"relationship":{"observation":{}},"values":[{"id":"O"}]},{"id":"REFERENCE_PERIOD","roles":[],"isMandatory":false,"relationship":{"observation":{}},"values":[]},{"id":"STATUS","roles":[],"isMandatory":false,"relationship":{"observation":{}},"values":[]}]},"annotations":[]}]}}'
+  recorded_at: 2026-06-14 19:10:09
+recorded_with: VCR-vcr/2.1.0

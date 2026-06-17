@@ -6,3 +6,6 @@
 .quarto
 docs
 .aider*
+/doc/
+/Meta/
+.positai

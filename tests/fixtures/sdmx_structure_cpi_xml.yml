@@ -1,0 +1,65 @@
+http_interactions:
+- request:
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/structure/dataflow/IMF.STA/CPI/%2B?detail=referencestubs
+  response:
+    status: 200
+    headers:
+      cache-control: no-cache, no-store, max-age=0, must-revalidate
+      content-type: application/vnd.sdmx.structure+xml;version=3.0.0
+      expires: '0'
+      pragma: no-cache
+      server: istio-envoy
+      strict-transport-security: max-age=31536000 ; includeSubDomains
+      x-content-type-options: nosniff
+      x-frame-options: DENY
+      x-xss-protection: '0'
+    body:
+      raw_gzip: |-
+        eJytVttu4zYQ/RVCL0lQR5adJpuosbepL42AXIzY2+7ui0GTY4tYihQ4lC8o+u8FaVl2snLR
+        DfrIIc+
+        Z4VwOeftxnUmyBINCq85JK4xOCCimuVCLzsmnyfD8+uRj9zYDRLqAeGxNwWxhgKwz
+        qTAu7Z0gtTaPm8
+        3VahUiz9ahNoumAdSFYYBNZ8pkE1kKGcXm8mIaNUtoUDLhjvk9XBV4x8Z0
+        lmn1HqotcsezRvGKZHXhK
+        dpR1Gp+fnwYe+S5UGipYpX3dSbrUJ8fH5qtm5vrpqIZYE49AEW8
+        9f+gGbXifUGXuSRh2AzDamvcf/z8
+        uN0J18iDfRnvgXIw+3XS7yb9l8HwuhVd3jYPrNWJCaDt
+        zqlE2O97W3ViZCCnBni3HbWvzqOr89bPk9Z
+        N3IriVju8arevWxdXrauve3gF2HcXKA6GCN4J
+        CvVN6ZUKmt094G3UVTNi97bqgLhPLZ1Lvao1ksKoTl
+        AYFbs0xtostikWaq4zzUGGnFpa4cId
+        rpM8DsPx5C7ujZLTyzAKo7OA0AUotkn6naDcDXzovVESVBMV+
+        MMBEThYWzCKyheYgwHFoBP4
+        fAbd223PxXdKaet7AGtsnvvX5HFYB5gIK6F7P+2NkulvX6a958fR89Pg
+        aXLbPHK0hmKTQ7d/
+        N7kbPjz/OR29DMaDp8ndJHl+qiNxh2s4YG3dDMSSqkUnABV0cwMIars9tc53p6c
+        VFhkYMjKC
+        AUkUhzU57Y2SMzLbkJ7Ocq1A2V/IKywHZEbkfkQmKZDeKCECCSUZUHSKpOfEpkDoEoybBZ
+        ZS
+        tQAiFMmdG3T7C605Eqo4QTBLb2XbYLhzneoCIdWSI9FLMISSHIzQ3FOLDELiHLsOcZ7L6IA7
+        H5RY
+        OpPQICthUwKUpYTpQlmzOUEf6szob6AI1yvlXLHdLbec1RKJUEwWHMhca+5DncH2Rtjw
+        AQq1aBBrqMJ
+        cm21uGoTmbpRkgxhgBkoj8GIrKZ7GFatQgpWbGXDBqCSMGmj4A9qmYGpSFNbV
+        H9a2pv5/UFlANxVgqG
+        Hpppqa7xvztOWHqIZ6y1GzcWwmXD0GaiEUjMFaoRYYHA3tryAVaLXZ
+        lEddHwdxMPz08DC9T8aT55cvw
+        d//R1DaiIVQxwNJniaD31+OjdcPu+tXOTiuDq6DEYwAnC7b
+        x4XhvzsVOBSKSqfR9QckRfsp59QCv7PH
+        c9GO2pfn0fV563ISfYijKG5F4Yfo4sPVzdcfy833
+        tr2QPtEM3kjTcR2qmByqoujvFegNk9ej46rm3xS
+        wu9FGr1PKB+gmcAfMPVA4IKATCWBa6WwT
+        kkQRyrnwnq3eypyURFjInCoA5VKoEtogHCwV0utSRdUXS4
+        EOfgrhIiTDnbg8aXVOJdOploId
+        Sk1Papt6rQHLwrOGcyoMoYiaCVdRsgKxSC02SnVR1ohZ4ZPuYqyuR
+        5UqqCRCzWUpRgZIXsyk
+        wNSxpGCcaFMhnYDW3rXi6o0SbHiTk9TatN5Tk2klELgrwU74XxcHyel90hvh
+        mdddn6rZhgwK
+        o9FSS+ba+EUO4R74uji7N8d5NOAutty9OOXb4abNPQzuxL8+QHlhWErx7QvUIKtUsPT
+        wTSoQ
+        CBcGmJWbBtHGRVMtrSZIrcD5pqyUe2gUQOluRZU9UPKDVj78JlU/qu6PfZEqXKX4/XF/Wv6V
+        f
+        vI6X+fk0Lr7adUa8eAXePjr+97Y/QdBLp3W
+  recorded_at: 2026-06-14 19:10:12
+recorded_with: VCR-vcr/2.1.0

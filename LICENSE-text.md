@@ -1,4 +1,4 @@
 # License
 
-    YEAR: 2026
+    YEAR: 2023
     COPYRIGHT HOLDER: imf.data authors

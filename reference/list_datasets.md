@@ -1,28 +1,22 @@
-# List IMF datasets
+# List all available Time Series Datasets
 
-Return the available IMF SDMX dataflows as a stable, tidy catalogue.
+List all available Time Series Datasets
 
 ## Usage
 
 ``` r
-list_datasets(agency_id = "*")
+list_datasets()
 ```
-
-## Arguments
-
-- agency_id:
-
-  Maintainer ID. Use `"*"` for all maintainers.
 
 ## Value
 
-A tibble with `agency`, `id`, `version`, `name`, `description`, and
-`dsd_id` columns.
+a data.frame with columns 'Id' and 'Description'.
 
 ## Examples
 
 ``` r
-# \donttest{
-datasets <- list_datasets("IMF.STA")
-# }
+d <- list_datasets()
+#> Data service did not respond.
+head(d)
+#> NULL
 ```

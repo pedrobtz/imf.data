@@ -1,31 +1,14 @@
 # Package index
 
-## Tidy workflow
+## All functions
 
 - [`list_datasets()`](https://pedrobtz.github.io/imf.data/reference/list_datasets.md)
-  : List IMF datasets
-- [`list_dimensions()`](https://pedrobtz.github.io/imf.data/reference/list_dimensions.md)
-  : List the dimensions of an IMF dataset
-- [`list_dimension_values()`](https://pedrobtz.github.io/imf.data/reference/list_dimension_values.md)
-  : List available values for a dataset dimension
-- [`get_data()`](https://pedrobtz.github.io/imf.data/reference/get_data.md)
-  : Download IMF data as a tidy data frame
-
-## Raw SDMX API
-
-- [`sdmx_api`](https://pedrobtz.github.io/imf.data/reference/sdmx_api.md)
-  : IMF SDMX 3.0 API
-- [`sdmx_structure()`](https://pedrobtz.github.io/imf.data/reference/sdmx_structure.md)
-  : Query structural metadata
-- [`sdmx_data()`](https://pedrobtz.github.io/imf.data/reference/sdmx_data.md)
-  : Query statistical data
-- [`sdmx_availability()`](https://pedrobtz.github.io/imf.data/reference/sdmx_availability.md)
-  : Query data availability
-- [`sdmx_metadata()`](https://pedrobtz.github.io/imf.data/reference/sdmx_metadata.md)
-  : Query metadata reports
-
-## Configuration
-
-- [`set_imf_proxy()`](https://pedrobtz.github.io/imf.data/reference/set_imf_proxy.md)
-  [`clear_imf_proxy()`](https://pedrobtz.github.io/imf.data/reference/set_imf_proxy.md)
-  : Configure an HTTP proxy
+  : List all available Time Series Datasets
+- [`load_datasets()`](https://pedrobtz.github.io/imf.data/reference/load_datasets.md)
+  : Loads Time Series Datasets
+- [`mt_compact_data()`](https://pedrobtz.github.io/imf.data/reference/mt_compact_data.md)
+  : Calls API endpoint 'CompactData' to get Dataset time series
+- [`mt_data_structure()`](https://pedrobtz.github.io/imf.data/reference/mt_data_structure.md)
+  : Calls API endpoint 'DataStructure'
+- [`mt_dataflow()`](https://pedrobtz.github.io/imf.data/reference/mt_dataflow.md)
+  : Calls API endpoint 'Dataflow'

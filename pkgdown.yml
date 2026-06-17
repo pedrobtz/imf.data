@@ -1,10 +1,8 @@
 pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
-articles:
-  getting-started: getting-started.html
-  migration: migration.html
-last_built: 2026-06-17T06:53Z
+articles: {}
+last_built: 2026-06-17T07:06Z
 urls:
   reference: https://pedrobtz.github.io/imf.data/reference
   article: https://pedrobtz.github.io/imf.data/articles

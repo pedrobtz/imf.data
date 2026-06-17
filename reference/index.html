@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">imf.data</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,13 +16,6 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Guides</h6></li>
-    <li><a class="dropdown-item" href="../articles/getting-started.html">Getting started with IMF SDMX 3.0 data</a></li>
-    <li><a class="dropdown-item" href="../articles/migration.html">Migrating from imf.data 0.1.x</a></li>
-  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -39,7 +32,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="tidy-workflow">Tidy workflow<a class="anchor" aria-label="anchor" href="#tidy-workflow"></a></h2>
+      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
 
 
 
@@ -53,91 +46,37 @@
           <code><a href="list_datasets.html">list_datasets()</a></code>
 
         </dt>
-        <dd>List IMF datasets</dd>
+        <dd>List all available Time Series Datasets</dd>
 
         <dt>
 
-          <code><a href="list_dimensions.html">list_dimensions()</a></code>
+          <code><a href="load_datasets.html">load_datasets()</a></code>
 
         </dt>
-        <dd>List the dimensions of an IMF dataset</dd>
+        <dd>Loads Time Series Datasets</dd>
 
         <dt>
 
-          <code><a href="list_dimension_values.html">list_dimension_values()</a></code>
+          <code><a href="mt_compact_data.html">mt_compact_data()</a></code>
 
         </dt>
-        <dd>List available values for a dataset dimension</dd>
+        <dd>Calls API endpoint 'CompactData' to get Dataset time series</dd>
 
         <dt>
 
-          <code><a href="get_data.html">get_data()</a></code>
+          <code><a href="mt_data_structure.html">mt_data_structure()</a></code>
 
         </dt>
-        <dd>Download IMF data as a tidy data frame</dd>
-      </dl></div><div class="section level2">
-      <h2 id="raw-sdmx-api">Raw SDMX API<a class="anchor" aria-label="anchor" href="#raw-sdmx-api"></a></h2>
-
-
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="sdmx_api.html">sdmx_api</a></code>
-
-        </dt>
-        <dd>IMF SDMX 3.0 API</dd>
+        <dd>Calls API endpoint 'DataStructure'</dd>
 
         <dt>
 
-          <code><a href="sdmx_structure.html">sdmx_structure()</a></code>
+          <code><a href="mt_dataflow.html">mt_dataflow()</a></code>
 
         </dt>
-        <dd>Query structural metadata</dd>
-
-        <dt>
-
-          <code><a href="sdmx_data.html">sdmx_data()</a></code>
-
-        </dt>
-        <dd>Query statistical data</dd>
-
-        <dt>
-
-          <code><a href="sdmx_availability.html">sdmx_availability()</a></code>
-
-        </dt>
-        <dd>Query data availability</dd>
-
-        <dt>
-
-          <code><a href="sdmx_metadata.html">sdmx_metadata()</a></code>
-
-        </dt>
-        <dd>Query metadata reports</dd>
-      </dl></div><div class="section level2">
-      <h2 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a></h2>
-
-
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="set_imf_proxy.html">set_imf_proxy()</a></code> <code><a href="set_imf_proxy.html">clear_imf_proxy()</a></code>
-
-        </dt>
-        <dd>Configure an HTTP proxy</dd>
+        <dd>Calls API endpoint 'Dataflow'</dd>
       </dl></div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
-    </nav></aside></div>
+  </main></div>
 
 
     <footer><div class="pkgdown-footer-left">

@@ -4,9 +4,9 @@ Version: 0.2.0
 Authors@R:
     person("Pedro", "Baltazar",, "pedrobtz@gmail.com", role = c("aut", "cre", "cph"))
 Description: Provides low-level access to the International Monetary Fund
-    Statistical Data and Metadata eXchange ('SDMX') 3.0 API and a concise
-    workflow for discovering datasets, inspecting dimensions, and
-    downloading observations as tidy data frames.
+    Statistical Data and Metadata eXchange ('SDMX') 3.0 API, available at
+    <https://data.imf.org/>, and a concise workflow for discovering datasets,
+    inspecting dimensions, and downloading observations as tidy data frames.
 Depends: R (>= 4.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8

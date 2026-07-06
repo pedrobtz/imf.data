@@ -1,3 +1,8 @@
+## Resubmission
+
+This is a resubmission. We added the IMF URL to the Description field as
+requested by the CRAN reviewer.
+
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes

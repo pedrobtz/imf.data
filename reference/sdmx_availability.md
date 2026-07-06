@@ -94,7 +94,7 @@ sdmx_availability("CPI", component_id = "COUNTRY")
 #> [1] "series_count"
 #> 
 #> $data$dataConstraints[[1]]$annotations[[1]]$title
-#> [1] "29651"
+#> [1] "29103"
 #> 
 #> $data$dataConstraints[[1]]$annotations[[1]]$type
 #> [1] "sdmx_metrics"
@@ -116,7 +116,7 @@ sdmx_availability("CPI", component_id = "COUNTRY")
 #> [1] "time_period_end"
 #> 
 #> $data$dataConstraints[[1]]$annotations[[3]]$title
-#> [1] "2026-06-01"
+#> [1] "2026-07-01"
 #> 
 #> $data$dataConstraints[[1]]$annotations[[3]]$type
 #> [1] "sdmx_metrics"
@@ -1204,13 +1204,13 @@ sdmx_availability("CPI", component_id = "COUNTRY")
 #> [1] "https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json"
 #> 
 #> $meta$id
-#> [1] "IDREF9513"
+#> [1] "IDREF3802"
 #> 
 #> $meta$test
 #> [1] FALSE
 #> 
 #> $meta$prepared
-#> [1] "2026-06-17T06:53:38.733375145Z"
+#> [1] "2026-07-06T05:29:36.793700584Z"
 #> 
 #> $meta$contentLanguages
 #> $meta$contentLanguages[[1]]

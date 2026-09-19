@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/pedrobtz/imf.data/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/pedrobtz/imf.data/blob/v0.2.0/DESCRIPTION)
 
 Baltazar P (2026). *imf.data: An Interface to IMF (International
 Monetary Fund) Data*. R package version 0.2.0,

@@ -73,8 +73,8 @@ get_data(
 #> # A tibble: 2 × 7
 #>   COUNTRY INDEX_TYPE COICOP_1999 TYPE_OF_TRANSFORMATION FREQUENCY TIME_PERIOD
 #>   <chr>   <chr>      <chr>       <chr>                  <chr>     <chr>      
-#> 1 USA     CPI        _T          IX                     M         2026-M04   
-#> 2 USA     CPI        _T          IX                     M         2026-M05   
+#> 1 USA     CPI        _T          IX                     M         2026-M06   
+#> 2 USA     CPI        _T          IX                     M         2026-M07   
 #> # ℹ 1 more variable: OBS_VALUE <dbl>
 # }
 ```

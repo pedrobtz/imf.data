@@ -2,6 +2,8 @@
 
 ## imf.data 0.2.0
 
+CRAN release: 2026-07-06
+
 - This release migrates `imf.data` to the new IMF SDMX 3.0 API. This is
   a breaking change from the API used by version 0.1.x.
 

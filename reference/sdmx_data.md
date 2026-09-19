@@ -130,7 +130,7 @@ sdmx_data(
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`0`
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`0`[[1]]
-#> [1] "152.7225866809138"
+#> [1] "153.150000802548"
 #> 
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`0`[[2]]
 #> NULL
@@ -147,7 +147,7 @@ sdmx_data(
 #> 
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`1`
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`1`[[1]]
-#> [1] "153.6870200476484"
+#> [1] "153.1344084418875"
 #> 
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`1`[[2]]
 #> NULL
@@ -298,12 +298,12 @@ sdmx_data(
 #> $data$structures[[1]]$dimensions$observation[[1]]$values
 #> $data$structures[[1]]$dimensions$observation[[1]]$values[[1]]
 #> $data$structures[[1]]$dimensions$observation[[1]]$values[[1]]$value
-#> [1] "2026-M04"
+#> [1] "2026-M06"
 #> 
 #> 
 #> $data$structures[[1]]$dimensions$observation[[1]]$values[[2]]
 #> $data$structures[[1]]$dimensions$observation[[1]]$values[[2]]$value
-#> [1] "2026-M05"
+#> [1] "2026-M07"
 #> 
 #> 
 #> 
@@ -341,9 +341,6 @@ sdmx_data(
 #> 
 #> 
 #> 
-#> $data$structures[[1]]$attributes$dimensionGroup[[1]]$values
-#> list()
-#> 
 #> 
 #> $data$structures[[1]]$attributes$dimensionGroup[[2]]
 #> $data$structures[[1]]$attributes$dimensionGroup[[2]]$id
@@ -362,9 +359,6 @@ sdmx_data(
 #> 
 #> 
 #> 
-#> $data$structures[[1]]$attributes$dimensionGroup[[2]]$values
-#> list()
-#> 
 #> 
 #> $data$structures[[1]]$attributes$dimensionGroup[[3]]
 #> $data$structures[[1]]$attributes$dimensionGroup[[3]]$id
@@ -382,9 +376,6 @@ sdmx_data(
 #> [1] "TYPE_OF_TRANSFORMATION"
 #> 
 #> 
-#> 
-#> $data$structures[[1]]$attributes$dimensionGroup[[3]]$values
-#> list()
 #> 
 #> 
 #> 
@@ -455,9 +446,6 @@ sdmx_data(
 #> 
 #> 
 #> 
-#> $data$structures[[1]]$attributes$series[[2]]$values
-#> list()
-#> 
 #> 
 #> $data$structures[[1]]$attributes$series[[3]]
 #> $data$structures[[1]]$attributes$series[[3]]$id
@@ -525,9 +513,6 @@ sdmx_data(
 #> 
 #> 
 #> 
-#> $data$structures[[1]]$attributes$series[[4]]$values
-#> list()
-#> 
 #> 
 #> $data$structures[[1]]$attributes$series[[5]]
 #> $data$structures[[1]]$attributes$series[[5]]$id
@@ -558,9 +543,6 @@ sdmx_data(
 #> 
 #> 
 #> 
-#> $data$structures[[1]]$attributes$series[[5]]$values
-#> list()
-#> 
 #> 
 #> 
 #> $data$structures[[1]]$attributes$observation
@@ -578,9 +560,6 @@ sdmx_data(
 #> $data$structures[[1]]$attributes$observation[[1]]$relationship$observation
 #> named list()
 #> 
-#> 
-#> $data$structures[[1]]$attributes$observation[[1]]$values
-#> list()
 #> 
 #> 
 #> $data$structures[[1]]$attributes$observation[[2]]
@@ -621,9 +600,6 @@ sdmx_data(
 #> named list()
 #> 
 #> 
-#> $data$structures[[1]]$attributes$observation[[3]]$values
-#> list()
-#> 
 #> 
 #> $data$structures[[1]]$attributes$observation[[4]]
 #> $data$structures[[1]]$attributes$observation[[4]]$id
@@ -639,9 +615,6 @@ sdmx_data(
 #> $data$structures[[1]]$attributes$observation[[4]]$relationship$observation
 #> named list()
 #> 
-#> 
-#> $data$structures[[1]]$attributes$observation[[4]]$values
-#> list()
 #> 
 #> 
 #> 

@@ -1,6 +1,6 @@
 Package: imf.data
 Title: An Interface to IMF (International Monetary Fund) Data
-Version: 0.2.0
+Version: 0.2.0.9000
 Authors@R:
     person("Pedro", "Baltazar",, "pedrobtz@gmail.com", role = c("aut", "cre", "cph"))
 Description: Provides low-level access to the International Monetary Fund

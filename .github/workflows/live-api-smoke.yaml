@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: "17 6 * * 1"
+    - cron: "32 5 * * 6"
   workflow_dispatch:
 
 name: live-api-smoke

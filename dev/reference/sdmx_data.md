@@ -130,7 +130,7 @@ sdmx_data(
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`0`
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`0`[[1]]
-#> [1] "153.1344084418875"
+#> [1] "153.6214404131058"
 #> 
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`0`[[2]]
 #> NULL
@@ -147,7 +147,7 @@ sdmx_data(
 #> 
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`1`
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`1`[[1]]
-#> [1] "153.6214404131058"
+#> [1] "154.5202941452979"
 #> 
 #> $data$dataSets[[1]]$series$`0:0:0:0:0`$observations$`1`[[2]]
 #> NULL
@@ -298,12 +298,12 @@ sdmx_data(
 #> $data$structures[[1]]$dimensions$observation[[1]]$values
 #> $data$structures[[1]]$dimensions$observation[[1]]$values[[1]]
 #> $data$structures[[1]]$dimensions$observation[[1]]$values[[1]]$value
-#> [1] "2026-M07"
+#> [1] "2026-M08"
 #> 
 #> 
 #> $data$structures[[1]]$dimensions$observation[[1]]$values[[2]]
 #> $data$structures[[1]]$dimensions$observation[[1]]$values[[2]]$value
-#> [1] "2026-M08"
+#> [1] "2026-M09"
 #> 
 #> 
 #> 

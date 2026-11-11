@@ -86,9 +86,9 @@ the label in the first run; one added later starts a new run. Use
 `ci:docs` for a change only to prose (README, NEWS, articles, comments in
 Markdown), `ci:minimal` for one the checks cannot see, such as CI
 configuration or repository housekeeping, and never either to get code past
-a failing check. Labels change pull request runs only. The push to the
-default branch after merge carries none, so whatever a label skipped still
-runs there, at the quick profile.
+a failing check. Labels change pull request runs only; the push to the
+default branch runs no checks at all (see Quick by default), so what a label
+skipped is next checked by the schedule.
 
 **A label skips without a runner.** The `changes` gate is a job, so on its
 own it takes one runner per workflow to decide that nothing runs: twelve for
@@ -120,11 +120,26 @@ The full profile is slow. gctorture at step 20 alone has taken 36 to 107
 minutes on sibling packages. Waiting on it between roadmap stages was the
 main thing slowing roadmaps down, so:
 
-- **Pull requests and pushes to the default branch run the quick profile**
-  (`profile: auto` in the callers). A merge never starts the full set. It
-  should finish in under five minutes. If it doesn't, raise gctorture's
+- **Pull requests run the quick profile** (`profile: auto` in the
+  callers). It should finish in under five minutes. If it doesn't, raise gctorture's
   `quick-step` or trim `quick-containers` in the caller workflows; never cut
   the full profile.
+- **A push to the default branch runs no checks.** The callers have no
+  `push:` trigger, except pkgdown, which deploys the site, and
+  `cran-release.yaml`. A pull request already checks its merge with main,
+  and on 2026-11-11 the push after merge was 111 of the 206 runs queued
+  across the account. Main is checked by the weekly schedule instead, which
+  r-actions skips when the commit is one its last green scheduled run
+  already checked, except in the first week of a month. Each package has its
+  own slot between Saturday 00:00 and Monday 06:00 UTC; a new package picks
+  a free hour, not the examples' cron.
+- **A change made in many packages at once** (a sync, a CLAUDE.md move, a
+  workflow edit) puts `[skip ci]` in its pull request title and commit.
+  GitHub then starts no run for the pull request, nor for the merge, whose
+  commit message carries the title. One sweep merged into 28 packages
+  without it queued 272 jobs. Use it only where no check could see the
+  change, or where every file has been checked by hand, as the label rules
+  above say.
 - **A `full` roadmap stage takes the `full-ci` label** and merges only on a
   green full run. The roadmap gives the reason in the stage's `**CI.**`
   line, for example first compiled code, a `PROTECT` or finalizer change, a

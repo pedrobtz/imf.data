@@ -104,7 +104,7 @@ told to.
 One pull request per batch of related work, not one per issue. Fixes found
 by one review or one pass go on one branch, with a `Closes #<n>` line for
 each issue. Split only what is large and independent of the rest. Every pull
-request runs the whole CI set, and the account's runners are shared by every
+request runs the quick CI set, and the account's runners are shared by every
 package (see `ci.md`): six pull requests from one zuhttp pass, opened at once,
 queued each other for hours, were cancelled for want of a macOS runner, and
 conflicted in the test files they all touched. They were folded into one.

@@ -5,15 +5,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Shared conventions
 
-The portfolio's shared rules are synced into `.claude/shared/` from
-`pedrobtz/packages:claude/shared/`. Never edit them here. Where this file and
-a shared file disagree, this file wins for this package.
+<!-- r-skills: shared-rules -->
 
-@.claude/shared/workflow.md
-@.claude/shared/r-package.md
-@.claude/shared/ci.md
-@.claude/shared/correctness.md
-@.claude/shared/assurance.md
+The portfolio's shared rules (`workflow`, `r-package`, `ci`, `native-code`,
+`correctness`, `assurance`) come from the
+[r-skills](https://github.com/pedrobtz/r-skills) plugin's `rules/`, loaded at
+session start because of the marker above. Never copy them here. Where this
+file and a shared rule disagree, this file wins for this package. Cloud
+sessions do not load the plugin and run without them.
 
 This package predates those files and departs from them in a few places.
 Each departure is stated as one below, in the section it belongs to.

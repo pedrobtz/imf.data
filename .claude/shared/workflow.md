@@ -119,7 +119,7 @@ for it rather than only working around it.
 
 The portfolio's workflow skills live in `pedrobtz/r-skills` (`pkg-init`,
 `pkg-roadmap`, `pkg-implement`, `pkg-assurance`, `pkg-bug-hunt`,
-`pkg-critical-review`, `pkg-cran-review`, `pkg-post-cran`, `pkg-readme`); the
+`pkg-critical-review`, `pkg-cran-review`, `pkg-post-cran`, `pkg-docs`); the
 general process skills are [Superpowers](https://github.com/obra/superpowers).
 `building-a-package.md` in `pedrobtz/packages` walks through them in order.
 Both sets defer to these files where they overlap, so the settlements are

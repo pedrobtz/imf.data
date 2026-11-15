@@ -1204,13 +1204,13 @@ sdmx_availability("CPI", component_id = "COUNTRY")
 #> [1] "https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json"
 #> 
 #> $meta$id
-#> [1] "IDREF2651"
+#> [1] "IDREF2555"
 #> 
 #> $meta$test
 #> [1] FALSE
 #> 
 #> $meta$prepared
-#> [1] "2026-11-12T09:39:35.771914561Z"
+#> [1] "2026-11-15T06:35:00.029215037Z"
 #> 
 #> $meta$contentLanguages
 #> $meta$contentLanguages[[1]]
